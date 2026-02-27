@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products — Griffix Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Archivo+Narrow:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { lime: { DEFAULT: '#D4FF00' }, tan: { DEFAULT: '#A39171' } }, fontFamily: { display: ['Oswald','sans-serif'], body: ['Archivo Narrow','sans-serif'] } } }
+    }
+  </script>
+  <link rel="stylesheet" href="/shared/theme.css">
+  <style>
+    body { background:#0a0a0a; }
+    .admin-nav { background:#111; border-bottom:1px solid rgba(163,145,113,.2); padding:0 28px; display:flex; align-items:center; gap:28px; height:56px; position:sticky; top:0; z-index:50; }
+    .admin-nav-link { font-family:'Oswald',sans-serif; font-size:12px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:#555; text-decoration:none; padding:4px 0; border-bottom:2px solid transparent; }
+    .admin-nav-link.active, .admin-nav-link:hover { color:#D4FF00; border-color:#D4FF00; }
+    .admin-content { max-width:1300px; margin:0 auto; padding:32px 28px; }
+  </style>
+</head>
+<body>
+
+<div class="admin-nav">
+  <img src="/brand_assets/Griffix logo.png" alt="Griffix" class="logo-lime" style="height:28px; flex-shrink:0;">
+  <a href="/admin/orders.html" class="admin-nav-link">Orders</a>
+  <a href="/admin/products.html" class="admin-nav-link active">Products</a>
+  <a href="/admin/gallery.html" class="admin-nav-link">Gallery</a>
+  <div style="margin-left:auto;">
+    <button id="logout-btn" style="font-family:'Archivo Narrow',sans-serif; font-size:12px; color:#444; background:none; border:none; cursor:pointer; text-decoration:underline;" class="hover:text-[#D4FF00]">Sign out</button>
+  </div>
+</div>
+
+<div class="admin-content">
+  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+    <h1 class="font-display text-white font-bold" style="font-size:26px; letter-spacing:-.01em;">PRODUCTS</h1>
+    <button id="refresh-btn" class="btn-ghost" style="padding:8px 16px; font-size:12px;">Refresh</button>
+  </div>
+  <p style="font-family:'Archivo Narrow',sans-serif; font-size:13px; color:#555; margin-bottom:28px;">
+    Products are managed via Google Sheets. Edit the Products tab in your sheet — changes sync within 60 seconds.
+    <a href="#" style="color:#A39171; text-decoration:underline;">Open Sheet ↗</a>
+  </p>
+
+  <div id="products-loading">
+    <div class="skeleton" style="height:48px; margin-bottom:8px;"></div>
+    <div class="skeleton" style="height:48px; margin-bottom:8px;"></div>
+    <div class="skeleton" style="height:48px; margin-bottom:8px;"></div>
+  </div>
+
+  <div id="products-table-wrap" style="display:none; overflow-x:auto;">
+    <table class="admin-table" style="width:100%;">
+      <thead>
+        <tr>
+          <th>SKU</th>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Make / Model</th>
+          <th>Years</th>
+          <th>Price</th>
+          <th>Featured</th>
+          <th>In Stock</th>
+        </tr>
+      </thead>
+      <tbody id="products-tbody"></tbody>
+    </table>
+  </div>
+
+  <div id="products-empty" style="display:none; text-align:center; padding:64px 0;">
+    <p class="font-display text-[#333] text-xl">NO PRODUCTS FOUND</p>
+    <p class="text-[#444] mt-2" style="font-family:'Archivo Narrow',sans-serif; font-size:14px;">Add products to the Google Sheets "Products" tab.</p>
+  </div>
+</div>
+
+<script type="module">
+import { initAdminAuth, getToken, clearToken } from '/js/admin-auth.js';
+
+let _token = null;
+
+async function boot() {
+  _token = await initAdminAuth();
+  if (!_token) return;
+  loadProducts();
+}
+
+async function loadProducts() {
+  try {
+    const res = await fetch('/api/sheets/products');
+    const data = await res.json();
+    renderProducts(data.products || []);
+  } catch (err) {
+    document.getElementById('products-loading').innerHTML = `<p style="color:#c0a0a0; font-family:'Archivo Narrow',sans-serif;">Failed to load products: ${err.message}</p>`;
+  }
+}
+
+function renderProducts(products) {
+  document.getElementById('products-loading').style.display = 'none';
+
+  if (products.length === 0) {
+    document.getElementById('products-empty').style.display = 'block';
+    return;
+  }
+
+  document.getElementById('products-table-wrap').style.display = 'block';
+  document.getElementById('products-tbody').innerHTML = products.map(p => `
+    <tr>
+      <td style="font-family:'Oswald',sans-serif; font-size:12px; color:#A39171; letter-spacing:.06em;">${p.sku || '—'}</td>
+      <td style="font-family:'Archivo Narrow',sans-serif; font-size:13px; color:#e5e5e5;">${p.name}</td>
+      <td><span class="badge badge-pending" style="font-size:10px;">${p.category}</span></td>
+      <td style="font-family:'Archivo Narrow',sans-serif; font-size:12px; color:#777;">${p.make || ''} ${p.model || ''}</td>
+      <td style="font-family:'Archivo Narrow',sans-serif; font-size:12px; color:#666;">${p.year_from || ''}${p.year_to && p.year_to !== p.year_from ? '–' + p.year_to : ''}</td>
+      <td style="font-family:'Oswald',sans-serif; font-size:14px; font-weight:600; color:#D4FF00;">$${p.price}</td>
+      <td>${p.featured ? '<span style="color:#D4FF00;">★</span>' : '<span style="color:#333;">—</span>'}</td>
+      <td><span class="${p.in_stock ? 'badge badge-shipped' : 'badge badge-cancelled'}" style="font-size:10px;">${p.in_stock ? 'Yes' : 'No'}</span></td>
+    </tr>
+  `).join('');
+}
+
+document.getElementById('refresh-btn').addEventListener('click', loadProducts);
+document.getElementById('logout-btn').addEventListener('click', () => {
+  clearToken();
+  window.location.href = '/admin/index.html';
+});
+
+boot();
+</script>
+</body>
+</html>

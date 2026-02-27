@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery — Griffix Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Archivo+Narrow:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { lime: { DEFAULT: '#D4FF00' }, tan: { DEFAULT: '#A39171' } }, fontFamily: { display: ['Oswald','sans-serif'], body: ['Archivo Narrow','sans-serif'] } } }
+    }
+  </script>
+  <link rel="stylesheet" href="/shared/theme.css">
+  <style>
+    body { background:#0a0a0a; }
+    .admin-nav { background:#111; border-bottom:1px solid rgba(163,145,113,.2); padding:0 28px; display:flex; align-items:center; gap:28px; height:56px; position:sticky; top:0; z-index:50; }
+    .admin-nav-link { font-family:'Oswald',sans-serif; font-size:12px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:#555; text-decoration:none; padding:4px 0; border-bottom:2px solid transparent; }
+    .admin-nav-link.active, .admin-nav-link:hover { color:#D4FF00; border-color:#D4FF00; }
+    .admin-content { max-width:1300px; margin:0 auto; padding:32px 28px; }
+  </style>
+</head>
+<body>
+
+<div class="admin-nav">
+  <img src="/brand_assets/Griffix logo.png" alt="Griffix" class="logo-lime" style="height:28px; flex-shrink:0;">
+  <a href="/admin/orders.html" class="admin-nav-link">Orders</a>
+  <a href="/admin/products.html" class="admin-nav-link">Products</a>
+  <a href="/admin/gallery.html" class="admin-nav-link active">Gallery</a>
+  <div style="margin-left:auto;">
+    <button id="logout-btn" style="font-family:'Archivo Narrow',sans-serif; font-size:12px; color:#444; background:none; border:none; cursor:pointer; text-decoration:underline;" class="hover:text-[#D4FF00]">Sign out</button>
+  </div>
+</div>
+
+<div class="admin-content">
+  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+    <h1 class="font-display text-white font-bold" style="font-size:26px; letter-spacing:-.01em;">GALLERY</h1>
+    <button id="refresh-btn" class="btn-ghost" style="padding:8px 16px; font-size:12px;">Refresh</button>
+  </div>
+  <p style="font-family:'Archivo Narrow',sans-serif; font-size:13px; color:#555; margin-bottom:28px;">
+    Gallery images are managed via Google Sheets. Edit the Gallery tab in your sheet — changes sync within 60 seconds.
+    <a href="#" style="color:#A39171; text-decoration:underline;">Open Sheet ↗</a>
+  </p>
+
+  <!-- Tab filter -->
+  <div style="display:flex; gap:0; margin-bottom:24px;">
+    <button class="tab-btn active" data-tab="">All</button>
+    <button class="tab-btn" data-tab="our-designs">Our Designs</button>
+    <button class="tab-btn" data-tab="customer-builds">Customer Builds</button>
+    <button class="tab-btn" data-tab="plastic-kits">Plastic Kits</button>
+  </div>
+
+  <div id="gallery-loading">
+    <div class="skeleton" style="height:48px; margin-bottom:8px;"></div>
+    <div class="skeleton" style="height:48px; margin-bottom:8px;"></div>
+    <div class="skeleton" style="height:48px; margin-bottom:8px;"></div>
+  </div>
+
+  <div id="gallery-table-wrap" style="display:none; overflow-x:auto;">
+    <table class="admin-table" style="width:100%;">
+      <thead>
+        <tr>
+          <th>Preview</th>
+          <th>Title</th>
+          <th>Tab</th>
+          <th>Bike</th>
+          <th>Customer</th>
+          <th>Featured</th>
+          <th>Order</th>
+        </tr>
+      </thead>
+      <tbody id="gallery-tbody"></tbody>
+    </table>
+  </div>
+
+  <div id="gallery-empty" style="display:none; text-align:center; padding:64px 0;">
+    <p class="font-display text-[#333] text-xl">NO GALLERY ITEMS</p>
+    <p class="text-[#444] mt-2" style="font-family:'Archivo Narrow',sans-serif; font-size:14px;">Add items to the Google Sheets "Gallery" tab.</p>
+  </div>
+</div>
+
+<script type="module">
+import { initAdminAuth, clearToken } from '/js/admin-auth.js';
+
+let _token = null;
+let _allItems = [];
+let _activeTab = '';
+
+async function boot() {
+  _token = await initAdminAuth();
+  if (!_token) return;
+  loadGallery();
+}
+
+async function loadGallery() {
+  try {
+    const res = await fetch('/api/sheets/gallery');
+    const data = await res.json();
+    _allItems = (data.gallery || []).sort((a, b) => a.order - b.order);
+    renderGallery();
+  } catch (err) {
+    document.getElementById('gallery-loading').innerHTML = `<p style="color:#c0a0a0; font-family:'Archivo Narrow',sans-serif;">Failed to load gallery: ${err.message}</p>`;
+  }
+}
+
+function renderGallery() {
+  document.getElementById('gallery-loading').style.display = 'none';
+  const items = _activeTab ? _allItems.filter(i => i.tab === _activeTab) : _allItems;
+
+  if (items.length === 0) {
+    document.getElementById('gallery-table-wrap').style.display = 'none';
+    document.getElementById('gallery-empty').style.display = 'block';
+    return;
+  }
+
+  document.getElementById('gallery-empty').style.display = 'none';
+  document.getElementById('gallery-table-wrap').style.display = 'block';
+
+  const tabLabels = { 'our-designs': 'Our Designs', 'customer-builds': 'Customer Builds', 'plastic-kits': 'Plastic Kits' };
+
+  document.getElementById('gallery-tbody').innerHTML = items.map(item => `
+    <tr>
+      <td>
+        ${item.image_url
+          ? `<img src="${item.image_url}" alt="${item.title}" style="width:56px; height:40px; object-fit:cover; border:1px solid #222;">`
+          : `<div style="width:56px; height:40px; background:#1a1a1a; border:1px solid #222; display:flex; align-items:center; justify-content:center;"><span style="color:#333; font-size:10px;">—</span></div>`
+        }
+      </td>
+      <td style="font-family:'Archivo Narrow',sans-serif; font-size:13px; color:#e5e5e5;">${item.title}</td>
+      <td><span class="badge badge-pending" style="font-size:10px;">${tabLabels[item.tab] || item.tab}</span></td>
+      <td style="font-family:'Archivo Narrow',sans-serif; font-size:12px; color:#777;">${item.bike_make || ''} ${item.bike_model || ''}</td>
+      <td style="font-family:'Archivo Narrow',sans-serif; font-size:12px; color:#666;">${item.customer_name || '—'}</td>
+      <td>${item.featured ? '<span style="color:#D4FF00;">★ Featured</span>' : '<span style="color:#333;">—</span>'}</td>
+      <td style="font-family:'Oswald',sans-serif; font-size:14px; color:#A39171;">${item.order}</td>
+    </tr>
+  `).join('');
+}
+
+document.querySelectorAll('.tab-btn[data-tab]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn[data-tab]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    _activeTab = btn.dataset.tab;
+    renderGallery();
+  });
+});
+
+document.getElementById('refresh-btn').addEventListener('click', loadGallery);
+document.getElementById('logout-btn').addEventListener('click', () => {
+  clearToken();
+  window.location.href = '/admin/index.html';
+});
+
+boot();
+</script>
+</body>
+</html>

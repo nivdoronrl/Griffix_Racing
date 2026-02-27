@@ -1,0 +1,53 @@
+<nav class="fixed top-0 left-0 right-0 z-50" style="background: rgba(15,15,15,.97); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(212,255,0,.1); box-shadow: 0 4px 30px rgba(0,0,0,.6);">
+  <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-8">
+
+    <!-- Logo -->
+    <a href="/index.html" class="flex-shrink-0">
+      <img src="/brand_assets/Griffix logo.png" alt="Griffix Racing" class="logo-lime" style="height:40px; max-width:190px; object-fit:contain;">
+    </a>
+
+    <!-- Desktop links -->
+    <div class="hidden lg:flex items-center gap-7">
+      <a href="/index.html" class="nav-link text-[#b0b0b0] text-xs font-medium" data-page="home" style="letter-spacing:.1em; text-transform:uppercase; font-family:'Archivo Narrow',sans-serif;">Home</a>
+      <a href="/shop.html" class="nav-link text-[#b0b0b0] text-xs font-medium" data-page="shop" style="letter-spacing:.1em; text-transform:uppercase; font-family:'Archivo Narrow',sans-serif;">Shop</a>
+      <a href="/gallery.html" class="nav-link text-[#b0b0b0] text-xs font-medium" data-page="gallery" style="letter-spacing:.1em; text-transform:uppercase; font-family:'Archivo Narrow',sans-serif;">Gallery</a>
+      <a href="/about.html" class="nav-link text-[#b0b0b0] text-xs font-medium" data-page="about" style="letter-spacing:.1em; text-transform:uppercase; font-family:'Archivo Narrow',sans-serif;">About</a>
+      <a href="/contact.html" class="nav-link text-[#b0b0b0] text-xs font-medium" data-page="contact" style="letter-spacing:.1em; text-transform:uppercase; font-family:'Archivo Narrow',sans-serif;">Contact</a>
+    </div>
+
+    <!-- Right actions -->
+    <div class="hidden lg:flex items-center gap-4">
+      <button aria-label="Search" id="nav-search-btn" class="text-[#777] hover:text-[#D4FF00] transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-[#D4FF00]">
+        <svg width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </button>
+      <button aria-label="Open cart" id="nav-cart-btn" class="relative text-[#777] hover:text-[#D4FF00] transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-[#D4FF00]">
+        <svg width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span id="cart-badge" style="display:none; position:absolute; top:-6px; right:-6px; min-width:16px; height:16px; background:#D4FF00; color:#0f0f0f; font-size:9px; font-weight:700; border-radius:9999px; display:flex; align-items:center; justify-content:center; font-family:'Oswald',sans-serif; padding:0 3px;">0</span>
+      </button>
+      <a href="/shop.html" class="btn-primary" style="padding:10px 22px; font-size:12px;">Shop Now</a>
+    </div>
+
+    <!-- Mobile hamburger -->
+    <button id="hamburger" class="lg:hidden text-[#777] hover:text-[#D4FF00] transition-colors duration-200" aria-label="Open menu">
+      <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile drawer -->
+  <div id="mobile-nav" class="flex-col gap-4 px-6 py-5 lg:hidden" style="border-top:1px solid rgba(212,255,0,.1); background:rgba(15,15,15,.99);">
+    <a href="/index.html" class="text-[#aaa] text-xs uppercase tracking-widest hover:text-[#D4FF00] transition-colors duration-200" style="font-family:'Archivo Narrow',sans-serif;">Home</a>
+    <a href="/shop.html" class="text-[#aaa] text-xs uppercase tracking-widest hover:text-[#D4FF00] transition-colors duration-200" style="font-family:'Archivo Narrow',sans-serif;">Shop</a>
+    <a href="/gallery.html" class="text-[#aaa] text-xs uppercase tracking-widest hover:text-[#D4FF00] transition-colors duration-200" style="font-family:'Archivo Narrow',sans-serif;">Gallery</a>
+    <a href="/about.html" class="text-[#aaa] text-xs uppercase tracking-widest hover:text-[#D4FF00] transition-colors duration-200" style="font-family:'Archivo Narrow',sans-serif;">About</a>
+    <a href="/contact.html" class="text-[#aaa] text-xs uppercase tracking-widest hover:text-[#D4FF00] transition-colors duration-200" style="font-family:'Archivo Narrow',sans-serif;">Contact</a>
+    <div class="flex items-center gap-3 pt-2">
+      <button aria-label="Open cart" id="mobile-cart-btn" class="relative text-[#777] hover:text-[#D4FF00] transition-colors duration-200">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span id="mobile-cart-badge" style="display:none; position:absolute; top:-6px; right:-6px; min-width:16px; height:16px; background:#D4FF00; color:#0f0f0f; font-size:9px; font-weight:700; border-radius:9999px; display:flex; align-items:center; justify-content:center; font-family:'Oswald',sans-serif; padding:0 3px;">0</span>
+      </button>
+      <a href="/shop.html" class="btn-primary flex-1 text-center" style="font-size:13px;">Shop Now</a>
+    </div>
+  </div>
+</nav>

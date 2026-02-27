@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Griffix Racing</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Archivo+Narrow:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            charcoal: { DEFAULT: '#2B2B2B',700: '#353535', 800: '#1E1E1E', 900: '#141414' },
+            lime: { DEFAULT: '#D4FF00', dark: '#B8DE00' },
+            tan: { DEFAULT: '#A39171', dark: '#7D6E56' }
+          },
+          fontFamily: {
+            display: ['Oswald', 'sans-serif'],
+            body: ['Archivo Narrow', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="/shared/theme.css">
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<!-- ── Page Hero ─────────────────────────────────────────────────────────── -->
+<section class="page-hero topo" style="padding-top:64px;">
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse 70% 100% at 30% 120%, rgba(163,145,113,.14) 0%, transparent 60%);"></div>
+  <div class="relative z-10 max-w-7xl mx-auto px-6 py-14">
+    <div class="label mb-3">Griffix Racing</div>
+    <h1 class="font-display font-bold text-white" style="font-size:clamp(36px,6vw,72px); letter-spacing:-.03em; line-height:.95;">ABOUT US</h1>
+    <p class="text-[#666] mt-3" style="font-family:'Archivo Narrow',sans-serif; font-size:15px;">Built by riders. Proven in the dirt.</p>
+  </div>
+</section>
+
+<!-- ── Brand Story ────────────────────────────────────────────────────────── -->
+<section style="padding:96px 0; background:#0f0f0f;" id="story">
+  <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center">
+
+    <!-- Image -->
+    <div class="relative reveal">
+      <div class="relative overflow-hidden" style="height:560px;">
+        <div class="absolute inset-0 carbon" style="opacity:.9;"></div>
+        <div class="absolute inset-0" style="background:radial-gradient(ellipse at 60% 40%, rgba(212,255,0,.06) 0%, transparent 60%);"></div>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <img src="/brand_assets/Griffix logo.png" alt="Griffix Racing" class="logo-lime" style="height:160px; opacity:.12;">
+        </div>
+        <div class="absolute inset-0" style="background:linear-gradient(to bottom, transparent 40%, rgba(15,15,15,.85) 100%);"></div>
+        <div class="absolute top-0 left-0 bottom-0" style="width:4px; background:#A39171;"></div>
+      </div>
+      <!-- Floating stat -->
+      <div class="absolute shadow-tactical" style="right:-20px; bottom:48px; background:#A39171; padding:20px 28px; min-width:160px;">
+        <div class="font-display text-[#0f0f0f] font-bold" style="font-size:40px; line-height:1;">15+</div>
+        <div class="font-display text-[#0f0f0f] text-sm tracking-wider mt-0.5">YEARS DESIGN</div>
+        <div class="text-[#2B2B2B]/80 text-xs mt-1" style="font-family:'Archivo Narrow',sans-serif;">Built by riders</div>
+      </div>
+    </div>
+
+    <!-- Text -->
+    <div class="reveal">
+      <div class="label mb-5">Our Story</div>
+      <h2 class="font-display font-bold text-white mb-7" style="font-size:clamp(36px,4.5vw,52px); letter-spacing:-.03em; line-height:1.0;">
+        FORGED IN DIRT.<br>
+        <span style="color:#A39171;">PROVEN IN</span><br>
+        BATTLE.
+      </h2>
+      <p class="text-[#909090] mb-5" style="font-size:16px; line-height:1.8; font-family:'Archivo Narrow',sans-serif;">
+        Griffix Racing was built by riders who were fed up with generic graphics that didn't survive the first river crossing.
+        We design from the seat of the bike — understanding what it means to take a hit, drag through roots, and still need your machine looking fresh on Sunday.
+      </p>
+      <p class="text-[#909090] mb-10" style="font-size:16px; line-height:1.8; font-family:'Archivo Narrow',sans-serif;">
+        Every kit is printed on 3M adhesive stock with military-grade laminate. UV resistant. Chemical resistant. Scratch resistant.
+        Built to last a full season in the gnarliest conditions on earth.
+      </p>
+      <a href="/shop.html" class="btn-primary" style="text-decoration:none; display:inline-block;">Shop Kits</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Values ─────────────────────────────────────────────────────────────── -->
+<section style="padding:96px 0; background:#141414;" class="topo">
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse 60% 60% at 20% 50%, rgba(163,145,113,.07) 0%, transparent 60%);"></div>
+  <div class="relative z-10 max-w-7xl mx-auto px-6">
+    <div class="text-center mb-14">
+      <div class="label mb-4 justify-center">What Drives Us</div>
+      <h2 class="font-display font-bold text-white" style="font-size:clamp(36px,5vw,60px); letter-spacing:-.03em;">HOW WE BUILD</h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="reveal" style="background:#1a1a1a; padding:36px 28px; border-top:2px solid #A39171;">
+        <div style="width:48px; height:48px; background:rgba(163,145,113,.12); display:flex; align-items:center; justify-content:center; margin-bottom:24px;">
+          <svg width="24" height="24" fill="none" stroke="#A39171" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 class="font-display text-white font-bold text-xl mb-4" style="letter-spacing:-.01em;">Military-Grade Materials</h3>
+        <p class="text-[#666]" style="font-family:'Archivo Narrow',sans-serif; line-height:1.7; font-size:15px;">3M adhesive stock rated for high-vibration environments. Our laminates don't peel, fade, or crack — no matter how hard you ride.</p>
+      </div>
+      <div class="reveal" style="background:#1a1a1a; padding:36px 28px; border-top:2px solid #D4FF00;">
+        <div style="width:48px; height:48px; background:rgba(212,255,0,.08); display:flex; align-items:center; justify-content:center; margin-bottom:24px;">
+          <svg width="24" height="24" fill="none" stroke="#D4FF00" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <h3 class="font-display text-white font-bold text-xl mb-4" style="letter-spacing:-.01em;">Designed from the Saddle</h3>
+        <p class="text-[#666]" style="font-family:'Archivo Narrow',sans-serif; line-height:1.7; font-size:15px;">Every pattern is tested on real bikes in real conditions. Romaniacs, Erzbergrodeo, GetzenRodeo — our graphics have been there and come back in one piece.</p>
+      </div>
+      <div class="reveal" style="background:#1a1a1a; padding:36px 28px; border-top:2px solid #A39171;">
+        <div style="width:48px; height:48px; background:rgba(163,145,113,.12); display:flex; align-items:center; justify-content:center; margin-bottom:24px;">
+          <svg width="24" height="24" fill="none" stroke="#A39171" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <h3 class="font-display text-white font-bold text-xl mb-4" style="letter-spacing:-.01em;">Custom. Fast. Right.</h3>
+        <p class="text-[#666]" style="font-family:'Archivo Narrow',sans-serif; line-height:1.7; font-size:15px;">48-hour dispatch on all standard kits. Custom designs turned around in 5-7 days. If it's wrong, we fix it. No arguments.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Installation Guide ─────────────────────────────────────────────────── -->
+<section style="padding:96px 0; background:#0f0f0f;" id="install">
+  <div class="max-w-4xl mx-auto px-6">
+    <div class="text-center mb-14">
+      <div class="label mb-4 justify-center">Step by Step</div>
+      <h2 class="font-display font-bold text-white" style="font-size:clamp(36px,5vw,56px); letter-spacing:-.03em;">INSTALLATION GUIDE</h2>
+    </div>
+
+    <div class="space-y-6">
+      <div class="reveal flex gap-6 items-start">
+        <div style="flex-shrink:0; width:40px; height:40px; background:#D4FF00; display:flex; align-items:center; justify-content:center;">
+          <span class="font-display font-bold text-[#0f0f0f]" style="font-size:16px;">01</span>
+        </div>
+        <div>
+          <h3 class="font-display text-white font-bold text-lg mb-2" style="letter-spacing:.02em;">CLEAN THE PLASTIC</h3>
+          <p class="text-[#666]" style="font-family:'Archivo Narrow',sans-serif; line-height:1.7; font-size:15px;">Degrease all panels with isopropyl alcohol. Remove any old graphics, wax, or silicone spray. The surface must be completely bare and dry before application.</p>
+        </div>
+      </div>
+      <div class="reveal flex gap-6 items-start">
+        <div style="flex-shrink:0; width:40px; height:40px; background:#A39171; display:flex; align-items:center; justify-content:center;">
+          <span class="font-display font-bold text-[#0f0f0f]" style="font-size:16px;">02</span>
+        </div>
+        <div>
+          <h3 class="font-display text-white font-bold text-lg mb-2" style="letter-spacing:.02em;">WARM THE GRAPHIC</h3>
+          <p class="text-[#666]" style="font-family:'Archivo Narrow',sans-serif; line-height:1.7; font-size:15px;">Use a heat gun or hair dryer to warm the graphic to approximately 40°C. This activates the adhesive and makes the vinyl flexible for curved surfaces.</p>
+        </div>
+      </div>
+      <div class="reveal flex gap-6 items-start">
+        <div style="flex-shrink:0; width:40px; height:40px; background:#D4FF00; display:flex; align-items:center; justify-content:center;">
+          <span class="font-display font-bold text-[#0f0f0f]" style="font-size:16px;">03</span>
+        </div>
+        <div>
+          <h3 class="font-display text-white font-bold text-lg mb-2" style="letter-spacing:.02em;">PEEL AND POSITION</h3>
+          <p class="text-[#666]" style="font-family:'Archivo Narrow',sans-serif; line-height:1.7; font-size:15px;">Peel the backing paper slowly at 180°. Start from one corner and work outward. Use transfer tape to hold the graphic while you position it on the panel.</p>
+        </div>
+      </div>
+      <div class="reveal flex gap-6 items-start">
+        <div style="flex-shrink:0; width:40px; height:40px; background:#A39171; display:flex; align-items:center; justify-content:center;">
+          <span class="font-display font-bold text-[#0f0f0f]" style="font-size:16px;">04</span>
+        </div>
+        <div>
+          <h3 class="font-display text-white font-bold text-lg mb-2" style="letter-spacing:.02em;">SQUEEGEE AND SET</h3>
+          <p class="text-[#666]" style="font-family:'Archivo Narrow',sans-serif; line-height:1.7; font-size:15px;">Work from the centre outward with a squeegee or credit card to remove air bubbles. Apply heat again and press the edges firmly. Leave 24 hours before riding.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Shipping & Returns ─────────────────────────────────────────────────── -->
+<section style="padding:80px 0; background:#2B2B2B;" class="topo" id="shipping">
+  <div class="carbon absolute inset-0" style="opacity:.4;"></div>
+  <div class="relative z-10 max-w-4xl mx-auto px-6">
+    <div class="text-center mb-12">
+      <div class="label mb-4 justify-center">Policies</div>
+      <h2 class="font-display font-bold text-white" style="font-size:clamp(32px,4.5vw,52px); letter-spacing:-.03em;">SHIPPING &amp; RETURNS</h2>
+    </div>
+    <div class="grid md:grid-cols-2 gap-8">
+      <div style="background:rgba(15,15,15,.6); padding:28px; border:1px solid rgba(163,145,113,.2);">
+        <h3 class="font-display text-[#D4FF00] font-bold text-base tracking-widest uppercase mb-4">Shipping</h3>
+        <ul class="space-y-3" style="font-family:'Archivo Narrow',sans-serif; font-size:14px; color:#888; line-height:1.7;">
+          <li>• All orders dispatched within 48 hours of payment confirmation</li>
+          <li>• Free standard shipping on Australian orders over $150</li>
+          <li>• International orders ship via tracked courier</li>
+          <li>• Live shipping rates calculated at checkout via Shippo</li>
+        </ul>
+      </div>
+      <div style="background:rgba(15,15,15,.6); padding:28px; border:1px solid rgba(163,145,113,.2);">
+        <h3 class="font-display text-[#A39171] font-bold text-base tracking-widest uppercase mb-4">Returns</h3>
+        <ul class="space-y-3" style="font-family:'Archivo Narrow',sans-serif; font-size:14px; color:#888; line-height:1.7;">
+          <li>• If your kit arrives damaged, we'll replace it — no questions asked</li>
+          <li>• Wrong fitment? Contact us within 14 days for an exchange</li>
+          <li>• Custom orders are non-refundable (made to order)</li>
+          <li>• Contact us at the email in the footer for all enquiries</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ────────────────────────────────────────────────────────────────── -->
+<section style="padding:96px 0; background:#0f0f0f;" id="faq">
+  <div class="max-w-3xl mx-auto px-6">
+    <div class="text-center mb-12">
+      <div class="label mb-4 justify-center">Common Questions</div>
+      <h2 class="font-display font-bold text-white" style="font-size:clamp(32px,4.5vw,52px); letter-spacing:-.03em;">FAQ</h2>
+    </div>
+
+    <div class="space-y-4" id="faq-list">
+      <div class="faq-item reveal" style="background:#181818; border:1px solid rgba(163,145,113,.15);">
+        <button class="faq-question" style="width:100%; text-align:left; background:none; border:none; cursor:pointer; padding:20px 24px; display:flex; justify-content:space-between; align-items:center;">
+          <span class="font-display text-white font-bold text-sm tracking-wide">HOW LONG DOES DELIVERY TAKE?</span>
+          <svg class="faq-icon" width="16" height="16" fill="none" stroke="#A39171" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="faq-answer" style="display:none; padding:0 24px 20px; font-family:'Archivo Narrow',sans-serif; font-size:14px; color:#777; line-height:1.75;">
+          We dispatch all orders within 48 hours of payment confirmation. Australian standard delivery typically takes 2-5 business days. International orders are 7-14 days depending on destination.
+        </div>
+      </div>
+      <div class="faq-item reveal" style="background:#181818; border:1px solid rgba(163,145,113,.15);">
+        <button class="faq-question" style="width:100%; text-align:left; background:none; border:none; cursor:pointer; padding:20px 24px; display:flex; justify-content:space-between; align-items:center;">
+          <span class="font-display text-white font-bold text-sm tracking-wide">DO YOU DO CUSTOM DESIGNS?</span>
+          <svg class="faq-icon" width="16" height="16" fill="none" stroke="#A39171" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="faq-answer" style="display:none; padding:0 24px 20px; font-family:'Archivo Narrow',sans-serif; font-size:14px; color:#777; line-height:1.75;">
+          Yes! We offer fully custom graphic kits. Get in touch via our contact page with your ideas, bike details, and colour preferences. We'll send over a proof within 24 hours and deliver production files within 5-7 days.
+        </div>
+      </div>
+      <div class="faq-item reveal" style="background:#181818; border:1px solid rgba(163,145,113,.15);">
+        <button class="faq-question" style="width:100%; text-align:left; background:none; border:none; cursor:pointer; padding:20px 24px; display:flex; justify-content:space-between; align-items:center;">
+          <span class="font-display text-white font-bold text-sm tracking-wide">WHAT BIKES DO YOUR KITS FIT?</span>
+          <svg class="faq-icon" width="16" height="16" fill="none" stroke="#A39171" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="faq-answer" style="display:none; padding:0 24px 20px; font-family:'Archivo Narrow',sans-serif; font-size:14px; color:#777; line-height:1.75;">
+          We cover KTM, Husqvarna, Yamaha, Honda, Kawasaki, Sherco, Beta, and GasGas. 100+ specific model/year combinations are available in the shop. If your bike isn't listed, contact us — we can usually cut to any template.
+        </div>
+      </div>
+      <div class="faq-item reveal" style="background:#181818; border:1px solid rgba(163,145,113,.15);">
+        <button class="faq-question" style="width:100%; text-align:left; background:none; border:none; cursor:pointer; padding:20px 24px; display:flex; justify-content:space-between; align-items:center;">
+          <span class="font-display text-white font-bold text-sm tracking-wide">HOW DO I PAY?</span>
+          <svg class="faq-icon" width="16" height="16" fill="none" stroke="#A39171" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="faq-answer" style="display:none; padding:0 24px 20px; font-family:'Archivo Narrow',sans-serif; font-size:14px; color:#777; line-height:1.75;">
+          We accept PayPal, Venmo, and bank transfer (Zelle/AU bank). After placing your order, you'll receive an email with payment instructions. Orders are dispatched once payment is confirmed.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ─────────────────────────────────────────────────────────────────── -->
+<section style="padding:96px 0; background:#0a0a0a; position:relative; overflow:hidden;" class="topo grain">
+  <div class="carbon absolute inset-0" style="opacity:.2;"></div>
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse 70% 60% at 50% 0%, rgba(163,145,113,.10) 0%, transparent 55%);"></div>
+  <div class="relative z-10 text-center px-6">
+    <div class="label mb-5 justify-center">Ready to Ride</div>
+    <h2 class="font-display font-bold text-white mb-4" style="font-size:clamp(38px,5vw,60px); letter-spacing:-.03em; line-height:.95;">
+      FIND YOUR<br><span style="color:#D4FF00;">KIT</span>
+    </h2>
+    <p class="text-[#666] mb-8 max-w-md mx-auto" style="font-family:'Archivo Narrow',sans-serif; line-height:1.75; font-size:16px;">
+      100+ models. Every major make. Built for riders who take no prisoners.
+    </p>
+    <a href="/shop.html" class="btn-primary" style="text-decoration:none; display:inline-block; font-size:15px; padding:16px 40px;">Shop Now</a>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+
+<script src="/js/reveal.js"></script>
+<script src="/js/cart.js"></script>
+<script src="/js/nav.js"></script>
+<script>
+// FAQ accordion
+document.querySelectorAll('.faq-question').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const answer = btn.nextElementSibling;
+    const icon = btn.querySelector('.faq-icon');
+    const isOpen = answer.style.display !== 'none';
+    answer.style.display = isOpen ? 'none' : 'block';
+    icon.style.transform = isOpen ? '' : 'rotate(180deg)';
+    icon.style.transition = 'transform .25s';
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery — Griffix Racing</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Archivo+Narrow:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            charcoal: { DEFAULT: '#2B2B2B', 700: '#353535', 800: '#1E1E1E', 900: '#141414' },
+            lime: { DEFAULT: '#D4FF00', dark: '#B8DE00' },
+            tan: { DEFAULT: '#A39171', dark: '#7D6E56' }
+          },
+          fontFamily: {
+            display: ['Oswald', 'sans-serif'],
+            body: ['Archivo Narrow', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="/shared/theme.css">
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<!-- ── Page Hero ─────────────────────────────────────────────────────────── -->
+<section class="page-hero topo" style="padding-top:64px;">
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse 70% 100% at 50% 120%, rgba(163,145,113,.12) 0%, transparent 60%);"></div>
+  <div class="relative z-10 max-w-7xl mx-auto px-6 py-14">
+    <div class="label mb-3">Built in the Dirt</div>
+    <h1 class="font-display font-bold text-white" style="font-size:clamp(36px,6vw,72px); letter-spacing:-.03em; line-height:.95;">GALLERY</h1>
+    <p class="text-[#666] mt-3" style="font-family:'Archivo Narrow',sans-serif; font-size:15px;">Our designs. Your builds. Out in the wild.</p>
+  </div>
+</section>
+
+<!-- ── Tab bar ────────────────────────────────────────────────────────────── -->
+<div style="background:#141414; border-bottom:1px solid rgba(163,145,113,.2); position:sticky; top:64px; z-index:30;">
+  <div class="max-w-7xl mx-auto px-6 flex gap-0">
+    <button class="tab-btn active" data-tab="our-designs">Our Designs</button>
+    <button class="tab-btn" data-tab="customer-builds">Customer Builds</button>
+    <button class="tab-btn" data-tab="plastic-kits">Plastic Kits</button>
+  </div>
+</div>
+
+<!-- ── Gallery Grid ──────────────────────────────────────────────────────── -->
+<section style="padding:48px 0 96px; background:#0f0f0f;">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <!-- Loading -->
+    <div id="gallery-loading" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+      <div class="skeleton" style="height:260px;"></div>
+      <div class="skeleton" style="height:260px;"></div>
+      <div class="skeleton" style="height:260px;"></div>
+      <div class="skeleton" style="height:260px;"></div>
+      <div class="skeleton" style="height:260px;"></div>
+      <div class="skeleton" style="height:260px;"></div>
+      <div class="skeleton" style="height:260px;"></div>
+      <div class="skeleton" style="height:260px;"></div>
+    </div>
+
+    <!-- Grid -->
+    <div id="gallery-grid" class="columns-2 md:columns-3 lg:columns-4 gap-2" style="display:none;"></div>
+
+    <!-- Empty -->
+    <div id="gallery-empty" style="display:none; text-align:center; padding:80px 0;">
+      <p class="font-display text-[#444] text-xl">NO PHOTOS YET</p>
+      <p class="text-[#555] mt-2" style="font-family:'Archivo Narrow',sans-serif;">Check back soon — more builds on the way.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── Lightbox ────────────────────────────────────────────────────────────── -->
+<div class="lightbox-overlay" id="lightbox">
+  <button class="lightbox-close" id="lb-close" aria-label="Close lightbox">
+    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <button class="lightbox-nav" id="lb-prev" aria-label="Previous image" style="left:16px;">
+    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+  <img class="lightbox-img" id="lb-img" src="" alt="">
+  <div id="lb-caption" style="position:absolute; bottom:24px; left:50%; transform:translateX(-50%); text-align:center; max-width:500px; padding:0 20px;">
+    <div id="lb-title" style="font-family:'Oswald',sans-serif; font-size:16px; font-weight:600; letter-spacing:.06em; color:#e5e5e5; margin-bottom:4px;"></div>
+    <div id="lb-meta" style="font-family:'Archivo Narrow',sans-serif; font-size:13px; color:#777;"></div>
+  </div>
+  <button class="lightbox-nav" id="lb-next" aria-label="Next image" style="right:16px;">
+    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+  </button>
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script src="/js/reveal.js"></script>
+<script src="/js/cart.js"></script>
+<script src="/js/nav.js"></script>
+<script>
+// ── State ─────────────────────────────────────────────────────────────────────
+let _allGallery = [];
+let _currentTab = 'our-designs';
+let _filteredItems = [];
+let _lbIndex = 0;
+
+// ── Load ──────────────────────────────────────────────────────────────────────
+async function loadGallery() {
+  try {
+    const res = await fetch('/api/sheets/gallery');
+    const data = await res.json();
+    _allGallery = (data.gallery || []).sort((a, b) => a.order - b.order);
+  } catch {
+    _allGallery = _fallbackGallery();
+  }
+  renderTab(_currentTab);
+}
+
+// ── Tabs ──────────────────────────────────────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    _currentTab = btn.dataset.tab;
+    renderTab(_currentTab);
+  });
+});
+
+function renderTab(tab) {
+  _filteredItems = _allGallery.filter(item => item.tab === tab);
+  const loading = document.getElementById('gallery-loading');
+  const grid = document.getElementById('gallery-grid');
+  const empty = document.getElementById('gallery-empty');
+
+  loading.style.display = 'none';
+
+  if (_filteredItems.length === 0) {
+    grid.style.display = 'none';
+    empty.style.display = 'block';
+    return;
+  }
+
+  empty.style.display = 'none';
+  grid.style.display = 'block';
+
+  grid.innerHTML = _filteredItems.map((item, idx) => `
+    <div class="gallery-img reveal" style="margin-bottom:8px; cursor:pointer; break-inside:avoid; height:${_randomHeight()}px;"
+      data-index="${idx}" title="${item.title}">
+      ${item.image_url
+        ? `<img src="${item.image_url}" alt="${item.title}" class="absolute inset-0 w-full h-full object-cover">`
+        : `<div class="absolute inset-0" style="background:#1a1a1a; background-image:radial-gradient(ellipse at ${_rp()}% ${_rp()}%, rgba(212,255,0,.06) 0%, transparent 50%);">
+             <div class="absolute inset-0 flex items-center justify-center">
+               <span class="font-display font-bold text-white/10 select-none" style="font-size:40px; letter-spacing:-.03em;">${item.bike_make || 'GRIFFIX'}</span>
+             </div>
+           </div>`
+      }
+      <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" style="opacity:0; transition:opacity .3s;"></div>
+      <div class="lime-tint"></div>
+      <div class="absolute bottom-0 left-0 right-0 p-4" style="opacity:0; transition:opacity .3s; transform:translateY(4px); transition:opacity .3s, transform .3s;">
+        <div class="font-display text-white font-bold text-sm" style="letter-spacing:.04em;">${item.title}</div>
+        ${item.customer_name ? `<div style="font-family:'Archivo Narrow',sans-serif; font-size:11px; color:#A39171;">${item.customer_name}</div>` : ''}
+        ${item.bike_make ? `<div style="font-family:'Archivo Narrow',sans-serif; font-size:11px; color:#555;">${item.bike_make} ${item.bike_model || ''}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+
+  // Hover effects
+  grid.querySelectorAll('.gallery-img').forEach(card => {
+    const overlay = card.querySelector('.bg-gradient-to-t');
+    const caption = card.querySelector('.absolute.bottom-0');
+    card.addEventListener('mouseenter', () => {
+      if (overlay) overlay.style.opacity = '1';
+      if (caption) { caption.style.opacity = '1'; caption.style.transform = 'translateY(0)'; }
+    });
+    card.addEventListener('mouseleave', () => {
+      if (overlay) overlay.style.opacity = '0';
+      if (caption) { caption.style.opacity = '0'; caption.style.transform = 'translateY(4px)'; }
+    });
+    card.addEventListener('click', () => openLightbox(parseInt(card.dataset.index)));
+  });
+
+  // Trigger reveal
+  setTimeout(() => grid.querySelectorAll('.reveal').forEach(el => el.classList.add('show')), 50);
+}
+
+function _rp() { return 20 + Math.floor(Math.random() * 60); }
+function _randomHeight() { const heights = [240, 260, 300, 280, 220]; return heights[Math.floor(Math.random() * heights.length)]; }
+
+// ── Lightbox ──────────────────────────────────────────────────────────────────
+function openLightbox(idx) {
+  _lbIndex = idx;
+  updateLightbox();
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function updateLightbox() {
+  const item = _filteredItems[_lbIndex];
+  if (!item) return;
+  const img = document.getElementById('lb-img');
+  img.src = item.image_url || `https://placehold.co/1200x800/1a1a1a/333?text=${encodeURIComponent(item.title)}`;
+  img.alt = item.title;
+  document.getElementById('lb-title').textContent = item.title;
+  document.getElementById('lb-meta').textContent = [item.bike_make, item.bike_model, item.customer_name ? `— ${item.customer_name}` : ''].filter(Boolean).join(' ');
+  document.getElementById('lb-prev').style.display = _lbIndex > 0 ? 'flex' : 'none';
+  document.getElementById('lb-next').style.display = _lbIndex < _filteredItems.length - 1 ? 'flex' : 'none';
+}
+
+document.getElementById('lb-close').addEventListener('click', closeLightbox);
+document.getElementById('lb-prev').addEventListener('click', () => { if (_lbIndex > 0) { _lbIndex--; updateLightbox(); } });
+document.getElementById('lb-next').addEventListener('click', () => { if (_lbIndex < _filteredItems.length - 1) { _lbIndex++; updateLightbox(); } });
+document.getElementById('lightbox').addEventListener('click', e => { if (e.target === e.currentTarget) closeLightbox(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft' && _lbIndex > 0) { _lbIndex--; updateLightbox(); }
+  if (e.key === 'ArrowRight' && _lbIndex < _filteredItems.length - 1) { _lbIndex++; updateLightbox(); }
+});
+
+// ── Fallback ──────────────────────────────────────────────────────────────────
+function _fallbackGallery() {
+  return [
+    { id:'g1', tab:'our-designs', title:'Stealth KTM Build', bike_make:'KTM', bike_model:'EXC 300', image_url:'', customer_name:'', featured:true, order:1 },
+    { id:'g2', tab:'our-designs', title:'Coyote Husqvarna', bike_make:'Husqvarna', bike_model:'TE 300i', image_url:'', customer_name:'', featured:true, order:2 },
+    { id:'g3', tab:'our-designs', title:'Acid Lime Yamaha', bike_make:'Yamaha', bike_model:'YZ250F', image_url:'', customer_name:'', featured:false, order:3 },
+    { id:'g4', tab:'our-designs', title:'Honda Charcoal Kit', bike_make:'Honda', bike_model:'CRF 450R', image_url:'', customer_name:'', featured:false, order:4 },
+    { id:'g5', tab:'customer-builds', title:'Jake\'s Race KTM', bike_make:'KTM', bike_model:'350 SXF', image_url:'', customer_name:'Jake K.', featured:true, order:1 },
+    { id:'g6', tab:'customer-builds', title:'Sam\'s Woods Husqy', bike_make:'Husqvarna', bike_model:'FE 350', image_url:'', customer_name:'Sam R.', featured:false, order:2 },
+    { id:'g7', tab:'customer-builds', title:'Mike\'s TE 300i', bike_make:'Husqvarna', bike_model:'TE 300i', image_url:'', customer_name:'Mike P.', featured:false, order:3 },
+    { id:'g8', tab:'plastic-kits', title:'KTM Full Plastics', bike_make:'KTM', bike_model:'250 SXF', image_url:'', customer_name:'', featured:true, order:1 },
+    { id:'g9', tab:'plastic-kits', title:'Husqvarna FC Plastics', bike_make:'Husqvarna', bike_model:'FC 450', image_url:'', customer_name:'', featured:false, order:2 },
+  ];
+}
+
+loadGallery();
+</script>
+</body>
+</html>

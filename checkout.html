@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — Griffix Racing</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Archivo+Narrow:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            charcoal: { DEFAULT: '#2B2B2B', 700: '#353535', 800: '#1E1E1E', 900: '#141414' },
+            lime: { DEFAULT: '#D4FF00', dark: '#B8DE00' },
+            tan: { DEFAULT: '#A39171', dark: '#7D6E56' }
+          },
+          fontFamily: {
+            display: ['Oswald', 'sans-serif'],
+            body: ['Archivo Narrow', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="/shared/theme.css">
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<!-- ── Page Hero ─────────────────────────────────────────────────────────── -->
+<section class="page-hero topo" style="padding-top:64px;">
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse 70% 100% at 50% 120%, rgba(163,145,113,.12) 0%, transparent 60%);"></div>
+  <div class="relative z-10 max-w-7xl mx-auto px-6 py-14">
+    <div class="label mb-3">Griffix Racing</div>
+    <h1 class="font-display font-bold text-white" style="font-size:clamp(36px,6vw,72px); letter-spacing:-.03em; line-height:.95;">CHECKOUT</h1>
+    <!-- Step indicator -->
+    <div class="step-indicator mt-8">
+      <div class="step active" id="step-1-dot">
+        <div class="step-num">1</div>
+        <span style="font-family:'Archivo Narrow',sans-serif; font-size:11px; color:#777; text-transform:uppercase; letter-spacing:.08em; white-space:nowrap;">Details</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step" id="step-2-dot">
+        <div class="step-num">2</div>
+        <span style="font-family:'Archivo Narrow',sans-serif; font-size:11px; color:#777; text-transform:uppercase; letter-spacing:.08em; white-space:nowrap;">Shipping</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step" id="step-3-dot">
+        <div class="step-num">3</div>
+        <span style="font-family:'Archivo Narrow',sans-serif; font-size:11px; color:#777; text-transform:uppercase; letter-spacing:.08em; white-space:nowrap;">Payment</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step" id="step-4-dot">
+        <div class="step-num">4</div>
+        <span style="font-family:'Archivo Narrow',sans-serif; font-size:11px; color:#777; text-transform:uppercase; letter-spacing:.08em; white-space:nowrap;">Confirm</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Checkout Content ───────────────────────────────────────────────────── -->
+<section style="padding:56px 0 96px; background:#0f0f0f; min-height:40vh;">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="lg:grid lg:grid-cols-3 lg:gap-10">
+
+      <!-- Left: Steps ────────────────────────────────────────────────────── -->
+      <div class="lg:col-span-2 space-y-6">
+
+        <!-- ── STEP 1: Customer Details ────────────────────────────────── -->
+        <div id="step-1" class="checkout-step">
+          <h2 class="font-display text-white font-bold text-base tracking-widest uppercase mb-6">1 — Customer Details</h2>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="sm:col-span-2">
+              <label class="field-label">Full Name *</label>
+              <input id="cust-name" type="text" class="form-input" placeholder="Jake Kowalski" autocomplete="name">
+            </div>
+            <div>
+              <label class="field-label">Email *</label>
+              <input id="cust-email" type="email" class="form-input" placeholder="jake@email.com" autocomplete="email">
+            </div>
+            <div>
+              <label class="field-label">Phone</label>
+              <input id="cust-phone" type="tel" class="form-input" placeholder="+61 4XX XXX XXX" autocomplete="tel">
+            </div>
+          </div>
+
+          <h2 class="font-display text-white font-bold text-base tracking-widest uppercase mb-6 mt-8">Shipping Address</h2>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="sm:col-span-2">
+              <label class="field-label">Street Address *</label>
+              <input id="addr-street1" type="text" class="form-input" placeholder="123 Enduro Way" autocomplete="address-line1">
+            </div>
+            <div class="sm:col-span-2">
+              <label class="field-label">Apartment / Unit (optional)</label>
+              <input id="addr-street2" type="text" class="form-input" placeholder="Unit 4" autocomplete="address-line2">
+            </div>
+            <div>
+              <label class="field-label">City / Suburb *</label>
+              <input id="addr-city" type="text" class="form-input" placeholder="Brisbane" autocomplete="address-level2">
+            </div>
+            <div>
+              <label class="field-label">State *</label>
+              <input id="addr-state" type="text" class="form-input" placeholder="QLD" autocomplete="address-level1">
+            </div>
+            <div>
+              <label class="field-label">Postcode *</label>
+              <input id="addr-zip" type="text" class="form-input" placeholder="4000" autocomplete="postal-code">
+            </div>
+            <div>
+              <label class="field-label">Country *</label>
+              <select id="addr-country" class="form-input" autocomplete="country">
+                <option value="AU">Australia</option>
+                <option value="NZ">New Zealand</option>
+                <option value="US">United States</option>
+                <option value="GB">United Kingdom</option>
+                <option value="CA">Canada</option>
+                <option value="DE">Germany</option>
+                <option value="FR">France</option>
+                <option value="IT">Italy</option>
+                <option value="ES">Spain</option>
+                <option value="ZA">South Africa</option>
+              </select>
+            </div>
+          </div>
+
+          <button id="step1-next" class="btn-primary mt-8" style="padding:14px 32px; font-size:14px;">Get Shipping Rates →</button>
+        </div>
+
+        <!-- ── STEP 2: Shipping ────────────────────────────────────────── -->
+        <div id="step-2" style="display:none;" class="checkout-step">
+          <h2 class="font-display text-white font-bold text-base tracking-widest uppercase mb-6">2 — Choose Shipping</h2>
+
+          <div id="rates-loading" style="display:none; text-align:center; padding:40px 0;">
+            <div class="skeleton" style="height:72px; margin-bottom:12px;"></div>
+            <div class="skeleton" style="height:72px; margin-bottom:12px;"></div>
+            <div class="skeleton" style="height:72px;"></div>
+          </div>
+
+          <div id="rates-container"></div>
+
+          <div id="rates-error" style="display:none; background:#1a1010; border:1px solid rgba(200,50,50,.3); padding:16px; margin-top:16px;">
+            <p style="color:#c0a0a0; font-family:'Archivo Narrow',sans-serif; font-size:14px;">Could not load shipping rates. Please check your address or contact us.</p>
+          </div>
+
+          <div class="flex gap-4 mt-8">
+            <button id="step2-back" class="btn-ghost" style="padding:12px 24px; font-size:13px;">← Back</button>
+            <button id="step2-next" class="btn-primary" style="padding:14px 32px; font-size:14px;" disabled>Continue to Payment →</button>
+          </div>
+        </div>
+
+        <!-- ── STEP 3: Payment ─────────────────────────────────────────── -->
+        <div id="step-3" style="display:none;" class="checkout-step">
+          <h2 class="font-display text-white font-bold text-base tracking-widest uppercase mb-6">3 — Payment Method</h2>
+          <p class="text-[#666] mb-6" style="font-family:'Archivo Narrow',sans-serif; line-height:1.7; font-size:14px;">
+            We accept PayPal, Venmo, and Zelle. Your order will be dispatched within 48 hours of payment confirmation.
+            Include your order number in the reference.
+          </p>
+
+          <div class="space-y-3">
+            <label style="display:flex; align-items:center; gap:16px; background:#181818; border:1px solid rgba(163,145,113,.2); padding:18px 20px; cursor:pointer;" class="rate-card" id="pay-paypal-card">
+              <input type="radio" name="payment" value="paypal" style="accent-color:#D4FF00; width:18px; height:18px; flex-shrink:0;">
+              <div>
+                <div class="font-display text-white font-bold text-sm tracking-wide">PayPal</div>
+                <div style="color:#666; font-family:'Archivo Narrow',sans-serif; font-size:12px; margin-top:2px;">Instant transfer via PayPal link — we'll send you the link after confirming your order.</div>
+              </div>
+            </label>
+            <label style="display:flex; align-items:center; gap:16px; background:#181818; border:1px solid rgba(163,145,113,.2); padding:18px 20px; cursor:pointer;" class="rate-card" id="pay-venmo-card">
+              <input type="radio" name="payment" value="venmo" style="accent-color:#D4FF00; width:18px; height:18px; flex-shrink:0;">
+              <div>
+                <div class="font-display text-white font-bold text-sm tracking-wide">Venmo</div>
+                <div style="color:#666; font-family:'Archivo Narrow',sans-serif; font-size:12px; margin-top:2px;">Send via Venmo to @GrifficRacing — include your order number as the note.</div>
+              </div>
+            </label>
+            <label style="display:flex; align-items:center; gap:16px; background:#181818; border:1px solid rgba(163,145,113,.2); padding:18px 20px; cursor:pointer;" class="rate-card" id="pay-zelle-card">
+              <input type="radio" name="payment" value="zelle" style="accent-color:#D4FF00; width:18px; height:18px; flex-shrink:0;">
+              <div>
+                <div class="font-display text-white font-bold text-sm tracking-wide">Zelle / Bank Transfer</div>
+                <div style="color:#666; font-family:'Archivo Narrow',sans-serif; font-size:12px; margin-top:2px;">Details will be emailed after your order is received — AU bank transfer also accepted.</div>
+              </div>
+            </label>
+          </div>
+
+          <div class="flex gap-4 mt-8">
+            <button id="step3-back" class="btn-ghost" style="padding:12px 24px; font-size:13px;">← Back</button>
+            <button id="step3-next" class="btn-primary" style="padding:14px 32px; font-size:14px;">Review Order →</button>
+          </div>
+        </div>
+
+        <!-- ── STEP 4: Confirm ─────────────────────────────────────────── -->
+        <div id="step-4" style="display:none;" class="checkout-step">
+          <h2 class="font-display text-white font-bold text-base tracking-widest uppercase mb-6">4 — Review &amp; Place Order</h2>
+
+          <div id="review-content"></div>
+
+          <div class="flex gap-4 mt-8">
+            <button id="step4-back" class="btn-ghost" style="padding:12px 24px; font-size:13px;">← Back</button>
+            <button id="place-order-btn" class="btn-primary" style="padding:14px 32px; font-size:14px; min-width:180px;">Place Order</button>
+          </div>
+        </div>
+
+        <!-- ── STEP 5: Confirmation ────────────────────────────────────── -->
+        <div id="step-5" style="display:none; text-align:center; padding:40px 0;" class="checkout-step">
+          <div style="background:#D4FF00; width:72px; height:72px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 24px;">
+            <svg width="32" height="32" fill="none" stroke="#0f0f0f" stroke-width="3" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h2 class="font-display text-white font-bold mb-3" style="font-size:clamp(28px,4vw,48px); letter-spacing:-.02em;">ORDER PLACED!</h2>
+          <p class="text-[#aaa] mb-2" style="font-family:'Archivo Narrow',sans-serif; font-size:15px;">
+            Order <strong id="confirm-order-id" style="color:#D4FF00;"></strong> has been received.
+          </p>
+          <p class="text-[#666]" style="font-family:'Archivo Narrow',sans-serif; font-size:14px;">
+            Check your email for payment instructions. We'll dispatch within 48 hours of payment confirmation.
+          </p>
+
+          <!-- Payment instructions box -->
+          <div id="payment-instructions" style="background:#181818; border:1px solid rgba(163,145,113,.2); border-left:3px solid #D4FF00; padding:24px; margin:32px 0; text-align:left;">
+            <h3 class="font-display text-[#D4FF00] font-bold text-sm tracking-widest uppercase mb-4">Payment Instructions</h3>
+            <div id="payment-details"></div>
+          </div>
+
+          <a href="/shop.html" class="btn-ghost inline-block no-underline" style="padding:12px 28px;">Continue Shopping</a>
+        </div>
+      </div>
+
+      <!-- Right: Order Summary ────────────────────────────────────────────── -->
+      <div>
+        <div id="order-summary-panel" style="background:#181818; border:1px solid rgba(163,145,113,.2); padding:28px; position:sticky; top:88px;">
+          <h2 class="font-display text-white font-bold text-base tracking-widest uppercase mb-5">Order</h2>
+          <div id="checkout-items-list" class="space-y-3 mb-5"></div>
+          <div style="border-top:1px solid rgba(163,145,113,.2); padding-top:16px;" class="space-y-2">
+            <div class="flex justify-between text-sm" style="font-family:'Archivo Narrow',sans-serif;">
+              <span class="text-[#666]">Subtotal</span>
+              <span class="text-[#e5e5e5]">$<span id="checkout-subtotal">0.00</span></span>
+            </div>
+            <div class="flex justify-between text-sm" style="font-family:'Archivo Narrow',sans-serif;" id="checkout-shipping-row" style="display:none;">
+              <span class="text-[#666]">Shipping</span>
+              <span class="text-[#e5e5e5]">$<span id="checkout-shipping">0.00</span></span>
+            </div>
+          </div>
+          <div style="border-top:1px solid rgba(163,145,113,.2); padding-top:16px; margin-top:8px;" class="flex justify-between items-baseline">
+            <span class="font-display text-white font-bold text-sm uppercase tracking-wider">Total</span>
+            <span class="font-display font-bold" style="font-size:22px; color:#D4FF00;">$<span id="checkout-total">0.00</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+
+<script src="/js/reveal.js"></script>
+<script src="/js/cart.js"></script>
+<script src="/js/nav.js"></script>
+<script>
+// ── State ─────────────────────────────────────────────────────────────────────
+let _currentStep = 1;
+let _selectedRate = null;
+let _selectedPayment = null;
+let _placedOrderId = null;
+
+// ── Redirect if cart empty ────────────────────────────────────────────────────
+setTimeout(() => {
+  if (window.Cart && window.Cart.getCount() === 0 && _currentStep < 5) {
+    window.location.href = '/cart.html';
+  }
+}, 300);
+
+// ── Render order summary panel ────────────────────────────────────────────────
+function renderSummary() {
+  const items = window.Cart.getItems();
+  const subtotal = window.Cart.getSubtotal();
+  const shipping = _selectedRate ? parseFloat(_selectedRate.amount) : 0;
+  const total = subtotal + shipping;
+
+  document.getElementById('checkout-items-list').innerHTML = items.map(i => `
+    <div style="display:flex; justify-content:space-between; gap:12px;">
+      <div style="flex:1; min-width:0;">
+        <div style="font-family:'Oswald',sans-serif; font-size:13px; font-weight:500; color:#e5e5e5; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${i.name}</div>
+        <div style="font-family:'Archivo Narrow',sans-serif; font-size:11px; color:#555;">Qty ${i.qty}</div>
+      </div>
+      <div style="font-family:'Oswald',sans-serif; font-size:13px; color:#D4FF00; flex-shrink:0;">$${(i.price * i.qty).toFixed(2)}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('checkout-subtotal').textContent = subtotal.toFixed(2);
+  document.getElementById('checkout-shipping').textContent = shipping.toFixed(2);
+  const shippingRow = document.getElementById('checkout-shipping-row');
+  if (shippingRow) shippingRow.style.display = shipping > 0 ? 'flex' : 'none';
+  document.getElementById('checkout-total').textContent = total.toFixed(2);
+}
+
+// ── Step navigation ────────────────────────────────────────────────────────────
+function goToStep(n) {
+  [1,2,3,4,5].forEach(i => {
+    const el = document.getElementById(`step-${i}`);
+    if (el) el.style.display = i === n ? 'block' : 'none';
+    const dot = document.getElementById(`step-${i}-dot`);
+    if (dot) {
+      dot.classList.toggle('active', i === n);
+      dot.classList.toggle('done', i < n);
+    }
+  });
+  _currentStep = n;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  renderSummary();
+}
+
+// ── STEP 1 → 2 ───────────────────────────────────────────────────────────────
+document.getElementById('step1-next').addEventListener('click', async () => {
+  const name  = document.getElementById('cust-name').value.trim();
+  const email = document.getElementById('cust-email').value.trim();
+  const street1 = document.getElementById('addr-street1').value.trim();
+  const city  = document.getElementById('addr-city').value.trim();
+  const state = document.getElementById('addr-state').value.trim();
+  const zip   = document.getElementById('addr-zip').value.trim();
+  const country = document.getElementById('addr-country').value;
+
+  if (!name || !email || !street1 || !city || !state || !zip) {
+    return showToast('Please fill in all required fields.', 'error');
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return showToast('Please enter a valid email address.', 'error');
+  }
+
+  goToStep(2);
+  fetchRates({ name, city, state, zip, country, street1 });
+});
+
+async function fetchRates(addr) {
+  document.getElementById('rates-loading').style.display = 'block';
+  document.getElementById('rates-container').innerHTML = '';
+  document.getElementById('rates-error').style.display = 'none';
+  document.getElementById('step2-next').disabled = true;
+  _selectedRate = null;
+
+  const items = window.Cart.getItems();
+
+  try {
+    const res = await fetch('/api/shippo/rates', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ toAddress: addr, items }),
+    });
+    const data = await res.json();
+    document.getElementById('rates-loading').style.display = 'none';
+
+    if (!res.ok || !data.rates?.length) {
+      document.getElementById('rates-error').style.display = 'block';
+      return;
+    }
+
+    renderRates(data.rates);
+  } catch {
+    document.getElementById('rates-loading').style.display = 'none';
+    document.getElementById('rates-error').style.display = 'block';
+  }
+}
+
+function renderRates(rates) {
+  const container = document.getElementById('rates-container');
+  container.innerHTML = rates.map(rate => `
+    <label style="display:flex; align-items:center; gap:16px; background:#181818; border:1px solid rgba(163,145,113,.2); padding:18px 20px; cursor:pointer; margin-bottom:10px;" class="rate-card" data-id="${rate.object_id}">
+      <input type="radio" name="shipping-rate" value="${rate.object_id}" style="accent-color:#D4FF00; width:18px; height:18px; flex-shrink:0;"
+        data-amount="${rate.amount}" data-provider="${rate.provider}" data-servicelevel="${rate.servicelevel}" data-currency="${rate.currency}">
+      <div style="flex:1;">
+        <div class="font-display text-white font-bold text-sm tracking-wide">${rate.provider} — ${rate.servicelevel}</div>
+        ${rate.duration_terms ? `<div style="color:#666; font-family:'Archivo Narrow',sans-serif; font-size:12px; margin-top:2px;">${rate.duration_terms}</div>` : ''}
+      </div>
+      <div class="font-display font-bold" style="font-size:18px; color:#D4FF00; flex-shrink:0;">$${parseFloat(rate.amount).toFixed(2)} ${rate.currency}</div>
+    </label>
+  `).join('');
+
+  container.querySelectorAll('input[name="shipping-rate"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      _selectedRate = {
+        object_id:    radio.value,
+        provider:     radio.dataset.provider,
+        servicelevel: radio.dataset.servicelevel,
+        amount:       radio.dataset.amount,
+        currency:     radio.dataset.currency,
+      };
+      document.getElementById('step2-next').disabled = false;
+      container.querySelectorAll('.rate-card').forEach(card => card.classList.remove('selected'));
+      radio.closest('.rate-card').classList.add('selected');
+      renderSummary();
+    });
+  });
+}
+
+document.getElementById('step2-back').addEventListener('click', () => goToStep(1));
+document.getElementById('step2-next').addEventListener('click', () => goToStep(3));
+
+// ── STEP 3 ────────────────────────────────────────────────────────────────────
+document.querySelectorAll('input[name="payment"]').forEach(radio => {
+  radio.addEventListener('change', () => {
+    _selectedPayment = radio.value;
+    document.querySelectorAll('.rate-card[id^="pay-"]').forEach(c => c.classList.remove('selected'));
+    radio.closest('.rate-card').classList.add('selected');
+  });
+});
+
+document.getElementById('step3-back').addEventListener('click', () => goToStep(2));
+document.getElementById('step3-next').addEventListener('click', () => {
+  if (!_selectedPayment) return showToast('Please select a payment method.', 'error');
+  renderReview();
+  goToStep(4);
+});
+
+// ── STEP 4 review render ───────────────────────────────────────────────────────
+function renderReview() {
+  const name    = document.getElementById('cust-name').value.trim();
+  const email   = document.getElementById('cust-email').value.trim();
+  const phone   = document.getElementById('cust-phone').value.trim();
+  const street1 = document.getElementById('addr-street1').value.trim();
+  const street2 = document.getElementById('addr-street2').value.trim();
+  const city    = document.getElementById('addr-city').value.trim();
+  const state   = document.getElementById('addr-state').value.trim();
+  const zip     = document.getElementById('addr-zip').value.trim();
+  const country = document.getElementById('addr-country').value;
+  const subtotal = window.Cart.getSubtotal();
+  const shipping = _selectedRate ? parseFloat(_selectedRate.amount) : 0;
+  const total = subtotal + shipping;
+
+  const payLabels = { paypal: 'PayPal', venmo: 'Venmo', zelle: 'Zelle / Bank Transfer' };
+
+  document.getElementById('review-content').innerHTML = `
+    <div style="space-y:20px;">
+      <div style="background:#181818; border:1px solid rgba(163,145,113,.2); padding:20px; margin-bottom:16px;">
+        <h3 style="font-family:'Oswald',sans-serif; font-size:13px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:#A39171; margin:0 0 12px;">Customer</h3>
+        <p style="font-family:'Archivo Narrow',sans-serif; font-size:14px; color:#e5e5e5; margin:0;">${name}<br>${email}${phone ? '<br>' + phone : ''}</p>
+      </div>
+      <div style="background:#181818; border:1px solid rgba(163,145,113,.2); padding:20px; margin-bottom:16px;">
+        <h3 style="font-family:'Oswald',sans-serif; font-size:13px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:#A39171; margin:0 0 12px;">Ship To</h3>
+        <p style="font-family:'Archivo Narrow',sans-serif; font-size:14px; color:#e5e5e5; margin:0;">${street1}${street2 ? ', ' + street2 : ''}<br>${city}, ${state} ${zip}<br>${country}</p>
+      </div>
+      <div style="background:#181818; border:1px solid rgba(163,145,113,.2); padding:20px; margin-bottom:16px;">
+        <h3 style="font-family:'Oswald',sans-serif; font-size:13px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:#A39171; margin:0 0 12px;">Shipping</h3>
+        <p style="font-family:'Archivo Narrow',sans-serif; font-size:14px; color:#e5e5e5; margin:0;">
+          ${_selectedRate ? `${_selectedRate.provider} — ${_selectedRate.servicelevel}` : 'Not selected'}
+          ${_selectedRate ? ` · $${parseFloat(_selectedRate.amount).toFixed(2)} ${_selectedRate.currency}` : ''}
+        </p>
+      </div>
+      <div style="background:#181818; border:1px solid rgba(163,145,113,.2); padding:20px;">
+        <h3 style="font-family:'Oswald',sans-serif; font-size:13px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:#A39171; margin:0 0 12px;">Payment</h3>
+        <p style="font-family:'Archivo Narrow',sans-serif; font-size:14px; color:#e5e5e5; margin:0 0 12px;">${payLabels[_selectedPayment] || _selectedPayment}</p>
+        <div style="display:flex; justify-content:space-between; align-items:baseline; border-top:1px solid rgba(255,255,255,.06); padding-top:12px;">
+          <span style="font-family:'Oswald',sans-serif; font-weight:600; font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:#777;">Total Due</span>
+          <span style="font-family:'Oswald',sans-serif; font-weight:700; font-size:22px; color:#D4FF00;">$${total.toFixed(2)}</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+document.getElementById('step4-back').addEventListener('click', () => goToStep(3));
+
+// ── Place order ───────────────────────────────────────────────────────────────
+document.getElementById('place-order-btn').addEventListener('click', async () => {
+  const btn = document.getElementById('place-order-btn');
+  btn.disabled = true;
+  btn.textContent = 'Placing Order…';
+
+  const customer = {
+    name:  document.getElementById('cust-name').value.trim(),
+    email: document.getElementById('cust-email').value.trim(),
+    phone: document.getElementById('cust-phone').value.trim(),
+  };
+  const shipping = {
+    address: {
+      street1: document.getElementById('addr-street1').value.trim(),
+      street2: document.getElementById('addr-street2').value.trim(),
+      city:    document.getElementById('addr-city').value.trim(),
+      state:   document.getElementById('addr-state').value.trim(),
+      zip:     document.getElementById('addr-zip').value.trim(),
+      country: document.getElementById('addr-country').value,
+    },
+    provider:     _selectedRate?.provider || '',
+    servicelevel: _selectedRate?.servicelevel || '',
+    amount:       _selectedRate?.amount || '0',
+    currency:     _selectedRate?.currency || 'AUD',
+  };
+
+  const payload = {
+    customer,
+    items:         window.Cart.getItems(),
+    shipping,
+    paymentMethod: _selectedPayment,
+    subtotal:      window.Cart.getSubtotal(),
+  };
+
+  try {
+    const res = await fetch('/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+
+    if (!res.ok || !data.orderId) throw new Error(data.error || 'Order failed');
+
+    _placedOrderId = data.orderId;
+    window.Cart.clear();
+    showConfirmation(data, _selectedPayment, parseFloat(data.total));
+    goToStep(5);
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = 'Place Order';
+    showToast('Order could not be placed: ' + err.message, 'error');
+  }
+});
+
+function showConfirmation(data, paymentMethod, total) {
+  document.getElementById('confirm-order-id').textContent = `#${data.orderId}`;
+
+  const paypalUrl = null; // Will be set from server env via template if needed
+
+  const payDetails = {
+    paypal: `<p style="color:#aaa; font-family:'Archivo Narrow',sans-serif; font-size:14px; line-height:1.7;">Send <strong style="color:#D4FF00;">$${total.toFixed(2)}</strong> via PayPal to the link we emailed you. Include <strong style="color:#D4FF00;">#${data.orderId}</strong> as the reference.</p>`,
+    venmo:  `<p style="color:#aaa; font-family:'Archivo Narrow',sans-serif; font-size:14px; line-height:1.7;">Send <strong style="color:#D4FF00;">$${total.toFixed(2)}</strong> via Venmo to <strong style="color:#fff;">@GrifficRacing</strong>. Include <strong style="color:#D4FF00;">#${data.orderId}</strong> as the note.</p>`,
+    zelle:  `<p style="color:#aaa; font-family:'Archivo Narrow',sans-serif; font-size:14px; line-height:1.7;">Bank transfer details have been sent to your email. Transfer <strong style="color:#D4FF00;">$${total.toFixed(2)}</strong> and include <strong style="color:#D4FF00;">#${data.orderId}</strong> in the description.</p>`,
+  };
+
+  document.getElementById('payment-details').innerHTML = payDetails[paymentMethod] || payDetails.zelle;
+}
+
+// ── Toast helper ──────────────────────────────────────────────────────────────
+function showToast(msg, type = 'info') {
+  let toast = document.getElementById('checkout-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'checkout-toast';
+    toast.className = `toast ${type === 'error' ? 'toast-error' : 'toast-success'}`;
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.className = `toast ${type === 'error' ? 'toast-error' : 'toast-success'} show`;
+  setTimeout(() => toast.classList.remove('show'), 4000);
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+setTimeout(() => {
+  goToStep(1);
+  renderSummary();
+}, 100);
+</script>
+</body>
+</html>

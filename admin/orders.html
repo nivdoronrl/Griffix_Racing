@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orders — Griffix Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Archivo+Narrow:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { lime: { DEFAULT: '#D4FF00' }, tan: { DEFAULT: '#A39171' } }, fontFamily: { display: ['Oswald','sans-serif'], body: ['Archivo Narrow','sans-serif'] } } }
+    }
+  </script>
+  <link rel="stylesheet" href="/shared/theme.css">
+  <style>
+    body { background:#0a0a0a; }
+    .admin-nav { background:#111; border-bottom:1px solid rgba(163,145,113,.2); padding:0 28px; display:flex; align-items:center; gap:28px; height:56px; position:sticky; top:0; z-index:50; }
+    .admin-nav-link { font-family:'Oswald',sans-serif; font-size:12px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:#555; text-decoration:none; padding:4px 0; border-bottom:2px solid transparent; }
+    .admin-nav-link.active, .admin-nav-link:hover { color:#D4FF00; border-color:#D4FF00; }
+    .admin-content { max-width:1300px; margin:0 auto; padding:32px 28px; }
+  </style>
+</head>
+<body>
+
+<!-- Admin nav -->
+<div class="admin-nav">
+  <img src="/brand_assets/Griffix logo.png" alt="Griffix" class="logo-lime" style="height:28px; flex-shrink:0;">
+  <a href="/admin/orders.html" class="admin-nav-link active">Orders</a>
+  <a href="/admin/products.html" class="admin-nav-link">Products</a>
+  <a href="/admin/gallery.html" class="admin-nav-link">Gallery</a>
+  <div style="margin-left:auto;">
+    <button id="logout-btn" style="font-family:'Archivo Narrow',sans-serif; font-size:12px; color:#444; background:none; border:none; cursor:pointer; text-decoration:underline;" class="hover:text-[#D4FF00]">Sign out</button>
+  </div>
+</div>
+
+<div class="admin-content">
+  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:28px;">
+    <h1 class="font-display text-white font-bold" style="font-size:26px; letter-spacing:-.01em;">ORDERS</h1>
+    <button id="refresh-btn" class="btn-ghost" style="padding:8px 16px; font-size:12px;">Refresh</button>
+  </div>
+
+  <!-- Stats row -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8" id="stats-row">
+    <div style="background:#181818; border:1px solid rgba(163,145,113,.2); padding:20px;">
+      <div class="font-display text-white font-bold" style="font-size:28px;" id="stat-total">—</div>
+      <div style="font-family:'Archivo Narrow',sans-serif; font-size:12px; color:#555; text-transform:uppercase; letter-spacing:.08em; margin-top:4px;">Total Orders</div>
+    </div>
+    <div style="background:#181818; border:1px solid rgba(163,145,113,.2); padding:20px;">
+      <div class="font-display text-white font-bold" style="font-size:28px;" id="stat-pending">—</div>
+      <div style="font-family:'Archivo Narrow',sans-serif; font-size:12px; color:#555; text-transform:uppercase; letter-spacing:.08em; margin-top:4px;">Pending</div>
+    </div>
+    <div style="background:#181818; border:1px solid rgba(163,145,113,.2); padding:20px;">
+      <div class="font-display text-[#D4FF00] font-bold" style="font-size:28px;" id="stat-revenue">—</div>
+      <div style="font-family:'Archivo Narrow',sans-serif; font-size:12px; color:#555; text-transform:uppercase; letter-spacing:.08em; margin-top:4px;">Total Revenue</div>
+    </div>
+    <div style="background:#181818; border:1px solid rgba(163,145,113,.2); padding:20px;">
+      <div class="font-display text-white font-bold" style="font-size:28px;" id="stat-avg">—</div>
+      <div style="font-family:'Archivo Narrow',sans-serif; font-size:12px; color:#555; text-transform:uppercase; letter-spacing:.08em; margin-top:4px;">Avg Order</div>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div id="orders-loading">
+    <div class="skeleton" style="height:48px; margin-bottom:8px;"></div>
+    <div class="skeleton" style="height:48px; margin-bottom:8px;"></div>
+    <div class="skeleton" style="height:48px; margin-bottom:8px;"></div>
+  </div>
+
+  <!-- Table -->
+  <div id="orders-table-wrap" style="display:none; overflow-x:auto;">
+    <table class="admin-table" style="width:100%;">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Date</th>
+          <th>Customer</th>
+          <th>Items</th>
+          <th>Total</th>
+          <th>Payment</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="orders-tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- Empty -->
+  <div id="orders-empty" style="display:none; text-align:center; padding:64px 0;">
+    <p class="font-display text-[#333] text-xl">NO ORDERS YET</p>
+    <p class="text-[#444] mt-2" style="font-family:'Archivo Narrow',sans-serif; font-size:14px;">Orders placed through the site will appear here.</p>
+  </div>
+</div>
+
+<script type="module">
+import { initAdminAuth, getToken, clearToken } from '/js/admin-auth.js';
+
+let _token = null;
+
+async function boot() {
+  _token = await initAdminAuth();
+  if (!_token) return;
+  loadOrders();
+}
+
+async function loadOrders() {
+  try {
+    const res = await fetch('/api/orders', {
+      headers: { 'x-admin-token': _token },
+    });
+    if (!res.ok) throw new Error('Unauthorised');
+    const orders = await res.json();
+    renderOrders(orders);
+  } catch (err) {
+    document.getElementById('orders-loading').innerHTML = `<p style="color:#c0a0a0; font-family:'Archivo Narrow',sans-serif;">Failed to load orders: ${err.message}</p>`;
+  }
+}
+
+function renderOrders(orders) {
+  document.getElementById('orders-loading').style.display = 'none';
+
+  // Stats
+  const total = orders.length;
+  const pending = orders.filter(o => o.status === 'pending').length;
+  const revenue = orders.reduce((s, o) => s + (o.total || 0), 0);
+  const avg = total ? revenue / total : 0;
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-pending').textContent = pending;
+  document.getElementById('stat-revenue').textContent = `$${revenue.toFixed(0)}`;
+  document.getElementById('stat-avg').textContent = `$${avg.toFixed(0)}`;
+
+  if (orders.length === 0) {
+    document.getElementById('orders-empty').style.display = 'block';
+    return;
+  }
+
+  document.getElementById('orders-table-wrap').style.display = 'block';
+
+  const sorted = [...orders].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  const tbody = document.getElementById('orders-tbody');
+
+  tbody.innerHTML = sorted.map(o => `
+    <tr>
+      <td><span style="font-family:'Oswald',sans-serif; font-size:13px; color:#D4FF00;">${o.orderId}</span></td>
+      <td style="font-family:'Archivo Narrow',sans-serif; font-size:12px; color:#666;">${new Date(o.createdAt).toLocaleDateString('en-AU')}</td>
+      <td>
+        <div style="font-family:'Archivo Narrow',sans-serif; font-size:13px; color:#e5e5e5;">${o.customer?.name || '—'}</div>
+        <div style="font-family:'Archivo Narrow',sans-serif; font-size:11px; color:#555;">${o.customer?.email || ''}</div>
+      </td>
+      <td style="font-family:'Archivo Narrow',sans-serif; font-size:12px; color:#aaa;">${(o.items || []).length} item${(o.items || []).length !== 1 ? 's' : ''}</td>
+      <td style="font-family:'Oswald',sans-serif; font-size:15px; font-weight:600; color:#D4FF00;">$${(o.total || 0).toFixed(2)}</td>
+      <td style="font-family:'Archivo Narrow',sans-serif; font-size:12px; color:#777;">${o.paymentMethod || '—'}</td>
+      <td><span class="badge ${_statusBadge(o.status)}">${o.status}</span></td>
+      <td>
+        <select class="status-select" data-id="${o.orderId}" style="background:#222; border:1px solid rgba(163,145,113,.3); color:#e5e5e5; font-family:'Archivo Narrow',sans-serif; font-size:12px; padding:5px 8px; cursor:pointer;">
+          <option value="pending" ${o.status === 'pending' ? 'selected' : ''}>Pending</option>
+          <option value="paid" ${o.status === 'paid' ? 'selected' : ''}>Paid</option>
+          <option value="shipped" ${o.status === 'shipped' ? 'selected' : ''}>Shipped</option>
+          <option value="cancelled" ${o.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+        </select>
+      </td>
+    </tr>
+  `).join('');
+
+  tbody.querySelectorAll('.status-select').forEach(sel => {
+    sel.addEventListener('change', () => updateStatus(sel.dataset.id, sel.value));
+  });
+}
+
+async function updateStatus(orderId, status) {
+  try {
+    const res = await fetch(`/api/orders/${orderId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'x-admin-token': _token },
+      body: JSON.stringify({ status }),
+    });
+    if (!res.ok) throw new Error('Update failed');
+    loadOrders(); // refresh
+  } catch (err) {
+    alert('Status update failed: ' + err.message);
+  }
+}
+
+function _statusBadge(status) {
+  const map = { pending: 'badge-pending', paid: 'badge-paid', shipped: 'badge-shipped', cancelled: 'badge-cancelled' };
+  return map[status] || 'badge-pending';
+}
+
+document.getElementById('refresh-btn').addEventListener('click', loadOrders);
+document.getElementById('logout-btn').addEventListener('click', () => {
+  clearToken();
+  window.location.href = '/admin/index.html';
+});
+
+boot();
+</script>
+</body>
+</html>

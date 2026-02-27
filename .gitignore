@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Environment secrets — NEVER commit
+.env
+
+# Credentials
+server/credentials.json
+
+# macOS
+.DS_Store
+
+# Temporary screenshots
+temporary screenshots/
+
+# Logs
+*.log
+npm-debug.log*
