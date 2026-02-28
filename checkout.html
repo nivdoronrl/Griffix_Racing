@@ -172,7 +172,7 @@
               <input type="radio" name="payment" value="venmo" style="accent-color:#D4FF00; width:18px; height:18px; flex-shrink:0;">
               <div>
                 <div class="font-display text-white font-bold text-sm tracking-wide">Venmo</div>
-                <div style="color:#666; font-family:'Archivo Narrow',sans-serif; font-size:12px; margin-top:2px;">Send via Venmo to @GrifficRacing — include your order number as the note.</div>
+                <div style="color:#666; font-family:'Archivo Narrow',sans-serif; font-size:12px; margin-top:2px;">Send via Venmo to @GriffixRacing — include your order number as the note.</div>
               </div>
             </label>
             <label style="display:flex; align-items:center; gap:16px; background:#181818; border:1px solid rgba(163,145,113,.2); padding:18px 20px; cursor:pointer;" class="rate-card" id="pay-zelle-card">
@@ -235,7 +235,7 @@
               <span class="text-[#666]">Subtotal</span>
               <span class="text-[#e5e5e5]">$<span id="checkout-subtotal">0.00</span></span>
             </div>
-            <div class="flex justify-between text-sm" style="font-family:'Archivo Narrow',sans-serif;" id="checkout-shipping-row" style="display:none;">
+            <div class="flex justify-between text-sm" id="checkout-shipping-row" style="font-family:'Archivo Narrow',sans-serif; display:none;">
               <span class="text-[#666]">Shipping</span>
               <span class="text-[#e5e5e5]">$<span id="checkout-shipping">0.00</span></span>
             </div>
@@ -261,6 +261,10 @@ let _currentStep = 1;
 let _selectedRate = null;
 let _selectedPayment = null;
 let _placedOrderId = null;
+let _paypalMeUrl = '';
+
+// Fetch public config (PayPal URL, etc.)
+fetch('/api/config').then(r => r.json()).then(cfg => { _paypalMeUrl = cfg.paypalMeUrl || ''; }).catch(() => {});
 
 // ── Redirect if cart empty ────────────────────────────────────────────────────
 setTimeout(() => {
@@ -330,6 +334,12 @@ document.getElementById('step1-next').addEventListener('click', async () => {
   fetchRates({ name, city, state, zip, country, street1 });
 });
 
+// Flat-rate fallbacks used when Shippo returns no live rates
+const FALLBACK_RATES = [
+  { object_id: 'flat-standard', provider: 'Griffix', servicelevel: 'Standard Shipping', duration_terms: '5–10 business days', amount: '15.00', currency: 'USD' },
+  { object_id: 'flat-express',  provider: 'Griffix', servicelevel: 'Express Shipping',  duration_terms: '2–4 business days',  amount: '29.00', currency: 'USD' },
+];
+
 async function fetchRates(addr) {
   document.getElementById('rates-loading').style.display = 'block';
   document.getElementById('rates-container').innerHTML = '';
@@ -348,21 +358,25 @@ async function fetchRates(addr) {
     const data = await res.json();
     document.getElementById('rates-loading').style.display = 'none';
 
-    if (!res.ok || !data.rates?.length) {
-      document.getElementById('rates-error').style.display = 'block';
-      return;
+    if (res.ok && data.rates?.length) {
+      renderRates(data.rates);
+    } else {
+      // Shippo returned no rates — use flat-rate fallback
+      renderRates(FALLBACK_RATES, true);
     }
-
-    renderRates(data.rates);
   } catch {
     document.getElementById('rates-loading').style.display = 'none';
-    document.getElementById('rates-error').style.display = 'block';
+    // Network error — use flat-rate fallback
+    renderRates(FALLBACK_RATES, true);
   }
 }
 
-function renderRates(rates) {
+function renderRates(rates, isFallback = false) {
   const container = document.getElementById('rates-container');
-  container.innerHTML = rates.map(rate => `
+  const fallbackNote = isFallback
+    ? `<p style="font-family:'Archivo Narrow',sans-serif; font-size:12px; color:#555; margin-bottom:14px;">Live carrier rates unavailable — showing estimated rates. Final shipping confirmed at dispatch.</p>`
+    : '';
+  container.innerHTML = fallbackNote + rates.map(rate => `
     <label style="display:flex; align-items:center; gap:16px; background:#181818; border:1px solid rgba(163,145,113,.2); padding:18px 20px; cursor:pointer; margin-bottom:10px;" class="rate-card" data-id="${rate.object_id}">
       <input type="radio" name="shipping-rate" value="${rate.object_id}" style="accent-color:#D4FF00; width:18px; height:18px; flex-shrink:0;"
         data-amount="${rate.amount}" data-provider="${rate.provider}" data-servicelevel="${rate.servicelevel}" data-currency="${rate.currency}">
@@ -516,11 +530,13 @@ document.getElementById('place-order-btn').addEventListener('click', async () =>
 function showConfirmation(data, paymentMethod, total) {
   document.getElementById('confirm-order-id').textContent = `#${data.orderId}`;
 
-  const paypalUrl = null; // Will be set from server env via template if needed
+  const paypalLinkHtml = _paypalMeUrl
+    ? `<a href="${_paypalMeUrl}/${total.toFixed(2)}" target="_blank" rel="noopener" style="color:#D4FF00; font-weight:700;">Pay via PayPal →</a>`
+    : `<span style="color:#aaa;">PayPal link will be sent to your email.</span>`;
 
   const payDetails = {
-    paypal: `<p style="color:#aaa; font-family:'Archivo Narrow',sans-serif; font-size:14px; line-height:1.7;">Send <strong style="color:#D4FF00;">$${total.toFixed(2)}</strong> via PayPal to the link we emailed you. Include <strong style="color:#D4FF00;">#${data.orderId}</strong> as the reference.</p>`,
-    venmo:  `<p style="color:#aaa; font-family:'Archivo Narrow',sans-serif; font-size:14px; line-height:1.7;">Send <strong style="color:#D4FF00;">$${total.toFixed(2)}</strong> via Venmo to <strong style="color:#fff;">@GrifficRacing</strong>. Include <strong style="color:#D4FF00;">#${data.orderId}</strong> as the note.</p>`,
+    paypal: `<p style="color:#aaa; font-family:'Archivo Narrow',sans-serif; font-size:14px; line-height:1.7;">Send <strong style="color:#D4FF00;">$${total.toFixed(2)}</strong> via PayPal. Include <strong style="color:#D4FF00;">#${data.orderId}</strong> as the reference.</p><p style="margin-top:10px;">${paypalLinkHtml}</p>`,
+    venmo:  `<p style="color:#aaa; font-family:'Archivo Narrow',sans-serif; font-size:14px; line-height:1.7;">Send <strong style="color:#D4FF00;">$${total.toFixed(2)}</strong> via Venmo to <strong style="color:#fff;">@GriffixRacing</strong>. Include <strong style="color:#D4FF00;">#${data.orderId}</strong> as the note.</p>`,
     zelle:  `<p style="color:#aaa; font-family:'Archivo Narrow',sans-serif; font-size:14px; line-height:1.7;">Bank transfer details have been sent to your email. Transfer <strong style="color:#D4FF00;">$${total.toFixed(2)}</strong> and include <strong style="color:#D4FF00;">#${data.orderId}</strong> in the description.</p>`,
   };
 

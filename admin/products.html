@@ -8,20 +8,124 @@
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Archivo+Narrow:wght@400;500;600&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
-      theme: { extend: { colors: { lime: { DEFAULT: '#D4FF00' }, tan: { DEFAULT: '#A39171' } }, fontFamily: { display: ['Oswald','sans-serif'], body: ['Archivo Narrow','sans-serif'] } } }
+      theme: { extend: {
+        colors: { lime: { DEFAULT: '#D4FF00' }, tan: { DEFAULT: '#A39171' } },
+        fontFamily: { display: ['Oswald','sans-serif'], body: ['Archivo Narrow','sans-serif'] }
+      }}
     }
   </script>
   <link rel="stylesheet" href="/shared/theme.css">
   <style>
-    body { background:#0a0a0a; }
+    body { background:#0a0a0a; font-family:'Archivo Narrow',sans-serif; }
+
     .admin-nav { background:#111; border-bottom:1px solid rgba(163,145,113,.2); padding:0 28px; display:flex; align-items:center; gap:28px; height:56px; position:sticky; top:0; z-index:50; }
     .admin-nav-link { font-family:'Oswald',sans-serif; font-size:12px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:#555; text-decoration:none; padding:4px 0; border-bottom:2px solid transparent; }
     .admin-nav-link.active, .admin-nav-link:hover { color:#D4FF00; border-color:#D4FF00; }
-    .admin-content { max-width:1300px; margin:0 auto; padding:32px 28px; }
+    .admin-content { max-width:1400px; margin:0 auto; padding:32px 28px; }
+
+    /* Table */
+    .data-table { width:100%; border-collapse:collapse; }
+    .data-table th { font-family:'Oswald',sans-serif; font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:#555; padding:10px 14px; text-align:left; border-bottom:1px solid #1f1f1f; white-space:nowrap; }
+    .data-table td { font-size:13px; color:#ccc; padding:12px 14px; border-bottom:1px solid #161616; vertical-align:middle; }
+    .data-table tr:hover td { background:#111; }
+    .data-table .thumb { width:48px; height:36px; object-fit:cover; background:#1a1a1a; border:1px solid #222; }
+    .data-table .thumb-empty { width:48px; height:36px; background:#181818; border:1px solid #222; display:flex; align-items:center; justify-content:center; }
+
+    /* Badges */
+    .badge { display:inline-flex; align-items:center; padding:2px 8px; font-family:'Oswald',sans-serif; font-size:10px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; }
+    .badge-stock { background:rgba(212,255,0,.08); color:#D4FF00; border:1px solid rgba(212,255,0,.2); }
+    .badge-nostock { background:rgba(255,80,80,.08); color:#ff5050; border:1px solid rgba(255,80,80,.15); }
+    .badge-cat { background:#1a1a1a; color:#A39171; border:1px solid #2a2a2a; }
+    .badge-featured { background:rgba(212,255,0,.15); color:#D4FF00; }
+
+    /* Action buttons */
+    .btn-edit { background:#1e1e1e; border:1px solid #2e2e2e; color:#aaa; padding:5px 12px; font-size:11px; font-family:'Oswald',sans-serif; letter-spacing:.06em; cursor:pointer; text-transform:uppercase; }
+    .btn-edit:hover { border-color:#A39171; color:#A39171; }
+    .btn-del { background:none; border:none; color:#444; padding:5px 8px; cursor:pointer; font-size:14px; }
+    .btn-del:hover { color:#ff5050; }
+
+    /* Drawer overlay */
+    .drawer-overlay { position:fixed; inset:0; z-index:100; background:rgba(0,0,0,.65); backdrop-filter:blur(4px); opacity:0; pointer-events:none; transition:opacity .25s ease; }
+    .drawer-overlay.open { opacity:1; pointer-events:auto; }
+
+    /* Drawer panel */
+    .drawer { position:fixed; top:0; right:-700px; width:660px; max-width:100vw; height:100vh; z-index:101; background:#0f0f0f; border-left:1px solid rgba(163,145,113,.2); display:flex; flex-direction:column; transition:right .28s cubic-bezier(.4,0,.2,1); }
+    .drawer.open { right:0; }
+    .drawer-header { padding:20px 28px; border-bottom:1px solid #1e1e1e; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+    .drawer-body { flex:1; overflow-y:auto; padding:28px; }
+    .drawer-footer { padding:20px 28px; border-top:1px solid #1e1e1e; display:flex; align-items:center; gap:12px; flex-shrink:0; background:#0f0f0f; }
+
+    /* Form fields */
+    .field-group { margin-bottom:22px; }
+    .field-label { display:block; font-family:'Oswald',sans-serif; font-size:11px; font-weight:600; letter-spacing:.1em; color:#555; text-transform:uppercase; margin-bottom:7px; }
+    .field-label span { color:#ff5050; }
+    .form-input, .form-select, .form-textarea {
+      width:100%; background:#161616; border:1px solid #2a2a2a; color:#e5e5e5; padding:10px 14px;
+      font-family:'Archivo Narrow',sans-serif; font-size:13px; outline:none;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color:#A39171; }
+    .form-select { appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23555' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center; padding-right:36px; cursor:pointer; }
+    .form-textarea { resize:vertical; min-height:90px; line-height:1.6; }
+    .form-input::placeholder { color:#3a3a3a; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .form-row-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+
+    /* Toggle switch */
+    .toggle-wrap { display:flex; align-items:center; gap:12px; }
+    .toggle { position:relative; width:40px; height:22px; cursor:pointer; }
+    .toggle input { display:none; }
+    .toggle-track { position:absolute; inset:0; background:#222; border:1px solid #333; transition:background .2s, border-color .2s; }
+    .toggle-thumb { position:absolute; top:3px; left:3px; width:14px; height:14px; background:#555; transition:left .2s, background .2s; }
+    .toggle input:checked ~ .toggle-track { background:rgba(212,255,0,.15); border-color:rgba(212,255,0,.4); }
+    .toggle input:checked ~ .toggle-thumb { left:21px; background:#D4FF00; }
+    .toggle-label { font-size:13px; color:#aaa; }
+
+    /* Image upload zone */
+    .upload-zone { border:2px dashed #2a2a2a; padding:28px 20px; text-align:center; cursor:pointer; position:relative; }
+    .upload-zone:hover, .upload-zone.dragging { border-color:#A39171; }
+    .upload-zone input { position:absolute; inset:0; opacity:0; cursor:pointer; }
+    .image-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(100px,1fr)); gap:10px; margin-bottom:14px; }
+    .image-thumb { position:relative; aspect-ratio:4/3; overflow:hidden; background:#161616; border:1px solid #222; }
+    .image-thumb img { width:100%; height:100%; object-fit:cover; }
+    .image-thumb .del-img { position:absolute; top:4px; right:4px; background:rgba(0,0,0,.8); border:none; color:#fff; width:20px; height:20px; cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; }
+    .image-thumb .del-img:hover { background:#c00; }
+
+    /* Primary button */
+    .btn-primary-admin { background:#D4FF00; color:#0a0a0a; border:none; padding:12px 28px; font-family:'Oswald',sans-serif; font-size:13px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; }
+    .btn-primary-admin:hover { background:#c4ef00; }
+    .btn-primary-admin:disabled { opacity:.4; cursor:not-allowed; }
+    .btn-cancel { background:none; border:1px solid #2a2a2a; color:#666; padding:12px 20px; font-family:'Oswald',sans-serif; font-size:12px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; }
+    .btn-cancel:hover { border-color:#555; color:#aaa; }
+
+    /* Divider */
+    .section-divider { border:none; border-top:1px solid #1e1e1e; margin:24px 0; }
+
+    /* Search / filter bar */
+    .toolbar { display:flex; align-items:center; gap:12px; margin-bottom:24px; flex-wrap:wrap; }
+    .search-input { background:#141414; border:1px solid #2a2a2a; color:#e5e5e5; padding:9px 14px; font-family:'Archivo Narrow',sans-serif; font-size:13px; outline:none; min-width:240px; }
+    .search-input:focus { border-color:#A39171; }
+    .filter-select-sm { background:#141414; border:1px solid #2a2a2a; color:#e5e5e5; padding:9px 14px; font-family:'Archivo Narrow',sans-serif; font-size:13px; outline:none; appearance:none; padding-right:32px; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23555' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; cursor:pointer; }
+
+    /* Skeleton */
+    .skeleton { background: linear-gradient(90deg, #111 25%, #1a1a1a 50%, #111 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; }
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+    /* Upload progress */
+    .upload-progress { font-size:12px; color:#A39171; margin-top:6px; }
+    .error-msg { font-size:12px; color:#ff5050; margin-top:6px; }
+    .success-toast { position:fixed; bottom:28px; right:28px; background:#D4FF00; color:#0a0a0a; padding:12px 22px; font-family:'Oswald',sans-serif; font-size:13px; font-weight:700; letter-spacing:.08em; z-index:200; opacity:0; transform:translateY(10px); transition:opacity .2s, transform .2s; pointer-events:none; }
+    .success-toast.show { opacity:1; transform:translateY(0); }
+
+    /* Section heading inside drawer */
+    .form-section-title { font-family:'Oswald',sans-serif; font-size:11px; font-weight:600; letter-spacing:.15em; color:#3a3a3a; text-transform:uppercase; margin-bottom:16px; }
+
+    /* SKU preview */
+    .sku-preview { font-family:'Oswald',sans-serif; font-size:11px; color:#D4FF00; letter-spacing:.06em; margin-top:5px; }
   </style>
 </head>
 <body>
 
+<!-- ── Admin Nav ──────────────────────────────────────────────────────────── -->
 <div class="admin-nav">
   <img src="/brand_assets/Griffix logo.png" alt="Griffix" class="logo-lime" style="height:28px; flex-shrink:0;">
   <a href="/admin/orders.html" class="admin-nav-link">Orders</a>
@@ -32,91 +136,719 @@
   </div>
 </div>
 
+<!-- ── Main Content ───────────────────────────────────────────────────────── -->
 <div class="admin-content">
-  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
-    <h1 class="font-display text-white font-bold" style="font-size:26px; letter-spacing:-.01em;">PRODUCTS</h1>
-    <button id="refresh-btn" class="btn-ghost" style="padding:8px 16px; font-size:12px;">Refresh</button>
-  </div>
-  <p style="font-family:'Archivo Narrow',sans-serif; font-size:13px; color:#555; margin-bottom:28px;">
-    Products are managed via Google Sheets. Edit the Products tab in your sheet — changes sync within 60 seconds.
-    <a href="#" style="color:#A39171; text-decoration:underline;">Open Sheet ↗</a>
-  </p>
 
-  <div id="products-loading">
-    <div class="skeleton" style="height:48px; margin-bottom:8px;"></div>
-    <div class="skeleton" style="height:48px; margin-bottom:8px;"></div>
-    <div class="skeleton" style="height:48px; margin-bottom:8px;"></div>
+  <!-- Header -->
+  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px;">
+    <div>
+      <h1 class="font-display text-white font-bold" style="font-size:26px; letter-spacing:-.01em;">PRODUCTS</h1>
+      <p id="product-count-label" style="font-size:12px; color:#444; margin-top:2px;"></p>
+    </div>
+    <button id="add-btn" class="btn-primary-admin" style="padding:10px 22px;">+ ADD PRODUCT</button>
   </div>
 
-  <div id="products-table-wrap" style="display:none; overflow-x:auto;">
-    <table class="admin-table" style="width:100%;">
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <input type="text" id="search-input" placeholder="Search by name, SKU, model…" class="search-input">
+    <select id="filter-cat" class="filter-select-sm">
+      <option value="">All Categories</option>
+      <option value="graphic-kit">Graphic Kits</option>
+      <option value="seat-cover">Seat Covers</option>
+      <option value="plastic-kit">Plastic Kits</option>
+      <option value="number-plate">Number Plates</option>
+      <option value="accessory">Accessories</option>
+    </select>
+    <select id="filter-make" class="filter-select-sm">
+      <option value="">All Makes</option>
+    </select>
+    <select id="filter-stock" class="filter-select-sm">
+      <option value="">All Stock</option>
+      <option value="in">In Stock</option>
+      <option value="out">Out of Stock</option>
+    </select>
+  </div>
+
+  <!-- Loading -->
+  <div id="tbl-loading">
+    <div class="skeleton" style="height:52px; margin-bottom:4px;"></div>
+    <div class="skeleton" style="height:52px; margin-bottom:4px;"></div>
+    <div class="skeleton" style="height:52px; margin-bottom:4px;"></div>
+    <div class="skeleton" style="height:52px; margin-bottom:4px;"></div>
+    <div class="skeleton" style="height:52px;"></div>
+  </div>
+
+  <!-- Table -->
+  <div id="tbl-wrap" style="display:none; overflow-x:auto;">
+    <table class="data-table">
       <thead>
         <tr>
+          <th style="width:64px;"></th>
           <th>SKU</th>
           <th>Name</th>
           <th>Category</th>
           <th>Make / Model</th>
           <th>Years</th>
           <th>Price</th>
-          <th>Featured</th>
-          <th>In Stock</th>
+          <th>Stock</th>
+          <th style="width:120px;"></th>
         </tr>
       </thead>
-      <tbody id="products-tbody"></tbody>
+      <tbody id="tbl-body"></tbody>
     </table>
   </div>
 
-  <div id="products-empty" style="display:none; text-align:center; padding:64px 0;">
-    <p class="font-display text-[#333] text-xl">NO PRODUCTS FOUND</p>
-    <p class="text-[#444] mt-2" style="font-family:'Archivo Narrow',sans-serif; font-size:14px;">Add products to the Google Sheets "Products" tab.</p>
+  <!-- Empty -->
+  <div id="tbl-empty" style="display:none; text-align:center; padding:72px 0;">
+    <p class="font-display text-[#333] text-xl">NO PRODUCTS YET</p>
+    <p class="text-[#444] mt-2" style="font-size:14px;">Click <strong style="color:#A39171;">+ Add Product</strong> to get started.</p>
   </div>
 </div>
+
+<!-- ── Drawer Overlay ─────────────────────────────────────────────────────── -->
+<div class="drawer-overlay" id="drawer-overlay"></div>
+
+<!-- ── Drawer Panel ───────────────────────────────────────────────────────── -->
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <div>
+      <div class="font-display text-white font-bold" id="drawer-title" style="font-size:18px; letter-spacing:-.01em;">ADD PRODUCT</div>
+      <div id="drawer-subtitle" style="font-size:12px; color:#444; margin-top:2px;"></div>
+    </div>
+    <button id="drawer-close" style="background:none; border:none; color:#555; cursor:pointer; padding:4px; font-size:20px; line-height:1;" class="hover:text-white">✕</button>
+  </div>
+
+  <div class="drawer-body">
+    <form id="product-form" novalidate>
+      <input type="hidden" id="field-id">
+
+      <!-- ── Images ───────────────────────────────────────────────────────── -->
+      <div class="field-group">
+        <label class="field-label">Product Images</label>
+        <div id="image-grid" class="image-grid" style="display:none;"></div>
+        <div class="upload-zone" id="upload-zone">
+          <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp" multiple>
+          <svg style="width:28px; height:28px; color:#333; margin:0 auto 8px;" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 12V4m0 0l-3 3m3-3l3 3"/></svg>
+          <p style="font-size:12px; color:#444;">Click or drag images here</p>
+          <p style="font-size:11px; color:#333; margin-top:4px;">JPG, PNG, WEBP — max 15 MB each</p>
+        </div>
+        <div id="upload-progress" class="upload-progress" style="display:none;"></div>
+      </div>
+
+      <hr class="section-divider">
+
+      <!-- ── Basic Info ────────────────────────────────────────────────────── -->
+      <p class="form-section-title">Basic Info</p>
+
+      <div class="field-group">
+        <label class="field-label" for="field-name">Product Name <span>*</span></label>
+        <input type="text" id="field-name" class="form-input" placeholder="e.g. KTM SX-F 250 Stealth Kit" required>
+      </div>
+
+      <div class="form-row" style="margin-bottom:22px;">
+        <div>
+          <label class="field-label" for="field-sku">SKU</label>
+          <input type="text" id="field-sku" class="form-input" placeholder="GRX-KTM-SXF-2325">
+          <div id="sku-preview" class="sku-preview" style="display:none;"></div>
+        </div>
+        <div>
+          <label class="field-label" for="field-category">Category <span>*</span></label>
+          <select id="field-category" class="form-select" required>
+            <option value="">— select —</option>
+            <option value="graphic-kit">Graphic Kit</option>
+            <option value="seat-cover">Seat Cover</option>
+            <option value="plastic-kit">Plastic Kit</option>
+            <option value="number-plate">Number Plate</option>
+            <option value="accessory">Accessory</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="field-price">Price (AUD) <span>*</span></label>
+        <input type="number" id="field-price" class="form-input" placeholder="249" min="0" step="0.01" style="max-width:180px;" required>
+      </div>
+
+      <hr class="section-divider">
+
+      <!-- ── Fitment ───────────────────────────────────────────────────────── -->
+      <p class="form-section-title">Fitment</p>
+
+      <div class="form-row" style="margin-bottom:16px;">
+        <div>
+          <label class="field-label" for="field-make">Make</label>
+          <select id="field-make" class="form-select">
+            <option value="">— Universal / N/A —</option>
+          </select>
+        </div>
+        <div>
+          <label class="field-label" for="field-model">Model</label>
+          <select id="field-model" class="form-select" disabled>
+            <option value="">— select make first —</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row-3" style="margin-bottom:22px;">
+        <div>
+          <label class="field-label" for="field-year-from">Year From</label>
+          <input type="number" id="field-year-from" class="form-input" placeholder="2023" min="1990" max="2030">
+        </div>
+        <div>
+          <label class="field-label" for="field-year-to">Year To</label>
+          <input type="number" id="field-year-to" class="form-input" placeholder="2025" min="1990" max="2030">
+        </div>
+        <div style="display:flex; align-items:flex-end; padding-bottom:2px;">
+          <button type="button" id="autofill-years-btn" style="background:#1a1a1a; border:1px solid #2a2a2a; color:#A39171; padding:10px 14px; font-family:'Oswald',sans-serif; font-size:11px; letter-spacing:.06em; text-transform:uppercase; cursor:pointer; width:100%;">Auto-fill</button>
+        </div>
+      </div>
+
+      <hr class="section-divider">
+
+      <!-- ── Description ───────────────────────────────────────────────────── -->
+      <p class="form-section-title">Description</p>
+
+      <div class="field-group">
+        <label class="field-label" for="field-description">Product Description</label>
+        <textarea id="field-description" class="form-textarea" placeholder="Describe the product — materials, fitment, what's included…"></textarea>
+      </div>
+
+      <hr class="section-divider">
+
+      <!-- ── Status ────────────────────────────────────────────────────────── -->
+      <p class="form-section-title">Status</p>
+
+      <div style="display:flex; gap:32px; margin-bottom:8px;">
+        <label class="toggle-wrap" style="cursor:pointer;">
+          <div class="toggle">
+            <input type="checkbox" id="field-in-stock" checked>
+            <div class="toggle-track"></div>
+            <div class="toggle-thumb"></div>
+          </div>
+          <span class="toggle-label">In Stock</span>
+        </label>
+        <label class="toggle-wrap" style="cursor:pointer;">
+          <div class="toggle">
+            <input type="checkbox" id="field-featured">
+            <div class="toggle-track"></div>
+            <div class="toggle-thumb"></div>
+          </div>
+          <span class="toggle-label">Featured on Homepage</span>
+        </label>
+      </div>
+
+      <div id="form-error" class="error-msg" style="display:none; margin-top:16px;"></div>
+    </form>
+  </div>
+
+  <div class="drawer-footer">
+    <button class="btn-primary-admin" id="save-btn">SAVE PRODUCT</button>
+    <button class="btn-cancel" id="cancel-btn">CANCEL</button>
+    <div id="save-status" style="font-size:12px; color:#A39171; margin-left:auto; display:none;"></div>
+  </div>
+</div>
+
+<!-- ── Delete Confirm Modal ─────────────────────────────────────────────── -->
+<div id="del-modal" style="display:none; position:fixed; inset:0; z-index:200; background:rgba(0,0,0,.75); backdrop-filter:blur(4px); align-items:center; justify-content:center;">
+  <div style="background:#131313; border:1px solid rgba(163,145,113,.25); padding:32px; max-width:400px; width:calc(100% - 40px);">
+    <p class="font-display text-white font-bold" style="font-size:18px; margin-bottom:8px;">DELETE PRODUCT?</p>
+    <p id="del-modal-name" style="font-size:13px; color:#777; margin-bottom:24px;"></p>
+    <p style="font-size:12px; color:#555; margin-bottom:24px;">This will permanently delete the product and all associated images. This cannot be undone.</p>
+    <div style="display:flex; gap:12px;">
+      <button id="del-confirm-btn" style="background:#c00; color:#fff; border:none; padding:10px 22px; font-family:'Oswald',sans-serif; font-size:12px; font-weight:700; letter-spacing:.08em; cursor:pointer; text-transform:uppercase;">DELETE</button>
+      <button id="del-cancel-btn" class="btn-cancel">CANCEL</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Success Toast ──────────────────────────────────────────────────────── -->
+<div class="success-toast" id="toast"></div>
 
 <script type="module">
 import { initAdminAuth, getToken, clearToken } from '/js/admin-auth.js';
 
 let _token = null;
+let _products = [];
+let _bikes = {};
+let _editId = null;       // null = add mode, string = edit mode
+let _pendingFiles = [];   // newly selected files not yet uploaded
+let _deleteId = null;
 
+// ── Boot ─────────────────────────────────────────────────────────────────────
 async function boot() {
   _token = await initAdminAuth();
   if (!_token) return;
-  loadProducts();
+
+  await Promise.all([loadBikes(), loadProducts()]);
+}
+
+// ── Data loaders ──────────────────────────────────────────────────────────────
+async function loadBikes() {
+  try {
+    const res = await fetch('/api/products/bikes');
+    _bikes = await res.json();
+    populateMakeSelects();
+  } catch {}
 }
 
 async function loadProducts() {
   try {
-    const res = await fetch('/api/sheets/products');
+    const res = await fetch('/api/products');
     const data = await res.json();
-    renderProducts(data.products || []);
-  } catch (err) {
-    document.getElementById('products-loading').innerHTML = `<p style="color:#c0a0a0; font-family:'Archivo Narrow',sans-serif;">Failed to load products: ${err.message}</p>`;
+    _products = data.products || [];
+  } catch {
+    _products = [];
   }
+  renderTable();
 }
 
-function renderProducts(products) {
-  document.getElementById('products-loading').style.display = 'none';
+// ── Make selects ──────────────────────────────────────────────────────────────
+function populateMakeSelects() {
+  const makes = Object.keys(_bikes).sort();
 
-  if (products.length === 0) {
-    document.getElementById('products-empty').style.display = 'block';
+  // Filter bar make
+  const filterMake = document.getElementById('filter-make');
+  filterMake.innerHTML = '<option value="">All Makes</option>';
+  makes.forEach(m => {
+    const o = document.createElement('option');
+    o.value = m; o.textContent = m;
+    filterMake.appendChild(o);
+  });
+
+  // Drawer make
+  const fieldMake = document.getElementById('field-make');
+  fieldMake.innerHTML = '<option value="">— Universal / N/A —</option>';
+  makes.forEach(m => {
+    const o = document.createElement('option');
+    o.value = m; o.textContent = m;
+    fieldMake.appendChild(o);
+  });
+}
+
+function updateModelSelect(makeVal, currentModel = '') {
+  const modelSel = document.getElementById('field-model');
+  modelSel.innerHTML = '';
+
+  if (!makeVal || !_bikes[makeVal]) {
+    modelSel.innerHTML = '<option value="">— select make first —</option>';
+    modelSel.disabled = true;
     return;
   }
 
-  document.getElementById('products-table-wrap').style.display = 'block';
-  document.getElementById('products-tbody').innerHTML = products.map(p => `
-    <tr>
-      <td style="font-family:'Oswald',sans-serif; font-size:12px; color:#A39171; letter-spacing:.06em;">${p.sku || '—'}</td>
-      <td style="font-family:'Archivo Narrow',sans-serif; font-size:13px; color:#e5e5e5;">${p.name}</td>
-      <td><span class="badge badge-pending" style="font-size:10px;">${p.category}</span></td>
-      <td style="font-family:'Archivo Narrow',sans-serif; font-size:12px; color:#777;">${p.make || ''} ${p.model || ''}</td>
-      <td style="font-family:'Archivo Narrow',sans-serif; font-size:12px; color:#666;">${p.year_from || ''}${p.year_to && p.year_to !== p.year_from ? '–' + p.year_to : ''}</td>
-      <td style="font-family:'Oswald',sans-serif; font-size:14px; font-weight:600; color:#D4FF00;">$${p.price}</td>
-      <td>${p.featured ? '<span style="color:#D4FF00;">★</span>' : '<span style="color:#333;">—</span>'}</td>
-      <td><span class="${p.in_stock ? 'badge badge-shipped' : 'badge badge-cancelled'}" style="font-size:10px;">${p.in_stock ? 'Yes' : 'No'}</span></td>
-    </tr>
-  `).join('');
+  modelSel.disabled = false;
+  const none = document.createElement('option');
+  none.value = ''; none.textContent = '— select model —';
+  modelSel.appendChild(none);
+
+  Object.keys(_bikes[makeVal]).sort().forEach(model => {
+    const o = document.createElement('option');
+    o.value = model; o.textContent = model;
+    if (model === currentModel) o.selected = true;
+    modelSel.appendChild(o);
+  });
 }
 
-document.getElementById('refresh-btn').addEventListener('click', loadProducts);
+// ── Filtering ─────────────────────────────────────────────────────────────────
+function getFilteredProducts() {
+  const q = document.getElementById('search-input').value.trim().toLowerCase();
+  const cat = document.getElementById('filter-cat').value;
+  const make = document.getElementById('filter-make').value;
+  const stock = document.getElementById('filter-stock').value;
+
+  return _products.filter(p => {
+    if (cat && p.category !== cat) return false;
+    if (make && p.make !== make) return false;
+    if (stock === 'in' && !p.in_stock) return false;
+    if (stock === 'out' && p.in_stock) return false;
+    if (q) {
+      const haystack = [p.name, p.sku, p.make, p.model, p.description].join(' ').toLowerCase();
+      if (!haystack.includes(q)) return false;
+    }
+    return true;
+  });
+}
+
+// ── Table render ─────────────────────────────────────────────────────────────
+function renderTable() {
+  const loading = document.getElementById('tbl-loading');
+  const wrap = document.getElementById('tbl-wrap');
+  const empty = document.getElementById('tbl-empty');
+  const body = document.getElementById('tbl-body');
+  const label = document.getElementById('product-count-label');
+
+  loading.style.display = 'none';
+
+  const filtered = getFilteredProducts();
+  label.textContent = `${_products.length} product${_products.length !== 1 ? 's' : ''} total${filtered.length !== _products.length ? ` · ${filtered.length} shown` : ''}`;
+
+  if (filtered.length === 0) {
+    wrap.style.display = 'none';
+    empty.style.display = 'block';
+    return;
+  }
+
+  empty.style.display = 'none';
+  wrap.style.display = 'block';
+
+  body.innerHTML = filtered.map(p => {
+    const thumb = p.images && p.images.length
+      ? `<img class="thumb" src="/${p.images[0]}" alt="">`
+      : `<div class="thumb-empty"><svg width="16" height="16" fill="none" stroke="#333" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg></div>`;
+
+    const yrs = p.year_from
+      ? `${p.year_from}${p.year_to && p.year_to !== p.year_from ? '–' + p.year_to : ''}`
+      : '—';
+
+    const catLabel = {
+      'graphic-kit':'Graphic Kit','seat-cover':'Seat Cover','plastic-kit':'Plastic Kit',
+      'number-plate':'Number Plate','accessory':'Accessory'
+    }[p.category] || p.category;
+
+    return `<tr>
+      <td style="padding:10px 14px;">${thumb}</td>
+      <td style="font-family:'Oswald',sans-serif; font-size:11px; color:#A39171; letter-spacing:.06em;">${p.sku || '—'}</td>
+      <td>
+        <div style="font-size:13px; color:#e5e5e5; font-weight:500;">${p.name}</div>
+        ${p.featured ? '<span class="badge badge-featured" style="font-size:9px; margin-top:3px; display:inline-block;">★ Featured</span>' : ''}
+      </td>
+      <td><span class="badge badge-cat">${catLabel}</span></td>
+      <td style="font-size:12px; color:#777;">${[p.make, p.model].filter(Boolean).join(' ') || '—'}</td>
+      <td style="font-size:12px; color:#666;">${yrs}</td>
+      <td style="font-family:'Oswald',sans-serif; font-size:15px; font-weight:600; color:#D4FF00;">$${p.price}</td>
+      <td><span class="badge ${p.in_stock ? 'badge-stock' : 'badge-nostock'}">${p.in_stock ? 'In Stock' : 'Sold Out'}</span></td>
+      <td style="white-space:nowrap;">
+        <button class="btn-edit" onclick="openEdit('${p.id}')">Edit</button>
+        <button class="btn-del" onclick="openDelete('${p.id}')" title="Delete">✕</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Drawer open/close ─────────────────────────────────────────────────────────
+function openAdd() {
+  _editId = null;
+  _pendingFiles = [];
+  document.getElementById('drawer-title').textContent = 'ADD PRODUCT';
+  document.getElementById('drawer-subtitle').textContent = '';
+  resetForm();
+  showDrawer();
+}
+
+function openEdit(id) {
+  const p = _products.find(x => x.id === id);
+  if (!p) return;
+  _editId = id;
+  _pendingFiles = [];
+  document.getElementById('drawer-title').textContent = 'EDIT PRODUCT';
+  document.getElementById('drawer-subtitle').textContent = p.name;
+  populateForm(p);
+  showDrawer();
+}
+window.openEdit = openEdit;
+
+function showDrawer() {
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawer-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('form-error').style.display = 'none';
+  document.getElementById('save-status').style.display = 'none';
+}
+
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawer-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  _pendingFiles = [];
+}
+
+// ── Form population ───────────────────────────────────────────────────────────
+function resetForm() {
+  document.getElementById('field-id').value = '';
+  document.getElementById('field-name').value = '';
+  document.getElementById('field-sku').value = '';
+  document.getElementById('field-category').value = '';
+  document.getElementById('field-price').value = '';
+  document.getElementById('field-make').value = '';
+  document.getElementById('field-description').value = '';
+  document.getElementById('field-year-from').value = '';
+  document.getElementById('field-year-to').value = '';
+  document.getElementById('field-in-stock').checked = true;
+  document.getElementById('field-featured').checked = false;
+  document.getElementById('sku-preview').style.display = 'none';
+  updateModelSelect('');
+  renderImageGrid([]);
+}
+
+function populateForm(p) {
+  document.getElementById('field-id').value = p.id;
+  document.getElementById('field-name').value = p.name || '';
+  document.getElementById('field-sku').value = p.sku || '';
+  document.getElementById('field-category').value = p.category || '';
+  document.getElementById('field-price').value = p.price || '';
+  document.getElementById('field-make').value = p.make || '';
+  document.getElementById('field-description').value = p.description || '';
+  document.getElementById('field-year-from').value = p.year_from || '';
+  document.getElementById('field-year-to').value = p.year_to || '';
+  document.getElementById('field-in-stock').checked = !!p.in_stock;
+  document.getElementById('field-featured').checked = !!p.featured;
+
+  updateModelSelect(p.make || '', p.model || '');
+  renderImageGrid(p.images || []);
+  updateSkuPreview();
+}
+
+// ── Image grid ────────────────────────────────────────────────────────────────
+function renderImageGrid(images) {
+  const grid = document.getElementById('image-grid');
+  if (images.length === 0) {
+    grid.style.display = 'none';
+    grid.innerHTML = '';
+    return;
+  }
+  grid.style.display = 'grid';
+  grid.innerHTML = images.map((src, i) => {
+    const filename = src.split('/').pop();
+    return `<div class="image-thumb">
+      <img src="/${src}" alt="">
+      <button class="del-img" type="button" onclick="removeExistingImage('${filename}', ${i})" title="Remove">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function addPendingPreviews(files) {
+  const grid = document.getElementById('image-grid');
+  grid.style.display = 'grid';
+
+  Array.from(files).forEach(file => {
+    const div = document.createElement('div');
+    div.className = 'image-thumb pending-thumb';
+    const reader = new FileReader();
+    reader.onload = e => {
+      div.innerHTML = `<img src="${e.target.result}" alt=""><div style="position:absolute;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;"><span style="font-size:9px;color:#fff;font-family:'Oswald',sans-serif;letter-spacing:.06em;">PENDING</span></div>`;
+    };
+    reader.readAsDataURL(file);
+    grid.appendChild(div);
+  });
+}
+
+async function removeExistingImage(filename, idx) {
+  if (_editId) {
+    // Delete from server immediately when editing
+    try {
+      await fetch(`/api/products/${_editId}/images/${filename}`, {
+        method: 'DELETE',
+        headers: { 'x-admin-token': _token },
+      });
+      const updated = _products.find(p => p.id === _editId);
+      if (updated) {
+        updated.images = updated.images.filter(i => !i.endsWith(filename));
+        renderImageGrid(updated.images);
+      }
+    } catch {}
+  } else {
+    // For new product (shouldn't happen but handle gracefully)
+    const grid = document.getElementById('image-grid');
+    grid.querySelectorAll('.image-thumb')[idx]?.remove();
+  }
+}
+window.removeExistingImage = removeExistingImage;
+
+// ── SKU preview ───────────────────────────────────────────────────────────────
+function updateSkuPreview() {
+  const sku = document.getElementById('field-sku').value.trim();
+  const preview = document.getElementById('sku-preview');
+  if (sku) {
+    preview.textContent = sku;
+    preview.style.display = 'block';
+  } else {
+    preview.style.display = 'none';
+  }
+}
+
+// ── Auto-fill years ────────────────────────────────────────────────────────────
+function autofillYears() {
+  const make = document.getElementById('field-make').value;
+  const model = document.getElementById('field-model').value;
+  if (!make || !model || !_bikes[make] || !_bikes[make][model]) return;
+  const [from, to] = _bikes[make][model];
+  document.getElementById('field-year-from').value = from;
+  document.getElementById('field-year-to').value = to;
+}
+
+// ── Save product ──────────────────────────────────────────────────────────────
+async function saveProduct() {
+  const name = document.getElementById('field-name').value.trim();
+  const category = document.getElementById('field-category').value;
+  const price = document.getElementById('field-price').value;
+
+  if (!name || !category || !price) {
+    showFormError('Name, category and price are required.');
+    return;
+  }
+
+  const saveBtn = document.getElementById('save-btn');
+  const saveStatus = document.getElementById('save-status');
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'SAVING…';
+  saveStatus.textContent = 'Uploading…';
+  saveStatus.style.display = 'block';
+  document.getElementById('form-error').style.display = 'none';
+
+  try {
+    const fd = new FormData();
+    fd.append('name', name);
+    fd.append('sku', document.getElementById('field-sku').value.trim());
+    fd.append('category', category);
+    fd.append('price', price);
+    fd.append('make', document.getElementById('field-make').value);
+    fd.append('model', document.getElementById('field-model').value);
+    fd.append('year_from', document.getElementById('field-year-from').value);
+    fd.append('year_to', document.getElementById('field-year-to').value);
+    fd.append('description', document.getElementById('field-description').value.trim());
+    fd.append('in_stock', document.getElementById('field-in-stock').checked ? 'true' : 'false');
+    fd.append('featured', document.getElementById('field-featured').checked ? 'true' : 'false');
+
+    _pendingFiles.forEach(f => fd.append('images', f));
+
+    const url = _editId ? `/api/products/${_editId}` : '/api/products';
+    const method = _editId ? 'PUT' : 'POST';
+
+    const res = await fetch(url, {
+      method,
+      headers: { 'x-admin-token': _token },
+      body: fd,
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || 'Save failed');
+    }
+
+    const data = await res.json();
+    const saved = data.product;
+
+    if (_editId) {
+      const idx = _products.findIndex(p => p.id === _editId);
+      if (idx !== -1) _products[idx] = saved;
+    } else {
+      _products.unshift(saved);
+    }
+
+    closeDrawer();
+    renderTable();
+    showToast(_editId ? 'Product updated' : 'Product created');
+  } catch (err) {
+    showFormError(err.message);
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.textContent = 'SAVE PRODUCT';
+    saveStatus.style.display = 'none';
+  }
+}
+
+// ── Delete ────────────────────────────────────────────────────────────────────
+function openDelete(id) {
+  _deleteId = id;
+  const p = _products.find(x => x.id === id);
+  document.getElementById('del-modal-name').textContent = p ? p.name : id;
+  const modal = document.getElementById('del-modal');
+  modal.style.display = 'flex';
+}
+window.openDelete = openDelete;
+
+async function confirmDelete() {
+  if (!_deleteId) return;
+  const btn = document.getElementById('del-confirm-btn');
+  btn.textContent = 'DELETING…';
+  btn.disabled = true;
+
+  try {
+    await fetch(`/api/products/${_deleteId}`, {
+      method: 'DELETE',
+      headers: { 'x-admin-token': _token },
+    });
+    _products = _products.filter(p => p.id !== _deleteId);
+    closeDeleteModal();
+    renderTable();
+    showToast('Product deleted');
+  } catch (err) {
+    closeDeleteModal();
+  } finally {
+    btn.textContent = 'DELETE';
+    btn.disabled = false;
+    _deleteId = null;
+  }
+}
+
+function closeDeleteModal() {
+  document.getElementById('del-modal').style.display = 'none';
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function showFormError(msg) {
+  const el = document.getElementById('form-error');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+// ── Events ────────────────────────────────────────────────────────────────────
+document.getElementById('add-btn').addEventListener('click', openAdd);
+document.getElementById('drawer-close').addEventListener('click', closeDrawer);
+document.getElementById('cancel-btn').addEventListener('click', closeDrawer);
+document.getElementById('drawer-overlay').addEventListener('click', closeDrawer);
+document.getElementById('save-btn').addEventListener('click', saveProduct);
+document.getElementById('del-confirm-btn').addEventListener('click', confirmDelete);
+document.getElementById('del-cancel-btn').addEventListener('click', closeDeleteModal);
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeDrawer(); closeDeleteModal(); }
+});
+
+// Make → Model cascade
+document.getElementById('field-make').addEventListener('change', e => {
+  updateModelSelect(e.target.value);
+  document.getElementById('field-year-from').value = '';
+  document.getElementById('field-year-to').value = '';
+});
+
+document.getElementById('autofill-years-btn').addEventListener('click', autofillYears);
+document.getElementById('field-sku').addEventListener('input', updateSkuPreview);
+
+// File input
+document.getElementById('file-input').addEventListener('change', e => {
+  const files = Array.from(e.target.files || []);
+  if (!files.length) return;
+  _pendingFiles.push(...files);
+  addPendingPreviews(files);
+  e.target.value = '';
+});
+
+// Drag-and-drop
+const zone = document.getElementById('upload-zone');
+zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragging'); });
+zone.addEventListener('dragleave', () => zone.classList.remove('dragging'));
+zone.addEventListener('drop', e => {
+  e.preventDefault();
+  zone.classList.remove('dragging');
+  const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+  if (!files.length) return;
+  _pendingFiles.push(...files);
+  addPendingPreviews(files);
+});
+
+// Filter listeners
+['search-input', 'filter-cat', 'filter-make', 'filter-stock'].forEach(id => {
+  document.getElementById(id).addEventListener('input', renderTable);
+  document.getElementById(id).addEventListener('change', renderTable);
+});
+
 document.getElementById('logout-btn').addEventListener('click', () => {
   clearToken();
   window.location.href = '/admin/index.html';

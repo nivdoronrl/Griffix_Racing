@@ -41,10 +41,30 @@
   </div>
 </section>
 
+<!-- ── Fit Finder ──────────────────────────────────────────────────────────── -->
+<section style="background:#111; border-bottom:1px solid rgba(163,145,113,.15); padding:18px 0;">
+  <div class="max-w-7xl mx-auto px-6">
+    <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+      <span class="font-display text-white font-bold" style="font-size:13px; letter-spacing:.06em; white-space:nowrap; color:#A39171;">FIND YOUR KIT:</span>
+      <select id="ff-make" class="filter-select" style="min-width:130px;">
+        <option value="">Select Make</option>
+      </select>
+      <select id="ff-model" class="filter-select" style="min-width:150px;" disabled>
+        <option value="">Select Model</option>
+      </select>
+      <select id="ff-year" class="filter-select" style="min-width:100px;" disabled>
+        <option value="">Any Year</option>
+      </select>
+      <button id="ff-find" class="btn-primary" style="padding:10px 22px; font-size:12px; white-space:nowrap;">FIND KITS →</button>
+      <button id="ff-clear" class="btn-ghost" style="padding:10px 16px; font-size:12px; display:none;">Clear</button>
+    </div>
+  </div>
+</section>
+
 <!-- ── Filter Bar ─────────────────────────────────────────────────────────── -->
-<div class="filter-bar" id="filter-bar">
+<div style="background:#0d0d0d; border-bottom:1px solid #191919; padding:12px 0;" id="filter-bar">
   <div class="max-w-7xl mx-auto px-6 flex flex-wrap items-center gap-3">
-    <select class="filter-select" id="filter-category">
+    <select class="filter-select" id="filter-category" style="font-size:12px;">
       <option value="">All Categories</option>
       <option value="graphic-kit">Graphic Kits</option>
       <option value="seat-cover">Seat Covers</option>
@@ -52,20 +72,6 @@
       <option value="number-plate">Number Plates</option>
       <option value="accessory">Accessories</option>
     </select>
-    <select class="filter-select" id="filter-make">
-      <option value="">All Makes</option>
-      <option>KTM</option>
-      <option>Husqvarna</option>
-      <option>Yamaha</option>
-      <option>Honda</option>
-      <option>Kawasaki</option>
-      <option>Sherco</option>
-      <option>Beta</option>
-      <option>GasGas</option>
-    </select>
-    <input type="number" id="filter-year" placeholder="Year (e.g. 2024)"
-      class="filter-select" style="width:160px;" min="2000" max="2030">
-    <button id="filter-reset" class="btn-ghost" style="padding:9px 18px; font-size:12px;">Reset Filters</button>
     <div class="ml-auto text-[#555] text-xs" style="font-family:'Archivo Narrow',sans-serif;" id="product-count"></div>
   </div>
 </div>
@@ -85,7 +91,7 @@
     <!-- Empty state -->
     <div id="products-empty" style="display:none; text-align:center; padding:80px 0;">
       <p class="font-display text-[#444] text-xl">NO KITS MATCH YOUR FILTER</p>
-      <p class="text-[#555] mt-2" style="font-family:'Archivo Narrow',sans-serif;">Try adjusting your make, category, or year.</p>
+      <p class="text-[#555] mt-2" style="font-family:'Archivo Narrow',sans-serif;">Try adjusting your make, model, or category.</p>
       <button onclick="resetFilters()" class="btn-ghost mt-6" style="padding:10px 24px;">Reset Filters</button>
     </div>
   </div>
@@ -110,7 +116,7 @@
       </div>
       <div>
         <label class="field-label">Model</label>
-        <input id="atc-model-input" type="text" class="form-input" placeholder="e.g. 350 SXF">
+        <input id="atc-model-input" type="text" class="form-input" placeholder="e.g. SX-F 350">
       </div>
       <div>
         <label class="field-label">Year</label>
@@ -137,47 +143,127 @@
 <script>
 // ── State ────────────────────────────────────────────────────────────────────
 let _allProducts = [];
+let _bikes = {};
+let _productMap = {};   // id → product (for click lookup)
 let _atcProduct = null;
 let _atcQty = 1;
+let _ffMake = '';
+let _ffModel = '';
+let _ffYear = '';
 
-// ── Load products from API ────────────────────────────────────────────────────
-async function loadProducts() {
+// ── Boot ─────────────────────────────────────────────────────────────────────
+async function boot() {
   try {
-    const res = await fetch('/api/sheets/products');
-    const data = await res.json();
+    const [bikeRes, prodRes] = await Promise.all([
+      fetch('/api/products/bikes'),
+      fetch('/api/products'),
+    ]);
+    _bikes = await bikeRes.json();
+    const data = await prodRes.json();
     _allProducts = data.products || [];
   } catch {
     _allProducts = _fallbackProducts();
   }
+  populateFitFinder();
   applyFiltersFromURL();
-  renderProducts(_allProducts);
+  renderProducts(filterProducts());
 }
 
-// ── Filtering ──────────────────────────────────────────────────────────────────
-function getFilters() {
-  return {
-    category: document.getElementById('filter-category').value,
-    make: document.getElementById('filter-make').value,
-    year: parseInt(document.getElementById('filter-year').value) || null,
-  };
+// ── Fit Finder ────────────────────────────────────────────────────────────────
+function populateFitFinder() {
+  const makes = Object.keys(_bikes).sort();
+  const ffMakeSel = document.getElementById('ff-make');
+  makes.forEach(m => {
+    const o = document.createElement('option');
+    o.value = m; o.textContent = m;
+    ffMakeSel.appendChild(o);
+  });
 }
 
+document.getElementById('ff-make').addEventListener('change', function() {
+  _ffMake = this.value;
+  _ffModel = '';
+  _ffYear = '';
+  const modelSel = document.getElementById('ff-model');
+  const yearSel = document.getElementById('ff-year');
+
+  modelSel.innerHTML = '<option value="">Select Model</option>';
+  yearSel.innerHTML = '<option value="">Any Year</option>';
+
+  if (!_ffMake || !_bikes[_ffMake]) {
+    modelSel.disabled = true;
+    yearSel.disabled = true;
+    return;
+  }
+  modelSel.disabled = false;
+  Object.keys(_bikes[_ffMake]).sort().forEach(model => {
+    const o = document.createElement('option');
+    o.value = model; o.textContent = model;
+    modelSel.appendChild(o);
+  });
+});
+
+document.getElementById('ff-model').addEventListener('change', function() {
+  _ffModel = this.value;
+  _ffYear = '';
+  const yearSel = document.getElementById('ff-year');
+  yearSel.innerHTML = '<option value="">Any Year</option>';
+  yearSel.disabled = false;
+
+  if (_ffMake && _ffModel && _bikes[_ffMake] && _bikes[_ffMake][_ffModel]) {
+    const [from, to] = _bikes[_ffMake][_ffModel];
+    for (let y = to; y >= from; y--) {
+      const o = document.createElement('option');
+      o.value = y; o.textContent = y;
+      yearSel.appendChild(o);
+    }
+  }
+});
+
+document.getElementById('ff-year').addEventListener('change', function() {
+  _ffYear = this.value;
+});
+
+document.getElementById('ff-find').addEventListener('click', function() {
+  document.getElementById('ff-clear').style.display = _ffMake ? 'inline-block' : 'none';
+  renderProducts(filterProducts());
+  document.getElementById('filter-bar').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+});
+
+document.getElementById('ff-clear').addEventListener('click', function() {
+  _ffMake = ''; _ffModel = ''; _ffYear = '';
+  document.getElementById('ff-make').value = '';
+  document.getElementById('ff-model').innerHTML = '<option value="">Select Model</option>';
+  document.getElementById('ff-model').disabled = true;
+  document.getElementById('ff-year').innerHTML = '<option value="">Any Year</option>';
+  document.getElementById('ff-year').disabled = true;
+  this.style.display = 'none';
+  renderProducts(filterProducts());
+});
+
+// ── Filtering ─────────────────────────────────────────────────────────────────
 function applyFiltersFromURL() {
   const params = new URLSearchParams(window.location.search);
   const cat = params.get('category');
   const make = params.get('make');
   if (cat) document.getElementById('filter-category').value = cat;
-  if (make) document.getElementById('filter-make').value = make;
+  if (make) {
+    _ffMake = make;
+    document.getElementById('ff-make').value = make;
+    document.getElementById('ff-make').dispatchEvent(new Event('change'));
+  }
 }
 
 function filterProducts() {
-  const { category, make, year } = getFilters();
+  const category = document.getElementById('filter-category').value;
   return _allProducts.filter(p => {
     if (category && p.category !== category) return false;
-    if (make && p.make && p.make !== make) return false;
-    if (year) {
-      if (p.year_from && year < parseInt(p.year_from)) return false;
-      if (p.year_to && year > parseInt(p.year_to)) return false;
+    if (_ffMake && p.make && p.make !== _ffMake) return false;
+    if (_ffModel && p.model && p.model !== _ffModel) return false;
+    if (_ffYear) {
+      const y = parseInt(_ffYear);
+      if (p.year_from && y < parseInt(p.year_from)) return false;
+      if (p.year_to && y > parseInt(p.year_to)) return false;
     }
     return true;
   });
@@ -202,11 +288,17 @@ function renderProducts(products) {
   grid.style.display = 'grid';
   count.textContent = `${products.length} product${products.length !== 1 ? 's' : ''}`;
 
-  grid.innerHTML = products.map(p => `
+  // Populate the product lookup map so click handlers can find the product object
+  _productMap = {};
+  products.forEach(p => { _productMap[p.id] = p; });
+
+  grid.innerHTML = products.map(p => {
+    const firstImg = p.images && p.images.length ? p.images[0] : null;
+    return `
     <div class="product-card reveal shadow-card">
       <div class="relative overflow-hidden" style="height:250px;">
-        ${p.image_url
-          ? `<img src="${p.image_url}" alt="${p.name}" class="w-full h-full object-cover">`
+        ${firstImg
+          ? `<img src="/${firstImg}" alt="${p.name}" class="w-full h-full object-cover">`
           : `<div class="absolute inset-0" style="background:#1a1a1a; background-image:radial-gradient(ellipse at 60% 40%, rgba(212,255,0,.05) 0%, transparent 55%);">
                <div class="absolute inset-0 flex items-center justify-center">
                  <span class="font-display font-bold text-white/10 select-none" style="font-size:52px; letter-spacing:-.03em;">${p.make || 'KIT'}</span>
@@ -217,7 +309,7 @@ function renderProducts(products) {
         <div class="absolute top-3 left-3 px-2 py-1" style="background:#2B2B2B; border:1px solid rgba(163,145,113,.45);">
           <span class="font-display text-xs font-bold tracking-widest" style="color:#A39171;">${(p.make || p.category || 'GRIFFIX').toUpperCase()}</span>
         </div>
-        ${p.featured ? `<div class="absolute top-3 right-3 px-2 py-0.5" style="background:#D4FF00;"><span class="font-display text-[#0f0f0f] text-[10px] font-bold tracking-wider">FEATURED</span></div>` : ''}
+        ${p.featured && p.in_stock ? `<div class="absolute top-3 right-3 px-2 py-0.5" style="background:#D4FF00;"><span class="font-display text-[#0f0f0f] text-[10px] font-bold tracking-wider">FEATURED</span></div>` : ''}
         ${!p.in_stock ? `<div class="absolute top-3 right-3 px-2 py-0.5" style="background:#444;"><span class="font-display text-white text-[10px] font-bold tracking-wider">SOLD OUT</span></div>` : ''}
       </div>
       <div class="p-5">
@@ -229,16 +321,17 @@ function renderProducts(products) {
         <div class="flex items-center justify-between">
           <div class="font-display text-[#D4FF00] font-bold" style="font-size:22px;">$${p.price}</div>
           <button
-            class="btn-primary" style="padding:8px 16px; font-size:11px; ${!p.in_stock ? 'opacity:.4; cursor:not-allowed;' : ''}"
-            ${p.in_stock ? `onclick="openATC(${JSON.stringify(JSON.stringify(p))})"` : 'disabled'}>
+            class="btn-primary atc-btn"
+            data-pid="${p.id}"
+            style="padding:8px 16px; font-size:11px; ${!p.in_stock ? 'opacity:.4; cursor:not-allowed;' : ''}"
+            ${!p.in_stock ? 'disabled' : ''}>
             ${p.in_stock ? 'ADD TO CART' : 'SOLD OUT'}
           </button>
         </div>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 
-  // Trigger reveal
   if (window.IntersectionObserver) {
     const els = grid.querySelectorAll('.reveal');
     const io = new IntersectionObserver(entries => {
@@ -256,22 +349,32 @@ function _categoryLabel(cat) {
 
 function resetFilters() {
   document.getElementById('filter-category').value = '';
-  document.getElementById('filter-make').value = '';
-  document.getElementById('filter-year').value = '';
+  _ffMake = ''; _ffModel = ''; _ffYear = '';
+  document.getElementById('ff-make').value = '';
+  const modelSel = document.getElementById('ff-model');
+  modelSel.innerHTML = '<option value="">Select Model</option>';
+  modelSel.disabled = true;
+  const yearSel = document.getElementById('ff-year');
+  yearSel.innerHTML = '<option value="">Any Year</option>';
+  yearSel.disabled = true;
+  document.getElementById('ff-clear').style.display = 'none';
   renderProducts(_allProducts);
 }
 window.resetFilters = resetFilters;
 
-// ── Filter event listeners ─────────────────────────────────────────────────────
-['filter-category', 'filter-make', 'filter-year'].forEach(id => {
-  document.getElementById(id).addEventListener('change', () => renderProducts(filterProducts()));
+document.getElementById('filter-category').addEventListener('change', () => renderProducts(filterProducts()));
+
+// ── Delegated click for Add to Cart buttons ───────────────────────────────────
+document.getElementById('products-grid').addEventListener('click', e => {
+  const btn = e.target.closest('.atc-btn');
+  if (!btn || btn.disabled) return;
+  const pid = btn.dataset.pid;
+  if (pid && _productMap[pid]) openATC(_productMap[pid]);
 });
-document.getElementById('filter-year').addEventListener('input', () => renderProducts(filterProducts()));
-document.getElementById('filter-reset').addEventListener('click', resetFilters);
 
 // ── Add to Cart modal ─────────────────────────────────────────────────────────
-function openATC(productJSON) {
-  _atcProduct = JSON.parse(productJSON);
+function openATC(product) {
+  _atcProduct = product;
   _atcQty = 1;
   document.getElementById('atc-name').textContent = _atcProduct.name;
   document.getElementById('atc-category').textContent = _categoryLabel(_atcProduct.category);
@@ -284,7 +387,6 @@ function openATC(productJSON) {
   modal.style.display = 'flex';
   document.body.style.overflow = 'hidden';
 }
-window.openATC = openATC;
 
 function closeATC() {
   document.getElementById('atc-modal').style.display = 'none';
@@ -316,31 +418,24 @@ document.getElementById('atc-confirm').addEventListener('click', () => {
     category:  _atcProduct.category,
     price:     _atcProduct.price,
     qty:       _atcQty,
-    image:     _atcProduct.image_url || '',
+    image:     (_atcProduct.images && _atcProduct.images[0]) ? '/' + _atcProduct.images[0] : '',
   });
 
   closeATC();
 });
 
-// ── Keyboard close ─────────────────────────────────────────────────────────────
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeATC(); });
 
-// ── Fallback data (if server not running) ─────────────────────────────────────
 function _fallbackProducts() {
   return [
-    { id:'p1', name:'KTM 250/350 SXF Stealth Kit', category:'graphic-kit', make:'KTM', model:'250/350 SXF', year_from:2023, year_to:2025, price:249, sku:'GRX-KTM-SXF-2325', image_url:'', in_stock:true, featured:true },
-    { id:'p2', name:'Husqvarna FE 350 Coyote Kit', category:'graphic-kit', make:'Husqvarna', model:'FE 350', year_from:2023, year_to:2025, price:249, sku:'GRX-HQV-FE350-2325', image_url:'', in_stock:true, featured:true },
-    { id:'p3', name:'Yamaha YZ250F Acid Kit', category:'graphic-kit', make:'Yamaha', model:'YZ250F', year_from:2024, year_to:2025, price:229, sku:'GRX-YAM-YZ250F-2425', image_url:'', in_stock:true, featured:true },
-    { id:'p4', name:'Honda CRF 450R Stealth Kit', category:'graphic-kit', make:'Honda', model:'CRF 450R', year_from:2021, year_to:2024, price:229, sku:'GRX-HON-CRF450R-2124', image_url:'', in_stock:true, featured:true },
-    { id:'p5', name:'KTM Gripper Seat Cover', category:'seat-cover', make:'KTM', model:'250/350 SXF', year_from:2023, year_to:2025, price:89, sku:'GRX-SC-KTM-SXF-2325', image_url:'', in_stock:true, featured:false },
-    { id:'p6', name:'Universal Number Plate Kit', category:'number-plate', make:'', model:'Universal', year_from:null, year_to:null, price:49, sku:'GRX-NP-UNI', image_url:'', in_stock:true, featured:false },
-    { id:'p7', name:'KTM Plastic Kit 2023+', category:'plastic-kit', make:'KTM', model:'SXF Series', year_from:2023, year_to:2025, price:489, sku:'GRX-PK-KTM-SXF-2325', image_url:'', in_stock:true, featured:false },
-    { id:'p8', name:'Goggle Bag — Griffix Edition', category:'accessory', make:'', model:'Universal', year_from:null, year_to:null, price:39, sku:'GRX-ACC-GOGGLE-BAG', image_url:'', in_stock:true, featured:false },
+    { id:'p1', name:'KTM SX-F 250 Stealth Kit', category:'graphic-kit', make:'KTM', model:'SX-F 250', year_from:2023, year_to:2025, price:249, sku:'GRX-KTM-SXF-2325', images:[], in_stock:true, featured:true },
+    { id:'p2', name:'Husqvarna FE 350 Coyote Kit', category:'graphic-kit', make:'Husqvarna', model:'FE 350', year_from:2023, year_to:2025, price:249, sku:'GRX-HQV-FE350-2325', images:[], in_stock:true, featured:true },
+    { id:'p3', name:'Yamaha YZ250F Acid Kit', category:'graphic-kit', make:'Yamaha', model:'YZ 250F', year_from:2024, year_to:2025, price:229, sku:'GRX-YAM-YZ250F-2425', images:[], in_stock:true, featured:true },
+    { id:'p4', name:'Honda CRF 450R Stealth Kit', category:'graphic-kit', make:'Honda', model:'CRF 450R', year_from:2021, year_to:2024, price:229, sku:'GRX-HON-CRF450R-2124', images:[], in_stock:true, featured:true },
   ];
 }
 
-// ── Init ─────────────────────────────────────────────────────────────────────
-loadProducts();
+boot();
 </script>
 </body>
 </html>

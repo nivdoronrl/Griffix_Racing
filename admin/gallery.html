@@ -8,16 +8,90 @@
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Archivo+Narrow:wght@400;500;600&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
-      theme: { extend: { colors: { lime: { DEFAULT: '#D4FF00' }, tan: { DEFAULT: '#A39171' } }, fontFamily: { display: ['Oswald','sans-serif'], body: ['Archivo Narrow','sans-serif'] } } }
+      theme: { extend: {
+        colors: { lime: { DEFAULT: '#D4FF00' }, tan: { DEFAULT: '#A39171' } },
+        fontFamily: { display: ['Oswald','sans-serif'], body: ['Archivo Narrow','sans-serif'] }
+      }}
     }
   </script>
   <link rel="stylesheet" href="/shared/theme.css">
   <style>
-    body { background:#0a0a0a; }
+    body { background:#0a0a0a; font-family:'Archivo Narrow',sans-serif; }
     .admin-nav { background:#111; border-bottom:1px solid rgba(163,145,113,.2); padding:0 28px; display:flex; align-items:center; gap:28px; height:56px; position:sticky; top:0; z-index:50; }
     .admin-nav-link { font-family:'Oswald',sans-serif; font-size:12px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:#555; text-decoration:none; padding:4px 0; border-bottom:2px solid transparent; }
     .admin-nav-link.active, .admin-nav-link:hover { color:#D4FF00; border-color:#D4FF00; }
     .admin-content { max-width:1300px; margin:0 auto; padding:32px 28px; }
+
+    .tab-btn { font-family:'Oswald',sans-serif; font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; padding:8px 18px; background:#141414; border:1px solid #222; color:#555; cursor:pointer; margin-right:-1px; }
+    .tab-btn:hover { color:#aaa; border-color:#333; }
+    .tab-btn.active { color:#D4FF00; border-color:#D4FF00; background:#0d0d0d; z-index:1; position:relative; }
+
+    .gallery-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:16px; }
+    .gallery-card { background:#111; border:1px solid #1e1e1e; position:relative; overflow:hidden; }
+    .gallery-card:hover { border-color:#2e2e2e; }
+    .gallery-card .img-wrap { aspect-ratio:4/3; background:#161616; overflow:hidden; position:relative; }
+    .gallery-card .img-wrap img { width:100%; height:100%; object-fit:cover; }
+    .gallery-card .img-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
+    .gallery-card .card-body { padding:12px 14px; }
+    .gallery-card .card-title { font-family:'Oswald',sans-serif; font-size:14px; font-weight:600; color:#e5e5e5; letter-spacing:.02em; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .gallery-card .card-meta { font-size:11px; color:#555; }
+    .gallery-card .card-actions { padding:10px 14px; border-top:1px solid #1a1a1a; display:flex; gap:8px; }
+    .card-edit-btn { background:#1a1a1a; border:1px solid #2a2a2a; color:#aaa; padding:5px 12px; font-family:'Oswald',sans-serif; font-size:10px; letter-spacing:.06em; text-transform:uppercase; cursor:pointer; flex:1; }
+    .card-edit-btn:hover { border-color:#A39171; color:#A39171; }
+    .card-del-btn { background:none; border:1px solid #222; color:#444; padding:5px 10px; cursor:pointer; font-size:13px; }
+    .card-del-btn:hover { border-color:#c00; color:#c00; }
+    .badge-tab { display:inline-block; padding:2px 7px; font-family:'Oswald',sans-serif; font-size:9px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; background:#1a1a1a; color:#A39171; border:1px solid #2a2a2a; margin-bottom:6px; }
+    .featured-star { position:absolute; top:8px; right:8px; background:#D4FF00; color:#0a0a0a; font-size:9px; font-family:'Oswald',sans-serif; font-weight:700; padding:2px 6px; letter-spacing:.06em; }
+
+    .drawer-overlay { position:fixed; inset:0; z-index:100; background:rgba(0,0,0,.65); backdrop-filter:blur(4px); opacity:0; pointer-events:none; transition:opacity .25s; }
+    .drawer-overlay.open { opacity:1; pointer-events:auto; }
+    .drawer { position:fixed; top:0; right:-620px; width:580px; max-width:100vw; height:100vh; z-index:101; background:#0f0f0f; border-left:1px solid rgba(163,145,113,.2); display:flex; flex-direction:column; transition:right .28s cubic-bezier(.4,0,.2,1); }
+    .drawer.open { right:0; }
+    .drawer-header { padding:20px 28px; border-bottom:1px solid #1e1e1e; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+    .drawer-body { flex:1; overflow-y:auto; padding:28px; }
+    .drawer-footer { padding:20px 28px; border-top:1px solid #1e1e1e; display:flex; gap:12px; flex-shrink:0; background:#0f0f0f; }
+
+    .field-group { margin-bottom:20px; }
+    .field-label { display:block; font-family:'Oswald',sans-serif; font-size:11px; font-weight:600; letter-spacing:.1em; color:#555; text-transform:uppercase; margin-bottom:7px; }
+    .field-label span { color:#ff5050; }
+    .form-input, .form-select {
+      width:100%; background:#161616; border:1px solid #2a2a2a; color:#e5e5e5;
+      padding:10px 14px; font-family:'Archivo Narrow',sans-serif; font-size:13px; outline:none;
+    }
+    .form-input:focus, .form-select:focus { border-color:#A39171; }
+    .form-select { appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23555' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center; padding-right:36px; cursor:pointer; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+
+    .upload-zone { border:2px dashed #2a2a2a; padding:24px 16px; text-align:center; cursor:pointer; position:relative; }
+    .upload-zone:hover, .upload-zone.dragging { border-color:#A39171; }
+    .upload-zone input { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
+    .img-preview-wrap { position:relative; margin-bottom:14px; aspect-ratio:16/9; overflow:hidden; background:#161616; border:1px solid #222; }
+    .img-preview-wrap img { width:100%; height:100%; object-fit:cover; }
+    .remove-img-btn { position:absolute; top:8px; right:8px; background:rgba(0,0,0,.8); border:none; color:#fff; width:24px; height:24px; cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; }
+    .remove-img-btn:hover { background:#c00; }
+
+    .toggle-wrap { display:flex; align-items:center; gap:12px; cursor:pointer; }
+    .toggle { position:relative; width:40px; height:22px; }
+    .toggle input { display:none; }
+    .toggle-track { position:absolute; inset:0; background:#222; border:1px solid #333; }
+    .toggle-thumb { position:absolute; top:3px; left:3px; width:14px; height:14px; background:#555; transition:left .2s, background .2s; }
+    .toggle input:checked ~ .toggle-track { background:rgba(212,255,0,.15); border-color:rgba(212,255,0,.4); }
+    .toggle input:checked ~ .toggle-thumb { left:21px; background:#D4FF00; }
+    .toggle-label { font-size:13px; color:#aaa; }
+
+    .btn-primary-admin { background:#D4FF00; color:#0a0a0a; border:none; padding:12px 28px; font-family:'Oswald',sans-serif; font-size:13px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; }
+    .btn-primary-admin:hover { background:#c4ef00; }
+    .btn-primary-admin:disabled { opacity:.4; cursor:not-allowed; }
+    .btn-cancel { background:none; border:1px solid #2a2a2a; color:#666; padding:12px 20px; font-family:'Oswald',sans-serif; font-size:12px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; }
+    .btn-cancel:hover { border-color:#555; color:#aaa; }
+
+    .del-modal-wrap { display:none; position:fixed; inset:0; z-index:200; background:rgba(0,0,0,.75); backdrop-filter:blur(4px); align-items:center; justify-content:center; }
+    .toast { position:fixed; bottom:28px; right:28px; background:#D4FF00; color:#0a0a0a; padding:12px 22px; font-family:'Oswald',sans-serif; font-size:13px; font-weight:700; letter-spacing:.08em; z-index:300; opacity:0; transform:translateY(10px); transition:opacity .2s, transform .2s; pointer-events:none; }
+    .toast.show { opacity:1; transform:translateY(0); }
+    .skeleton { background:linear-gradient(90deg, #111 25%, #1a1a1a 50%, #111 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; }
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+    .error-msg { font-size:12px; color:#ff5050; margin-top:8px; }
+    .section-divider { border:none; border-top:1px solid #1e1e1e; margin:22px 0; }
   </style>
 </head>
 <body>
@@ -28,124 +102,441 @@
   <a href="/admin/products.html" class="admin-nav-link">Products</a>
   <a href="/admin/gallery.html" class="admin-nav-link active">Gallery</a>
   <div style="margin-left:auto;">
-    <button id="logout-btn" style="font-family:'Archivo Narrow',sans-serif; font-size:12px; color:#444; background:none; border:none; cursor:pointer; text-decoration:underline;" class="hover:text-[#D4FF00]">Sign out</button>
+    <button id="logout-btn" style="font-family:'Archivo Narrow',sans-serif; font-size:12px; color:#444; background:none; border:none; cursor:pointer; text-decoration:underline;">Sign out</button>
   </div>
 </div>
 
 <div class="admin-content">
-  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
-    <h1 class="font-display text-white font-bold" style="font-size:26px; letter-spacing:-.01em;">GALLERY</h1>
-    <button id="refresh-btn" class="btn-ghost" style="padding:8px 16px; font-size:12px;">Refresh</button>
+  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px;">
+    <div>
+      <h1 class="font-display text-white font-bold" style="font-size:26px; letter-spacing:-.01em;">GALLERY</h1>
+      <p id="gallery-count-label" style="font-size:12px; color:#444; margin-top:2px;"></p>
+    </div>
+    <button id="add-btn" class="btn-primary-admin" style="padding:10px 22px;">+ ADD IMAGE</button>
   </div>
-  <p style="font-family:'Archivo Narrow',sans-serif; font-size:13px; color:#555; margin-bottom:28px;">
-    Gallery images are managed via Google Sheets. Edit the Gallery tab in your sheet — changes sync within 60 seconds.
-    <a href="#" style="color:#A39171; text-decoration:underline;">Open Sheet ↗</a>
-  </p>
 
-  <!-- Tab filter -->
-  <div style="display:flex; gap:0; margin-bottom:24px;">
+  <div style="display:flex; margin-bottom:24px;">
     <button class="tab-btn active" data-tab="">All</button>
     <button class="tab-btn" data-tab="our-designs">Our Designs</button>
     <button class="tab-btn" data-tab="customer-builds">Customer Builds</button>
     <button class="tab-btn" data-tab="plastic-kits">Plastic Kits</button>
   </div>
 
-  <div id="gallery-loading">
-    <div class="skeleton" style="height:48px; margin-bottom:8px;"></div>
-    <div class="skeleton" style="height:48px; margin-bottom:8px;"></div>
-    <div class="skeleton" style="height:48px; margin-bottom:8px;"></div>
+  <div id="gallery-loading" class="gallery-grid">
+    <div class="skeleton" style="height:210px;"></div>
+    <div class="skeleton" style="height:210px;"></div>
+    <div class="skeleton" style="height:210px;"></div>
+    <div class="skeleton" style="height:210px;"></div>
   </div>
-
-  <div id="gallery-table-wrap" style="display:none; overflow-x:auto;">
-    <table class="admin-table" style="width:100%;">
-      <thead>
-        <tr>
-          <th>Preview</th>
-          <th>Title</th>
-          <th>Tab</th>
-          <th>Bike</th>
-          <th>Customer</th>
-          <th>Featured</th>
-          <th>Order</th>
-        </tr>
-      </thead>
-      <tbody id="gallery-tbody"></tbody>
-    </table>
-  </div>
-
-  <div id="gallery-empty" style="display:none; text-align:center; padding:64px 0;">
-    <p class="font-display text-[#333] text-xl">NO GALLERY ITEMS</p>
-    <p class="text-[#444] mt-2" style="font-family:'Archivo Narrow',sans-serif; font-size:14px;">Add items to the Google Sheets "Gallery" tab.</p>
+  <div id="gallery-grid" class="gallery-grid" style="display:none;"></div>
+  <div id="gallery-empty" style="display:none; text-align:center; padding:72px 0;">
+    <p class="font-display text-[#333] text-xl">NO GALLERY IMAGES YET</p>
+    <p class="text-[#444] mt-2" style="font-size:14px;">Click <strong style="color:#A39171;">+ Add Image</strong> to get started.</p>
   </div>
 </div>
+
+<div class="drawer-overlay" id="drawer-overlay"></div>
+
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <div>
+      <div class="font-display text-white font-bold" id="drawer-title" style="font-size:18px; letter-spacing:-.01em;">ADD IMAGE</div>
+      <div id="drawer-subtitle" style="font-size:12px; color:#444; margin-top:2px;"></div>
+    </div>
+    <button id="drawer-close" style="background:none; border:none; color:#555; cursor:pointer; padding:4px; font-size:20px; line-height:1;">✕</button>
+  </div>
+
+  <div class="drawer-body">
+    <form id="gallery-form" novalidate>
+      <input type="hidden" id="field-id">
+
+      <div class="field-group">
+        <label class="field-label">Photo</label>
+        <div id="img-preview-wrap" class="img-preview-wrap" style="display:none;">
+          <img id="img-preview" src="" alt="">
+          <button class="remove-img-btn" type="button" id="remove-img-btn">✕</button>
+        </div>
+        <div class="upload-zone" id="upload-zone">
+          <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp">
+          <svg style="width:26px; height:26px; color:#333; margin:0 auto 8px;" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 12V4m0 0l-3 3m3-3l3 3"/></svg>
+          <p style="font-size:12px; color:#444;">Click or drag a photo here</p>
+          <p style="font-size:11px; color:#333; margin-top:3px;">JPG, PNG, WEBP — max 15 MB</p>
+        </div>
+      </div>
+
+      <hr class="section-divider">
+
+      <div class="field-group">
+        <label class="field-label" for="field-title">Title <span>*</span></label>
+        <input type="text" id="field-title" class="form-input" placeholder="e.g. Stealth KTM Build">
+      </div>
+
+      <div class="form-row" style="margin-bottom:20px;">
+        <div>
+          <label class="field-label" for="field-tab">Gallery Tab <span>*</span></label>
+          <select id="field-tab" class="form-select">
+            <option value="our-designs">Our Designs</option>
+            <option value="customer-builds">Customer Builds</option>
+            <option value="plastic-kits">Plastic Kits</option>
+          </select>
+        </div>
+        <div>
+          <label class="field-label" for="field-order">Display Order</label>
+          <input type="number" id="field-order" class="form-input" placeholder="1" min="1">
+        </div>
+      </div>
+
+      <div class="form-row" style="margin-bottom:20px;">
+        <div>
+          <label class="field-label" for="field-bike-make">Bike Make</label>
+          <input type="text" id="field-bike-make" class="form-input" placeholder="e.g. KTM">
+        </div>
+        <div>
+          <label class="field-label" for="field-bike-model">Bike Model</label>
+          <input type="text" id="field-bike-model" class="form-input" placeholder="e.g. 350 SXF">
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="field-customer">Customer Name</label>
+        <input type="text" id="field-customer" class="form-input" placeholder="Leave blank for in-house builds">
+      </div>
+
+      <hr class="section-divider">
+
+      <label class="toggle-wrap">
+        <div class="toggle">
+          <input type="checkbox" id="field-featured">
+          <div class="toggle-track"></div>
+          <div class="toggle-thumb"></div>
+        </div>
+        <span class="toggle-label">Featured on Homepage</span>
+      </label>
+
+      <div id="form-error" class="error-msg" style="display:none; margin-top:14px;"></div>
+    </form>
+  </div>
+
+  <div class="drawer-footer">
+    <button class="btn-primary-admin" id="save-btn">SAVE</button>
+    <button class="btn-cancel" id="cancel-btn">CANCEL</button>
+  </div>
+</div>
+
+<div class="del-modal-wrap" id="del-modal">
+  <div style="background:#131313; border:1px solid rgba(163,145,113,.25); padding:32px; max-width:380px; width:calc(100% - 40px);">
+    <p class="font-display text-white font-bold" style="font-size:18px; margin-bottom:8px;">DELETE IMAGE?</p>
+    <p id="del-modal-title" style="font-size:13px; color:#777; margin-bottom:20px;"></p>
+    <p style="font-size:12px; color:#555; margin-bottom:24px;">This will permanently remove the entry and its uploaded file. Cannot be undone.</p>
+    <div style="display:flex; gap:12px;">
+      <button id="del-confirm-btn" style="background:#c00; color:#fff; border:none; padding:10px 22px; font-family:'Oswald',sans-serif; font-size:12px; font-weight:700; letter-spacing:.08em; cursor:pointer; text-transform:uppercase;">DELETE</button>
+      <button id="del-cancel-btn" class="btn-cancel">CANCEL</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
 
 <script type="module">
 import { initAdminAuth, clearToken } from '/js/admin-auth.js';
 
 let _token = null;
-let _allItems = [];
+let _items = [];
 let _activeTab = '';
+let _editId = null;
+let _pendingFile = null;
+let _deleteId = null;
 
 async function boot() {
   _token = await initAdminAuth();
   if (!_token) return;
-  loadGallery();
+  await loadGallery();
 }
 
 async function loadGallery() {
   try {
-    const res = await fetch('/api/sheets/gallery');
+    const res = await fetch('/api/gallery');
     const data = await res.json();
-    _allItems = (data.gallery || []).sort((a, b) => a.order - b.order);
-    renderGallery();
-  } catch (err) {
-    document.getElementById('gallery-loading').innerHTML = `<p style="color:#c0a0a0; font-family:'Archivo Narrow',sans-serif;">Failed to load gallery: ${err.message}</p>`;
+    _items = data.gallery || [];
+  } catch {
+    _items = [];
   }
+  renderGrid();
 }
 
-function renderGallery() {
+function renderGrid() {
   document.getElementById('gallery-loading').style.display = 'none';
-  const items = _activeTab ? _allItems.filter(i => i.tab === _activeTab) : _allItems;
+  const grid = document.getElementById('gallery-grid');
+  const empty = document.getElementById('gallery-empty');
+  const label = document.getElementById('gallery-count-label');
 
-  if (items.length === 0) {
-    document.getElementById('gallery-table-wrap').style.display = 'none';
-    document.getElementById('gallery-empty').style.display = 'block';
+  const filtered = _activeTab ? _items.filter(i => i.tab === _activeTab) : _items;
+  label.textContent = `${_items.length} image${_items.length !== 1 ? 's' : ''} total${filtered.length !== _items.length ? ` · ${filtered.length} shown` : ''}`;
+
+  if (filtered.length === 0) {
+    grid.style.display = 'none';
+    empty.style.display = 'block';
     return;
   }
 
-  document.getElementById('gallery-empty').style.display = 'none';
-  document.getElementById('gallery-table-wrap').style.display = 'block';
+  empty.style.display = 'none';
+  grid.style.display = 'grid';
 
   const tabLabels = { 'our-designs': 'Our Designs', 'customer-builds': 'Customer Builds', 'plastic-kits': 'Plastic Kits' };
 
-  document.getElementById('gallery-tbody').innerHTML = items.map(item => `
-    <tr>
-      <td>
-        ${item.image_url
-          ? `<img src="${item.image_url}" alt="${item.title}" style="width:56px; height:40px; object-fit:cover; border:1px solid #222;">`
-          : `<div style="width:56px; height:40px; background:#1a1a1a; border:1px solid #222; display:flex; align-items:center; justify-content:center;"><span style="color:#333; font-size:10px;">—</span></div>`
+  grid.innerHTML = filtered.map(item => {
+    const imgSrc = item.image_url
+      ? (item.image_url.startsWith('http') ? item.image_url : '/' + item.image_url)
+      : '';
+
+    return `<div class="gallery-card">
+      <div class="img-wrap">
+        ${imgSrc
+          ? `<img src="${imgSrc}" alt="${item.title}" loading="lazy">`
+          : `<div class="img-placeholder"><svg width="28" height="28" fill="none" stroke="#2a2a2a" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg></div>`
         }
-      </td>
-      <td style="font-family:'Archivo Narrow',sans-serif; font-size:13px; color:#e5e5e5;">${item.title}</td>
-      <td><span class="badge badge-pending" style="font-size:10px;">${tabLabels[item.tab] || item.tab}</span></td>
-      <td style="font-family:'Archivo Narrow',sans-serif; font-size:12px; color:#777;">${item.bike_make || ''} ${item.bike_model || ''}</td>
-      <td style="font-family:'Archivo Narrow',sans-serif; font-size:12px; color:#666;">${item.customer_name || '—'}</td>
-      <td>${item.featured ? '<span style="color:#D4FF00;">★ Featured</span>' : '<span style="color:#333;">—</span>'}</td>
-      <td style="font-family:'Oswald',sans-serif; font-size:14px; color:#A39171;">${item.order}</td>
-    </tr>
-  `).join('');
+        ${item.featured ? '<div class="featured-star">★ FEAT.</div>' : ''}
+      </div>
+      <div class="card-body">
+        <div class="badge-tab">${tabLabels[item.tab] || item.tab}</div>
+        <div class="card-title" title="${item.title}">${item.title}</div>
+        <div class="card-meta">${[item.bike_make, item.bike_model].filter(Boolean).join(' ') || '—'}${item.customer_name ? ' · ' + item.customer_name : ''}</div>
+      </div>
+      <div class="card-actions">
+        <button class="card-edit-btn" onclick="openEdit('${item.id}')">Edit</button>
+        <button class="card-del-btn" onclick="openDelete('${item.id}')" title="Delete">✕</button>
+      </div>
+    </div>`;
+  }).join('');
 }
 
-document.querySelectorAll('.tab-btn[data-tab]').forEach(btn => {
+// ── Drawer ─────────────────────────────────────────────────────────────────────
+function openAdd() {
+  _editId = null; _pendingFile = null;
+  document.getElementById('drawer-title').textContent = 'ADD IMAGE';
+  document.getElementById('drawer-subtitle').textContent = '';
+  resetForm();
+  showDrawer();
+}
+
+function openEdit(id) {
+  const item = _items.find(i => i.id === id);
+  if (!item) return;
+  _editId = id; _pendingFile = null;
+  document.getElementById('drawer-title').textContent = 'EDIT IMAGE';
+  document.getElementById('drawer-subtitle').textContent = item.title;
+  populateForm(item);
+  showDrawer();
+}
+window.openEdit = openEdit;
+
+function showDrawer() {
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawer-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('form-error').style.display = 'none';
+}
+
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawer-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  _pendingFile = null;
+}
+
+function resetForm() {
+  document.getElementById('field-id').value = '';
+  document.getElementById('field-title').value = '';
+  document.getElementById('field-tab').value = 'our-designs';
+  document.getElementById('field-order').value = '';
+  document.getElementById('field-bike-make').value = '';
+  document.getElementById('field-bike-model').value = '';
+  document.getElementById('field-customer').value = '';
+  document.getElementById('field-featured').checked = false;
+  clearImagePreview();
+}
+
+function populateForm(item) {
+  document.getElementById('field-id').value = item.id;
+  document.getElementById('field-title').value = item.title || '';
+  document.getElementById('field-tab').value = item.tab || 'our-designs';
+  document.getElementById('field-order').value = item.order || '';
+  document.getElementById('field-bike-make').value = item.bike_make || '';
+  document.getElementById('field-bike-model').value = item.bike_model || '';
+  document.getElementById('field-customer').value = item.customer_name || '';
+  document.getElementById('field-featured').checked = !!item.featured;
+
+  if (item.image_url) {
+    const src = item.image_url.startsWith('http') ? item.image_url : '/' + item.image_url;
+    showImagePreview(src);
+  } else {
+    clearImagePreview();
+  }
+}
+
+function showImagePreview(src) {
+  document.getElementById('img-preview').src = src;
+  document.getElementById('img-preview-wrap').style.display = 'block';
+  document.getElementById('upload-zone').style.display = 'none';
+}
+
+function clearImagePreview() {
+  document.getElementById('img-preview').src = '';
+  document.getElementById('img-preview-wrap').style.display = 'none';
+  document.getElementById('upload-zone').style.display = 'block';
+  _pendingFile = null;
+}
+
+document.getElementById('remove-img-btn').addEventListener('click', clearImagePreview);
+
+document.getElementById('file-input').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  _pendingFile = file;
+  const reader = new FileReader();
+  reader.onload = ev => showImagePreview(ev.target.result);
+  reader.readAsDataURL(file);
+  e.target.value = '';
+});
+
+const zone = document.getElementById('upload-zone');
+zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragging'); });
+zone.addEventListener('dragleave', () => zone.classList.remove('dragging'));
+zone.addEventListener('drop', e => {
+  e.preventDefault();
+  zone.classList.remove('dragging');
+  const file = Array.from(e.dataTransfer.files).find(f => f.type.startsWith('image/'));
+  if (!file) return;
+  _pendingFile = file;
+  const reader = new FileReader();
+  reader.onload = ev => showImagePreview(ev.target.result);
+  reader.readAsDataURL(file);
+});
+
+// ── Save ────────────────────────────────────────────────────────────────────
+async function saveItem() {
+  const title = document.getElementById('field-title').value.trim();
+  if (!title) {
+    showFormError('Title is required.');
+    return;
+  }
+
+  const saveBtn = document.getElementById('save-btn');
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'SAVING…';
+  document.getElementById('form-error').style.display = 'none';
+
+  try {
+    const fd = new FormData();
+    fd.append('title', title);
+    fd.append('tab', document.getElementById('field-tab').value);
+    fd.append('order', document.getElementById('field-order').value || '');
+    fd.append('bike_make', document.getElementById('field-bike-make').value.trim());
+    fd.append('bike_model', document.getElementById('field-bike-model').value.trim());
+    fd.append('customer_name', document.getElementById('field-customer').value.trim());
+    fd.append('featured', document.getElementById('field-featured').checked ? 'true' : 'false');
+    if (_pendingFile) fd.append('image', _pendingFile);
+
+    const url = _editId ? `/api/gallery/${_editId}` : '/api/gallery';
+    const method = _editId ? 'PUT' : 'POST';
+
+    const res = await fetch(url, {
+      method,
+      headers: { 'x-admin-token': _token },
+      body: fd,
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || 'Save failed');
+    }
+
+    const data = await res.json();
+    const saved = data.item;
+
+    if (_editId) {
+      const idx = _items.findIndex(i => i.id === _editId);
+      if (idx !== -1) _items[idx] = saved; else _items.push(saved);
+    } else {
+      _items.push(saved);
+    }
+
+    closeDrawer();
+    renderGrid();
+    showToast(_editId ? 'Image updated' : 'Image added');
+  } catch (err) {
+    showFormError(err.message);
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.textContent = 'SAVE';
+  }
+}
+
+function showFormError(msg) {
+  const el = document.getElementById('form-error');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+// ── Delete ──────────────────────────────────────────────────────────────────
+function openDelete(id) {
+  _deleteId = id;
+  const item = _items.find(i => i.id === id);
+  document.getElementById('del-modal-title').textContent = item ? item.title : id;
+  document.getElementById('del-modal').style.display = 'flex';
+}
+window.openDelete = openDelete;
+
+async function confirmDelete() {
+  if (!_deleteId) return;
+  const btn = document.getElementById('del-confirm-btn');
+  btn.textContent = 'DELETING…'; btn.disabled = true;
+  try {
+    await fetch(`/api/gallery/${_deleteId}`, {
+      method: 'DELETE',
+      headers: { 'x-admin-token': _token },
+    });
+    _items = _items.filter(i => i.id !== _deleteId);
+    closeDelModal();
+    renderGrid();
+    showToast('Image deleted');
+  } catch {
+    closeDelModal();
+  } finally {
+    btn.textContent = 'DELETE'; btn.disabled = false;
+    _deleteId = null;
+  }
+}
+
+function closeDelModal() {
+  document.getElementById('del-modal').style.display = 'none';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ── Events ──────────────────────────────────────────────────────────────────
+document.getElementById('add-btn').addEventListener('click', openAdd);
+document.getElementById('drawer-close').addEventListener('click', closeDrawer);
+document.getElementById('cancel-btn').addEventListener('click', closeDrawer);
+document.getElementById('drawer-overlay').addEventListener('click', closeDrawer);
+document.getElementById('save-btn').addEventListener('click', saveItem);
+document.getElementById('del-confirm-btn').addEventListener('click', confirmDelete);
+document.getElementById('del-cancel-btn').addEventListener('click', closeDelModal);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeDrawer(); closeDelModal(); } });
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab-btn[data-tab]').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     _activeTab = btn.dataset.tab;
-    renderGallery();
+    renderGrid();
   });
 });
 
-document.getElementById('refresh-btn').addEventListener('click', loadGallery);
 document.getElementById('logout-btn').addEventListener('click', () => {
   clearToken();
   window.location.href = '/admin/index.html';

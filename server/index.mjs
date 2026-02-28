@@ -10,6 +10,8 @@ import shippoRouter from './routes/shippo.mjs';
 import sheetsRouter from './routes/sheets.mjs';
 import contactRouter from './routes/contact.mjs';
 import adminRouter from './routes/admin.mjs';
+import productsRouter from './routes/products.mjs';
+import galleryRouter from './routes/gallery.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -30,9 +32,18 @@ app.use('/api/shippo', shippoRouter);
 app.use('/api/sheets', sheetsRouter);
 app.use('/api/contact', contactRouter);
 app.use('/api/admin', adminRouter);
+app.use('/api/products', productsRouter);
+app.use('/api/gallery', galleryRouter);
 
 // ── Health check ─────────────────────────────────────────────────────────────
 app.get('/api/health', (_req, res) => res.json({ ok: true, ts: Date.now() }));
+
+// ── Public config (non-sensitive env vars for frontend) ───────────────────────
+app.get('/api/config', (_req, res) => {
+  res.json({
+    paypalMeUrl: process.env.PAYPAL_ME_URL || '',
+  });
+});
 
 // ── SPA fallback — serve index.html for unknown routes ───────────────────────
 app.get('*', (_req, res) => {

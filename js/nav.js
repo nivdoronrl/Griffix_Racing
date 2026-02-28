@@ -54,7 +54,11 @@
     badges.forEach(badge => {
       if (!badge) return;
       badge.textContent = count;
-      badge.style.display = count > 0 ? 'flex' : 'none';
+      if (count > 0) {
+        badge.classList.add('visible');
+      } else {
+        badge.classList.remove('visible');
+      }
     });
   }
 

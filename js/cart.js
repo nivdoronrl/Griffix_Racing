@@ -82,7 +82,7 @@
       const drawer = document.getElementById('cart-drawer');
       const overlay = document.getElementById('cart-overlay');
       if (drawer) drawer.classList.add('open');
-      if (overlay) overlay.classList.add('open');
+      if (overlay) overlay.classList.add('visible');
       document.body.style.overflow = 'hidden';
     },
 
@@ -90,7 +90,7 @@
       const drawer = document.getElementById('cart-drawer');
       const overlay = document.getElementById('cart-overlay');
       if (drawer) drawer.classList.remove('open');
-      if (overlay) overlay.classList.remove('open');
+      if (overlay) overlay.classList.remove('visible');
       document.body.style.overflow = '';
     },
   };

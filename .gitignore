@@ -4,8 +4,10 @@ node_modules/
 # Environment secrets — NEVER commit
 .env
 
-# Credentials
+# Credentials — never commit any of these
 server/credentials.json
+server/client_secret*.json
+server/*.json
 
 # macOS
 .DS_Store
@@ -16,3 +18,12 @@ temporary screenshots/
 # Logs
 *.log
 npm-debug.log*
+
+# Uploaded user files — auto-created by server on first run
+uploads/
+
+# Live order data — contains customer PII, never commit
+server/data/orders.json
+
+# Reference/scratch screenshots in root
+us.skda.com.au_.png

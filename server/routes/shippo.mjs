@@ -23,8 +23,8 @@ router.post('/rates', async (req, res) => {
 
   try {
     const parcel = deriveParcel(items);
-    const rates = await getRates(toAddress, parcel);
-    res.json({ rates });
+    const { rates, messages } = await getRates(toAddress, parcel);
+    res.json({ rates, messages });
   } catch (err) {
     console.error('Shippo error:', err.message);
     res.status(502).json({ error: 'Could not fetch shipping rates. Please try again.' });

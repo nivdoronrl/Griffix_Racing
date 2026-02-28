@@ -8,13 +8,14 @@
 
 const SHIPPO_API = 'https://api.goshippo.com';
 
-// Parcel presets by category (mass kg, dims cm)
+// Parcel presets by category (weight kg, dims cm)
+// Shippo REST API uses: weight + mass_unit for weight, length/width/height + distance_unit for dims
 const PARCEL_PRESETS = {
-  'graphic-kit':  { mass_value: '0.5', mass_unit: 'kg', length: '40', width: '30', height: '5',  distance_unit: 'cm' },
-  'seat-cover':   { mass_value: '0.3', mass_unit: 'kg', length: '30', width: '25', height: '5',  distance_unit: 'cm' },
-  'plastic-kit':  { mass_value: '2.0', mass_unit: 'kg', length: '60', width: '40', height: '20', distance_unit: 'cm' },
-  'number-plate': { mass_value: '0.2', mass_unit: 'kg', length: '25', width: '15', height: '2',  distance_unit: 'cm' },
-  'accessory':    { mass_value: '0.2', mass_unit: 'kg', length: '20', width: '15', height: '5',  distance_unit: 'cm' },
+  'graphic-kit':  { weight: '0.5', mass_unit: 'kg', length: '40', width: '30', height: '5',  distance_unit: 'cm' },
+  'seat-cover':   { weight: '0.3', mass_unit: 'kg', length: '30', width: '25', height: '5',  distance_unit: 'cm' },
+  'plastic-kit':  { weight: '2.0', mass_unit: 'kg', length: '60', width: '40', height: '20', distance_unit: 'cm' },
+  'number-plate': { weight: '0.2', mass_unit: 'kg', length: '25', width: '15', height: '2',  distance_unit: 'cm' },
+  'accessory':    { weight: '0.2', mass_unit: 'kg', length: '20', width: '15', height: '5',  distance_unit: 'cm' },
 };
 
 /**
@@ -22,21 +23,21 @@ const PARCEL_PRESETS = {
  * @param {Array} items  — cart items with { category, qty }
  */
 export function deriveParcel(items = []) {
-  let mass = 0;
+  let weight = 0;
   let length = 0, width = 0, height = 0;
 
   for (const item of items) {
     const preset = PARCEL_PRESETS[item.category] || PARCEL_PRESETS['accessory'];
-    mass += parseFloat(preset.mass_value) * (item.qty || 1);
+    weight += parseFloat(preset.weight) * (item.qty || 1);
     length = Math.max(length, parseFloat(preset.length));
     width  = Math.max(width,  parseFloat(preset.width));
     height = Math.max(height, parseFloat(preset.height));
   }
 
-  if (mass === 0) mass = 0.5; // default
+  if (weight === 0) weight = 0.5; // default
 
   return {
-    mass_value: mass.toFixed(2),
+    weight: weight.toFixed(2),
     mass_unit: 'kg',
     length: String(length || 40),
     width:  String(width  || 30),
@@ -84,9 +85,15 @@ export async function getRates(toAddress, parcel) {
   }
 
   const data = await res.json();
+
+  // Log Shippo messages for debugging (visible in server console)
+  if (data.messages?.length) {
+    console.warn('Shippo messages:', JSON.stringify(data.messages, null, 2));
+  }
+
   const successRates = (data.rates || []).filter(r => r.object_status === 'SUCCESS');
 
-  return successRates
+  const rates = successRates
     .map(r => ({
       object_id:    r.object_id,
       provider:     r.provider,
@@ -96,4 +103,6 @@ export async function getRates(toAddress, parcel) {
       currency:     r.currency_local || r.currency,
     }))
     .sort((a, b) => parseFloat(a.amount) - parseFloat(b.amount));
+
+  return { rates, messages: data.messages || [] };
 }
