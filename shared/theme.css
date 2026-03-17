@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════
    GRIFFIX RACING — Global Theme
-   Brand: Stealth Charcoal #2B2B2B · Acid Lime #D4FF00 · Coyote Tan #A39171
+   Brand: Stealth Charcoal #2B2B2B · Blaze Orange #FF6B00 · Coyote Tan #A39171
    Fonts: Oswald (display) · Archivo Narrow (body)
 ═══════════════════════════════════════════════════════════ */
 
@@ -44,9 +44,9 @@ body { font-family: 'Archivo Narrow', sans-serif; background: #0f0f0f; color: #e
   opacity: 0.35;
 }
 
-/* ── Logo: recolour to Acid Lime ── */
+/* ── Logo: recolour to Blaze Orange ── */
 .logo-lime {
-  filter: brightness(0) saturate(100%) invert(95%) sepia(100%) saturate(1600%) hue-rotate(23deg) brightness(108%) contrast(106%);
+  filter: brightness(0) saturate(100%) invert(45%) sepia(90%) saturate(800%) hue-rotate(5deg) brightness(110%) contrast(110%);
 }
 .logo-tan {
   filter: brightness(0) saturate(100%) invert(65%) sepia(20%) saturate(600%) hue-rotate(10deg) brightness(95%);
@@ -54,14 +54,14 @@ body { font-family: 'Archivo Narrow', sans-serif; background: #0f0f0f; color: #e
 
 /* ── Layered shadows ── */
 .shadow-tactical {
-  box-shadow: 0 1px 2px rgba(212,255,0,.07), 0 4px 10px rgba(0,0,0,.5), 0 16px 32px rgba(0,0,0,.35);
+  box-shadow: 0 1px 2px rgba(255,107,0,.07), 0 4px 10px rgba(0,0,0,.5), 0 16px 32px rgba(0,0,0,.35);
 }
 .shadow-card {
   box-shadow: 0 2px 6px rgba(0,0,0,.4), 0 8px 20px rgba(0,0,0,.3);
   transition: box-shadow .3s cubic-bezier(.34,1.56,.64,1), transform .3s cubic-bezier(.34,1.56,.64,1);
 }
 .shadow-card:hover {
-  box-shadow: 0 0 0 1px rgba(212,255,0,.4), 0 6px 12px rgba(0,0,0,.5), 0 20px 40px rgba(0,0,0,.4);
+  box-shadow: 0 0 0 1px rgba(255,107,0,.4), 0 6px 12px rgba(0,0,0,.5), 0 20px 40px rgba(0,0,0,.4);
   transform: translateY(-4px);
 }
 
@@ -72,28 +72,28 @@ body { font-family: 'Archivo Narrow', sans-serif; background: #0f0f0f; color: #e
   position: absolute;
   bottom: -3px; left: 0; right: 0;
   height: 2px;
-  background: #D4FF00;
+  background: #FF6B00;
   transform: scaleX(0);
   transition: transform .25s cubic-bezier(.34,1.56,.64,1);
   transform-origin: left;
 }
 .nav-link:hover::after, .nav-link.active::after { transform: scaleX(1); }
-.nav-link:hover { color: #D4FF00; }
+.nav-link:hover { color: #FF6B00; }
 
 /* ── Buttons ── */
 .btn-primary {
   display: inline-flex; align-items: center; justify-content: center;
-  background: #D4FF00; color: #0f0f0f;
+  background: #FF6B00; color: #0f0f0f;
   font-family: 'Oswald', sans-serif; font-weight: 600;
   letter-spacing: .12em; text-transform: uppercase;
-  padding: 12px 28px; border: 2px solid #D4FF00;
+  padding: 12px 28px; border: 2px solid #FF6B00;
   cursor: pointer; position: relative; overflow: hidden;
   transition: background .2s ease, color .2s ease, transform .15s ease;
   white-space: nowrap; text-decoration: none;
 }
-.btn-primary:hover { background: #0f0f0f; color: #D4FF00; transform: translateY(-2px); }
+.btn-primary:hover { background: #0f0f0f; color: #FF6B00; transform: translateY(-2px); }
 .btn-primary:active { transform: translateY(0); }
-.btn-primary:focus-visible { outline: 2px solid #D4FF00; outline-offset: 3px; }
+.btn-primary:focus-visible { outline: 2px solid #FF6B00; outline-offset: 3px; }
 
 .btn-ghost {
   display: inline-flex; align-items: center; justify-content: center;
@@ -139,7 +139,7 @@ body { font-family: 'Archivo Narrow', sans-serif; background: #0f0f0f; color: #e
 }
 .cat-card .lime-bar {
   position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
-  background: #D4FF00;
+  background: #FF6B00;
   transform: scaleX(0); transform-origin: left;
   transition: transform .3s cubic-bezier(.34,1.56,.64,1);
 }
@@ -149,10 +149,10 @@ body { font-family: 'Archivo Narrow', sans-serif; background: #0f0f0f; color: #e
 .product-card { background: #1a1a1a; position: relative; overflow: hidden; cursor: pointer; }
 .product-card::before {
   content: ''; position: absolute; inset: 0;
-  border: 1px solid rgba(212,255,0,0);
+  border: 1px solid rgba(255,107,0,0);
   transition: border-color .3s ease; z-index: 10; pointer-events: none;
 }
-.product-card:hover::before { border-color: rgba(212,255,0,.45); }
+.product-card:hover::before { border-color: rgba(255,107,0,.45); }
 .product-card img { transition: transform .5s cubic-bezier(.34,1.56,.64,1); }
 .product-card:hover img { transform: scale(1.05); }
 
@@ -160,18 +160,18 @@ body { font-family: 'Archivo Narrow', sans-serif; background: #0f0f0f; color: #e
 .label {
   display: flex; align-items: center; gap: 10px;
   font-family: 'Archivo Narrow', sans-serif;
-  font-size: 11px; letter-spacing: .25em; text-transform: uppercase; color: #A39171;
+  font-size: 11px; letter-spacing: .25em; text-transform: uppercase; color: #B8A485;
 }
-.label::before { content: ''; display: block; width: 24px; height: 2px; background: #A39171; }
+.label::before { content: ''; display: block; width: 24px; height: 2px; background: #B8A485; }
 
 /* ── Gradient clip text ── */
 .clip-lime {
-  background: linear-gradient(135deg, #D4FF00 0%, #b8e600 100%);
+  background: linear-gradient(135deg, #FF6B00 0%, #e55a00 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 
 /* ── Stat bar ── */
-.stat-bar { border-left: 3px solid #A39171; padding-left: 18px; }
+.stat-bar { border-left: 4px solid #A39171; padding-left: 18px; }
 
 /* ── Feature check ── */
 .check-icon {
@@ -194,7 +194,7 @@ body { font-family: 'Archivo Narrow', sans-serif; background: #0f0f0f; color: #e
 .gallery-img:hover img { transform: scale(1.06); }
 .gallery-img .lime-tint {
   position: absolute; inset: 0;
-  background: rgba(212,255,0,0);
+  background: rgba(255,107,0,0);
   transition: background .3s ease;
 }
 .gallery-img:hover .lime-tint { background: rgba(163,145,113,.14); }
@@ -235,8 +235,8 @@ select {
 }
 .tab-btn:hover { color: #A39171; border-color: rgba(163,145,113,.5); }
 .tab-btn.active {
-  color: #D4FF00; border-color: rgba(212,255,0,.6);
-  background: rgba(212,255,0,.07);
+  color: #FF6B00; border-color: rgba(255,107,0,.6);
+  background: rgba(255,107,0,.07);
 }
 
 /* ── Form inputs ── */
@@ -249,14 +249,14 @@ select {
   transition: border-color .2s ease;
   outline: none;
 }
-.form-input:focus { border-color: rgba(212,255,0,.55); }
+.form-input:focus { border-color: rgba(255,107,0,.55); }
 .form-input::placeholder { color: #444; }
 .form-input.error { border-color: rgba(220,60,60,.6); }
 
 label.field-label {
   display: block; font-family: 'Archivo Narrow', sans-serif;
   font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
-  color: #A39171; margin-bottom: 6px;
+  color: #B8A485; margin-bottom: 6px;
 }
 
 textarea.form-input { resize: vertical; min-height: 120px; }
@@ -280,13 +280,13 @@ textarea.form-input { resize: vertical; min-height: 120px; }
   background-position: right 10px center;
   transition: border-color .2s ease;
 }
-.filter-select:focus { border-color: rgba(212,255,0,.5); }
+.filter-select:focus { border-color: rgba(255,107,0,.5); }
 
 /* ── Cart badge ── */
 #cart-badge {
   position: absolute; top: -6px; right: -6px;
   width: 17px; height: 17px;
-  background: #D4FF00; color: #0f0f0f;
+  background: #FF6B00; color: #0f0f0f;
   font-family: 'Oswald', sans-serif; font-size: 10px; font-weight: 700;
   border-radius: 50%; display: flex; align-items: center; justify-content: center;
   opacity: 0; transform: scale(0);
@@ -347,8 +347,8 @@ textarea.form-input { resize: vertical; min-height: 120px; }
   margin-bottom: 8px;
 }
 .rate-card:hover { border-color: rgba(163,145,113,.5); background: #1e1e1e; }
-.rate-card input[type="radio"] { accent-color: #D4FF00; width: 16px; height: 16px; flex-shrink: 0; }
-.rate-card.selected { border-color: rgba(212,255,0,.55); background: rgba(212,255,0,.04); }
+.rate-card input[type="radio"] { accent-color: #FF6B00; width: 16px; height: 16px; flex-shrink: 0; }
+.rate-card.selected { border-color: rgba(255,107,0,.55); background: rgba(255,107,0,.04); }
 
 /* ── Order step indicator ── */
 .step-indicator {
@@ -359,7 +359,7 @@ textarea.form-input { resize: vertical; min-height: 120px; }
   font-family: 'Oswald', sans-serif; font-size: 12px;
   letter-spacing: .1em; text-transform: uppercase; color: #555;
 }
-.step.active { color: #D4FF00; }
+.step.active { color: #FF6B00; }
 .step.done { color: #A39171; }
 .step-num {
   width: 28px; height: 28px; border-radius: 50%;
@@ -397,7 +397,7 @@ textarea.form-input { resize: vertical; min-height: 120px; }
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; font-size: 20px; transition: background .2s ease;
 }
-.lightbox-close:hover { background: rgba(163,145,113,.2); color: #D4FF00; }
+.lightbox-close:hover { background: rgba(163,145,113,.2); color: #FF6B00; }
 
 /* ── Admin table ── */
 .admin-table { width: 100%; border-collapse: collapse; }
@@ -419,7 +419,7 @@ textarea.form-input { resize: vertical; min-height: 120px; }
   padding: 3px 10px; font-size: 11px; font-family: 'Oswald', sans-serif;
   letter-spacing: .1em; text-transform: uppercase;
 }
-.badge-pending { background: rgba(212,255,0,.12); color: #D4FF00; }
+.badge-pending { background: rgba(255,107,0,.12); color: #FF6B00; }
 .badge-paid { background: rgba(80,200,120,.12); color: #50c878; }
 .badge-shipped { background: rgba(163,145,113,.18); color: #A39171; }
 .badge-cancelled { background: rgba(220,60,60,.12); color: #dc3c3c; }
@@ -427,13 +427,13 @@ textarea.form-input { resize: vertical; min-height: 120px; }
 /* ── Price tag ── */
 .price-tag {
   font-family: 'Oswald', sans-serif; font-weight: 700;
-  color: #D4FF00; letter-spacing: -.01em;
+  color: #FF6B00; letter-spacing: -.01em;
 }
 
 /* ── Section divider ── */
 .section-divider {
   width: 48px; height: 3px;
-  background: linear-gradient(90deg, #D4FF00, #A39171);
+  background: linear-gradient(90deg, #FF6B00, #B8A485);
   margin: 20px 0;
 }
 
@@ -448,7 +448,7 @@ textarea.form-input { resize: vertical; min-height: 120px; }
   box-shadow: 0 8px 32px rgba(0,0,0,.5);
 }
 .toast.show { transform: translateY(0); opacity: 1; }
-.toast-success { border-color: rgba(212,255,0,.5); }
+.toast-success { border-color: rgba(255,107,0,.5); }
 .toast-error { border-color: rgba(220,60,60,.5); }
 
 /* ── Skeleton loader ── */

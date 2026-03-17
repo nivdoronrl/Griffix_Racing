@@ -9,7 +9,7 @@
   <script>
     tailwind.config = {
       theme: { extend: {
-        colors: { lime: { DEFAULT: '#D4FF00' }, tan: { DEFAULT: '#A39171' } },
+        colors: { lime: { DEFAULT: '#FF6B00' }, tan: { DEFAULT: '#A39171' } },
         fontFamily: { display: ['Oswald','sans-serif'], body: ['Archivo Narrow','sans-serif'] }
       }}
     }
@@ -20,7 +20,7 @@
 
     .admin-nav { background:#111; border-bottom:1px solid rgba(163,145,113,.2); padding:0 28px; display:flex; align-items:center; gap:28px; height:56px; position:sticky; top:0; z-index:50; }
     .admin-nav-link { font-family:'Oswald',sans-serif; font-size:12px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:#555; text-decoration:none; padding:4px 0; border-bottom:2px solid transparent; }
-    .admin-nav-link.active, .admin-nav-link:hover { color:#D4FF00; border-color:#D4FF00; }
+    .admin-nav-link.active, .admin-nav-link:hover { color:#FF6B00; border-color:#FF6B00; }
     .admin-content { max-width:1400px; margin:0 auto; padding:32px 28px; }
 
     /* Table */
@@ -33,10 +33,10 @@
 
     /* Badges */
     .badge { display:inline-flex; align-items:center; padding:2px 8px; font-family:'Oswald',sans-serif; font-size:10px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; }
-    .badge-stock { background:rgba(212,255,0,.08); color:#D4FF00; border:1px solid rgba(212,255,0,.2); }
+    .badge-stock { background:rgba(255,107,0,.08); color:#FF6B00; border:1px solid rgba(255,107,0,.2); }
     .badge-nostock { background:rgba(255,80,80,.08); color:#ff5050; border:1px solid rgba(255,80,80,.15); }
     .badge-cat { background:#1a1a1a; color:#A39171; border:1px solid #2a2a2a; }
-    .badge-featured { background:rgba(212,255,0,.15); color:#D4FF00; }
+    .badge-featured { background:rgba(255,107,0,.15); color:#FF6B00; }
 
     /* Action buttons */
     .btn-edit { background:#1e1e1e; border:1px solid #2e2e2e; color:#aaa; padding:5px 12px; font-size:11px; font-family:'Oswald',sans-serif; letter-spacing:.06em; cursor:pointer; text-transform:uppercase; }
@@ -76,8 +76,8 @@
     .toggle input { display:none; }
     .toggle-track { position:absolute; inset:0; background:#222; border:1px solid #333; transition:background .2s, border-color .2s; }
     .toggle-thumb { position:absolute; top:3px; left:3px; width:14px; height:14px; background:#555; transition:left .2s, background .2s; }
-    .toggle input:checked ~ .toggle-track { background:rgba(212,255,0,.15); border-color:rgba(212,255,0,.4); }
-    .toggle input:checked ~ .toggle-thumb { left:21px; background:#D4FF00; }
+    .toggle input:checked ~ .toggle-track { background:rgba(255,107,0,.15); border-color:rgba(255,107,0,.4); }
+    .toggle input:checked ~ .toggle-thumb { left:21px; background:#FF6B00; }
     .toggle-label { font-size:13px; color:#aaa; }
 
     /* Image upload zone */
@@ -91,7 +91,7 @@
     .image-thumb .del-img:hover { background:#c00; }
 
     /* Primary button */
-    .btn-primary-admin { background:#D4FF00; color:#0a0a0a; border:none; padding:12px 28px; font-family:'Oswald',sans-serif; font-size:13px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; }
+    .btn-primary-admin { background:#FF6B00; color:#0a0a0a; border:none; padding:12px 28px; font-family:'Oswald',sans-serif; font-size:13px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; }
     .btn-primary-admin:hover { background:#c4ef00; }
     .btn-primary-admin:disabled { opacity:.4; cursor:not-allowed; }
     .btn-cancel { background:none; border:1px solid #2a2a2a; color:#666; padding:12px 20px; font-family:'Oswald',sans-serif; font-size:12px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; }
@@ -113,14 +113,14 @@
     /* Upload progress */
     .upload-progress { font-size:12px; color:#A39171; margin-top:6px; }
     .error-msg { font-size:12px; color:#ff5050; margin-top:6px; }
-    .success-toast { position:fixed; bottom:28px; right:28px; background:#D4FF00; color:#0a0a0a; padding:12px 22px; font-family:'Oswald',sans-serif; font-size:13px; font-weight:700; letter-spacing:.08em; z-index:200; opacity:0; transform:translateY(10px); transition:opacity .2s, transform .2s; pointer-events:none; }
+    .success-toast { position:fixed; bottom:28px; right:28px; background:#FF6B00; color:#0a0a0a; padding:12px 22px; font-family:'Oswald',sans-serif; font-size:13px; font-weight:700; letter-spacing:.08em; z-index:200; opacity:0; transform:translateY(10px); transition:opacity .2s, transform .2s; pointer-events:none; }
     .success-toast.show { opacity:1; transform:translateY(0); }
 
     /* Section heading inside drawer */
     .form-section-title { font-family:'Oswald',sans-serif; font-size:11px; font-weight:600; letter-spacing:.15em; color:#3a3a3a; text-transform:uppercase; margin-bottom:16px; }
 
     /* SKU preview */
-    .sku-preview { font-family:'Oswald',sans-serif; font-size:11px; color:#D4FF00; letter-spacing:.06em; margin-top:5px; }
+    .sku-preview { font-family:'Oswald',sans-serif; font-size:11px; color:#FF6B00; letter-spacing:.06em; margin-top:5px; }
   </style>
 </head>
 <body>
@@ -132,7 +132,7 @@
   <a href="/admin/products.html" class="admin-nav-link active">Products</a>
   <a href="/admin/gallery.html" class="admin-nav-link">Gallery</a>
   <div style="margin-left:auto;">
-    <button id="logout-btn" style="font-family:'Archivo Narrow',sans-serif; font-size:12px; color:#444; background:none; border:none; cursor:pointer; text-decoration:underline;" class="hover:text-[#D4FF00]">Sign out</button>
+    <button id="logout-btn" style="font-family:'Archivo Narrow',sans-serif; font-size:12px; color:#444; background:none; border:none; cursor:pointer; text-decoration:underline;" class="hover:text-[#FF6B00]">Sign out</button>
   </div>
 </div>
 
@@ -265,7 +265,7 @@
       </div>
 
       <div class="field-group">
-        <label class="field-label" for="field-price">Price (AUD) <span>*</span></label>
+        <label class="field-label" for="field-price">Price (USD) <span>*</span></label>
         <input type="number" id="field-price" class="form-input" placeholder="249" min="0" step="0.01" style="max-width:180px;" required>
       </div>
 
@@ -514,7 +514,7 @@ function renderTable() {
       <td><span class="badge badge-cat">${catLabel}</span></td>
       <td style="font-size:12px; color:#777;">${[p.make, p.model].filter(Boolean).join(' ') || '—'}</td>
       <td style="font-size:12px; color:#666;">${yrs}</td>
-      <td style="font-family:'Oswald',sans-serif; font-size:15px; font-weight:600; color:#D4FF00;">$${p.price}</td>
+      <td style="font-family:'Oswald',sans-serif; font-size:15px; font-weight:600; color:#FF6B00;">$${p.price}</td>
       <td><span class="badge ${p.in_stock ? 'badge-stock' : 'badge-nostock'}">${p.in_stock ? 'In Stock' : 'Sold Out'}</span></td>
       <td style="white-space:nowrap;">
         <button class="btn-edit" onclick="openEdit('${p.id}')">Edit</button>

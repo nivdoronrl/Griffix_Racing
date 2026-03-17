@@ -112,7 +112,7 @@
     drawer.innerHTML = `
       <div class="cart-drawer-header">
         <h2 style="font-family:'Oswald',sans-serif; font-size:18px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:#e5e5e5;">Your Cart</h2>
-        <button id="cart-close-btn" aria-label="Close cart" style="color:#666; background:none; border:none; cursor:pointer; padding:4px;" class="hover:text-[#D4FF00] transition-colors duration-200">
+        <button id="cart-close-btn" aria-label="Close cart" style="color:#666; background:none; border:none; cursor:pointer; padding:4px;" class="hover:text-[#FF6B00] transition-colors duration-200">
           <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
@@ -189,7 +189,7 @@
     footerEl.innerHTML = `
       <div class="cart-subtotal-row">
         <span style="font-family:'Archivo Narrow',sans-serif; color:#aaa; font-size:13px;">Subtotal (excl. shipping)</span>
-        <span style="font-family:'Oswald',sans-serif; color:#D4FF00; font-size:20px; font-weight:600;">$${subtotal.toFixed(2)}</span>
+        <span style="font-family:'Oswald',sans-serif; color:#FF6B00; font-size:20px; font-weight:600;">$${subtotal.toFixed(2)}</span>
       </div>
       <a href="/cart.html" class="btn-primary" style="display:block; text-align:center; text-decoration:none; margin-bottom:10px; font-size:14px; padding:14px;">View Cart</a>
       <a href="/checkout.html" style="display:block; text-align:center; text-decoration:none; padding:14px; font-size:14px; font-family:'Oswald',sans-serif; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:#0f0f0f; background:#A39171; border:none; cursor:pointer;">Checkout →</a>
@@ -230,7 +230,7 @@
       .cart-item-info { flex: 1; min-width: 0; }
       .cart-item-name { font-family: 'Oswald', sans-serif; font-size: 14px; font-weight: 500; color: #e5e5e5; letter-spacing: .04em; line-height: 1.3; margin-bottom: 3px; }
       .cart-item-meta { font-family: 'Archivo Narrow', sans-serif; font-size: 11px; color: #555; margin-bottom: 6px; }
-      .cart-item-price { font-family: 'Oswald', sans-serif; font-size: 15px; font-weight: 600; color: #D4FF00; margin-bottom: 10px; }
+      .cart-item-price { font-family: 'Oswald', sans-serif; font-size: 15px; font-weight: 600; color: #FF6B00; margin-bottom: 10px; }
       .cart-item-remove {
         position: absolute;
         top: 16px;
@@ -242,7 +242,7 @@
         padding: 4px;
         transition: color .2s;
       }
-      .cart-item-remove:hover { color: #D4FF00; }
+      .cart-item-remove:hover { color: #FF6B00; }
       .cart-drawer-footer {
         padding: 20px 24px;
         border-top: 1px solid rgba(163,145,113,.2);

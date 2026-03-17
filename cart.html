@@ -14,7 +14,7 @@
         extend: {
           colors: {
             charcoal: { DEFAULT: '#2B2B2B', 700: '#353535', 800: '#1E1E1E', 900: '#141414' },
-            lime: { DEFAULT: '#D4FF00', dark: '#B8DE00' },
+            orange: { DEFAULT: '#FF6B00', dark: '#e55a00' },
             tan: { DEFAULT: '#A39171', dark: '#7D6E56' }
           },
           fontFamily: {
@@ -60,7 +60,7 @@
         <div class="lg:col-span-2">
           <div class="flex items-center justify-between mb-6">
             <h2 class="font-display text-white font-bold text-lg tracking-wide">ITEMS</h2>
-            <button id="clear-cart-btn" class="text-[#444] text-xs hover:text-[#D4FF00] transition-colors duration-200 underline" style="font-family:'Archivo Narrow',sans-serif;">Clear cart</button>
+            <button id="clear-cart-btn" class="text-[#444] text-xs hover:text-[#FF6B00] transition-colors duration-200 underline" style="font-family:'Archivo Narrow',sans-serif;">Clear cart</button>
           </div>
 
           <div id="cart-items-full"></div>
@@ -84,11 +84,11 @@
 
             <div style="border-top:1px solid rgba(163,145,113,.2); padding-top:20px; margin-bottom:24px;" class="flex justify-between items-baseline">
               <span class="font-display text-white font-bold text-sm tracking-wider uppercase">Total</span>
-              <span class="font-display font-bold" style="font-size:26px; color:#D4FF00;">$<span id="summary-total">0.00</span></span>
+              <span class="font-display font-bold" style="font-size:26px; color:#FF6B00;">$<span id="summary-total">0.00</span></span>
             </div>
 
             <a href="/checkout.html" id="checkout-btn" class="btn-primary block text-center no-underline mb-3" style="padding:16px; font-size:14px;">Proceed to Checkout →</a>
-            <a href="/shop.html" class="block text-center text-[#555] text-xs hover:text-[#D4FF00] transition-colors duration-200 no-underline" style="font-family:'Archivo Narrow',sans-serif;">← Continue Shopping</a>
+            <a href="/shop.html" class="block text-center text-[#555] text-xs hover:text-[#FF6B00] transition-colors duration-200 no-underline" style="font-family:'Archivo Narrow',sans-serif;">← Continue Shopping</a>
 
             <!-- Trust signals -->
             <div style="border-top:1px solid rgba(255,255,255,.05); margin-top:24px; padding-top:20px;" class="space-y-3">
@@ -150,10 +150,10 @@ function renderCartPage() {
             <span class="qty-display">${item.qty}</span>
             <button class="qty-btn" data-action="inc" data-id="${item.id}">+</button>
           </div>
-          <button data-remove="${item.id}" style="background:none; border:none; color:#444; font-family:'Archivo Narrow',sans-serif; font-size:12px; cursor:pointer; text-decoration:underline; padding:0;" class="hover:text-[#D4FF00] transition-colors duration-200">Remove</button>
+          <button data-remove="${item.id}" style="background:none; border:none; color:#444; font-family:'Archivo Narrow',sans-serif; font-size:12px; cursor:pointer; text-decoration:underline; padding:0;" class="hover:text-[#FF6B00] transition-colors duration-200">Remove</button>
         </div>
       </div>
-      <div class="font-display font-bold" style="font-size:20px; color:#D4FF00; flex-shrink:0;">$${(item.price * item.qty).toFixed(2)}</div>
+      <div class="font-display font-bold" style="font-size:20px; color:#FF6B00; flex-shrink:0;">$${(item.price * item.qty).toFixed(2)}</div>
     </div>
   `).join('');
 

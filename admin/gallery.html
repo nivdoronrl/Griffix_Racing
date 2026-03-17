@@ -9,7 +9,7 @@
   <script>
     tailwind.config = {
       theme: { extend: {
-        colors: { lime: { DEFAULT: '#D4FF00' }, tan: { DEFAULT: '#A39171' } },
+        colors: { lime: { DEFAULT: '#FF6B00' }, tan: { DEFAULT: '#A39171' } },
         fontFamily: { display: ['Oswald','sans-serif'], body: ['Archivo Narrow','sans-serif'] }
       }}
     }
@@ -19,12 +19,12 @@
     body { background:#0a0a0a; font-family:'Archivo Narrow',sans-serif; }
     .admin-nav { background:#111; border-bottom:1px solid rgba(163,145,113,.2); padding:0 28px; display:flex; align-items:center; gap:28px; height:56px; position:sticky; top:0; z-index:50; }
     .admin-nav-link { font-family:'Oswald',sans-serif; font-size:12px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:#555; text-decoration:none; padding:4px 0; border-bottom:2px solid transparent; }
-    .admin-nav-link.active, .admin-nav-link:hover { color:#D4FF00; border-color:#D4FF00; }
+    .admin-nav-link.active, .admin-nav-link:hover { color:#FF6B00; border-color:#FF6B00; }
     .admin-content { max-width:1300px; margin:0 auto; padding:32px 28px; }
 
     .tab-btn { font-family:'Oswald',sans-serif; font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; padding:8px 18px; background:#141414; border:1px solid #222; color:#555; cursor:pointer; margin-right:-1px; }
     .tab-btn:hover { color:#aaa; border-color:#333; }
-    .tab-btn.active { color:#D4FF00; border-color:#D4FF00; background:#0d0d0d; z-index:1; position:relative; }
+    .tab-btn.active { color:#FF6B00; border-color:#FF6B00; background:#0d0d0d; z-index:1; position:relative; }
 
     .gallery-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:16px; }
     .gallery-card { background:#111; border:1px solid #1e1e1e; position:relative; overflow:hidden; }
@@ -41,7 +41,7 @@
     .card-del-btn { background:none; border:1px solid #222; color:#444; padding:5px 10px; cursor:pointer; font-size:13px; }
     .card-del-btn:hover { border-color:#c00; color:#c00; }
     .badge-tab { display:inline-block; padding:2px 7px; font-family:'Oswald',sans-serif; font-size:9px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; background:#1a1a1a; color:#A39171; border:1px solid #2a2a2a; margin-bottom:6px; }
-    .featured-star { position:absolute; top:8px; right:8px; background:#D4FF00; color:#0a0a0a; font-size:9px; font-family:'Oswald',sans-serif; font-weight:700; padding:2px 6px; letter-spacing:.06em; }
+    .featured-star { position:absolute; top:8px; right:8px; background:#FF6B00; color:#0a0a0a; font-size:9px; font-family:'Oswald',sans-serif; font-weight:700; padding:2px 6px; letter-spacing:.06em; }
 
     .drawer-overlay { position:fixed; inset:0; z-index:100; background:rgba(0,0,0,.65); backdrop-filter:blur(4px); opacity:0; pointer-events:none; transition:opacity .25s; }
     .drawer-overlay.open { opacity:1; pointer-events:auto; }
@@ -75,18 +75,18 @@
     .toggle input { display:none; }
     .toggle-track { position:absolute; inset:0; background:#222; border:1px solid #333; }
     .toggle-thumb { position:absolute; top:3px; left:3px; width:14px; height:14px; background:#555; transition:left .2s, background .2s; }
-    .toggle input:checked ~ .toggle-track { background:rgba(212,255,0,.15); border-color:rgba(212,255,0,.4); }
-    .toggle input:checked ~ .toggle-thumb { left:21px; background:#D4FF00; }
+    .toggle input:checked ~ .toggle-track { background:rgba(255,107,0,.15); border-color:rgba(255,107,0,.4); }
+    .toggle input:checked ~ .toggle-thumb { left:21px; background:#FF6B00; }
     .toggle-label { font-size:13px; color:#aaa; }
 
-    .btn-primary-admin { background:#D4FF00; color:#0a0a0a; border:none; padding:12px 28px; font-family:'Oswald',sans-serif; font-size:13px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; }
+    .btn-primary-admin { background:#FF6B00; color:#0a0a0a; border:none; padding:12px 28px; font-family:'Oswald',sans-serif; font-size:13px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; }
     .btn-primary-admin:hover { background:#c4ef00; }
     .btn-primary-admin:disabled { opacity:.4; cursor:not-allowed; }
     .btn-cancel { background:none; border:1px solid #2a2a2a; color:#666; padding:12px 20px; font-family:'Oswald',sans-serif; font-size:12px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; }
     .btn-cancel:hover { border-color:#555; color:#aaa; }
 
     .del-modal-wrap { display:none; position:fixed; inset:0; z-index:200; background:rgba(0,0,0,.75); backdrop-filter:blur(4px); align-items:center; justify-content:center; }
-    .toast { position:fixed; bottom:28px; right:28px; background:#D4FF00; color:#0a0a0a; padding:12px 22px; font-family:'Oswald',sans-serif; font-size:13px; font-weight:700; letter-spacing:.08em; z-index:300; opacity:0; transform:translateY(10px); transition:opacity .2s, transform .2s; pointer-events:none; }
+    .toast { position:fixed; bottom:28px; right:28px; background:#FF6B00; color:#0a0a0a; padding:12px 22px; font-family:'Oswald',sans-serif; font-size:13px; font-weight:700; letter-spacing:.08em; z-index:300; opacity:0; transform:translateY(10px); transition:opacity .2s, transform .2s; pointer-events:none; }
     .toast.show { opacity:1; transform:translateY(0); }
     .skeleton { background:linear-gradient(90deg, #111 25%, #1a1a1a 50%, #111 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; }
     @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }

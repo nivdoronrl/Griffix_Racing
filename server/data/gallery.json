@@ -1,11 +1,11 @@
 [
   {
     "id": "g1",
-    "tab": "our-designs",
-    "title": "Stealth KTM Build",
+    "tab": "customer-builds",
+    "title": "Test URL Reference",
     "bike_make": "KTM",
     "bike_model": "EXC 300",
-    "image_url": "",
+    "image_url": "uploads/gallery/e04dc3f0-41ff-40f0-a8cc-964d27279417.jpg",
     "customer_name": "",
     "featured": true,
     "order": 1,
@@ -58,5 +58,17 @@
     "featured": true,
     "order": 1,
     "created_at": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "6e25923f-3950-4ac2-8041-8ac8fa2e22af",
+    "tab": "customer-builds",
+    "title": "KTM Hard Enduro Build",
+    "bike_make": "KTM",
+    "bike_model": "EXC 300",
+    "image_url": "uploads/gallery/67e6a493-b68d-4541-944f-ad4a4ffbba9c.jpg",
+    "customer_name": "",
+    "featured": false,
+    "order": 3,
+    "created_at": "2026-03-05T03:54:54.250Z"
   }
 ]

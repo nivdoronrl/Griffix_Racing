@@ -1,5 +1,6 @@
 /**
- * orders.mjs — POST /api/orders, GET /api/orders (admin)
+ * orders.mjs — POST /api/orders, GET /api/orders (admin), PATCH /api/orders/:id,
+ *              GET /api/orders/track/:id (public customer lookup)
  */
 
 import express from 'express';
@@ -7,7 +8,7 @@ import { readFileSync, writeFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { v4 as uuidv4 } from 'uuid';
-import { sendOrderNotification, sendCustomerConfirmation } from '../lib/mailer.mjs';
+import { sendOrderNotification, sendCustomerConfirmation, sendTrackingUpdate } from '../lib/mailer.mjs';
 
 const router = express.Router();
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -26,7 +27,6 @@ function writeOrders(orders) {
 router.post('/', async (req, res) => {
   const { customer, items, shipping, paymentMethod, subtotal } = req.body;
 
-  // Basic validation
   if (!customer?.name || !customer?.email || !items?.length || !shipping) {
     return res.status(400).json({ error: 'Missing required order fields.' });
   }
@@ -36,6 +36,7 @@ router.post('/', async (req, res) => {
   const order = {
     orderId: `GRX-${uuidv4().substring(0, 8).toUpperCase()}`,
     createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
     status: 'pending',
     customer,
     items,
@@ -43,14 +44,15 @@ router.post('/', async (req, res) => {
     paymentMethod: paymentMethod || 'Not specified',
     subtotal: parseFloat(subtotal) || 0,
     total,
+    trackingNumber: null,
+    trackingUrl: null,
+    notes: '',
   };
 
-  // Persist
   const orders = readOrders();
   orders.push(order);
   writeOrders(orders);
 
-  // Send emails (non-blocking — don't fail order if email fails)
   Promise.allSettled([
     sendOrderNotification(order),
     sendCustomerConfirmation(order),
@@ -65,31 +67,77 @@ router.post('/', async (req, res) => {
   res.json({ success: true, orderId: order.orderId, total: order.total });
 });
 
+// ── GET /api/orders/track/:id (public — customer lookup by orderId + email) ──
+router.get('/track/:id', (req, res) => {
+  const { id } = req.params;
+  const { email } = req.query;
+
+  if (!email) {
+    return res.status(400).json({ error: 'Email address is required.' });
+  }
+
+  const orders = readOrders();
+  const order = orders.find(
+    o => o.orderId === id && o.customer?.email?.toLowerCase() === email.toLowerCase()
+  );
+
+  if (!order) {
+    return res.status(404).json({ error: 'Order not found. Please check your Order ID and email address.' });
+  }
+
+  // Return safe public view (no internal notes, full customer email not echoed back)
+  res.json({
+    orderId:       order.orderId,
+    createdAt:     order.createdAt,
+    updatedAt:     order.updatedAt,
+    status:        order.status,
+    customerName:  order.customer.name,
+    items:         order.items,
+    shipping:      order.shipping,
+    paymentMethod: order.paymentMethod,
+    subtotal:      order.subtotal,
+    total:         order.total,
+    trackingNumber: order.trackingNumber || null,
+    trackingUrl:    order.trackingUrl    || null,
+  });
+});
+
 // ── GET /api/orders (admin protected) ────────────────────────────────────────
 router.get('/', (req, res) => {
   const token = req.headers['x-admin-token'];
   if (!token || token !== process.env.ADMIN_SECRET) {
     return res.status(401).json({ error: 'Unauthorized.' });
   }
-
-  const orders = readOrders();
-  res.json(orders);
+  res.json(readOrders());
 });
 
-// ── PATCH /api/orders/:id (update status) ─────────────────────────────────────
-router.patch('/:id', (req, res) => {
+// ── PATCH /api/orders/:id (admin — update status, tracking, notes) ────────────
+router.patch('/:id', async (req, res) => {
   const token = req.headers['x-admin-token'];
   if (!token || token !== process.env.ADMIN_SECRET) {
     return res.status(401).json({ error: 'Unauthorized.' });
   }
 
-  const { status } = req.body;
+  const { status, trackingNumber, trackingUrl, notes } = req.body;
   const orders = readOrders();
   const order = orders.find(o => o.orderId === req.params.id);
   if (!order) return res.status(404).json({ error: 'Order not found.' });
 
-  order.status = status;
+  const prevTracking = order.trackingNumber;
+
+  if (status        !== undefined) order.status        = status;
+  if (trackingNumber !== undefined) order.trackingNumber = trackingNumber || null;
+  if (trackingUrl    !== undefined) order.trackingUrl    = trackingUrl    || null;
+  if (notes          !== undefined) order.notes          = notes;
+  order.updatedAt = new Date().toISOString();
+
   writeOrders(orders);
+
+  // Email customer when tracking is first added
+  if (trackingNumber && !prevTracking) {
+    sendTrackingUpdate(order).catch(err => console.error('Tracking email failed:', err));
+  }
+
   res.json({ success: true, order });
 });
 

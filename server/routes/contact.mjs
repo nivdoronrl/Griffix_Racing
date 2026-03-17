@@ -30,7 +30,7 @@ router.post('/', async (req, res) => {
   const html = `
     <div style="font-family:sans-serif; background:#0f0f0f; padding:32px;">
       <div style="max-width:520px; margin:0 auto; background:#181818; border:1px solid #2a2a2a; padding:28px;">
-        <h2 style="color:#D4FF00; margin-top:0;">Contact Form — Griffix Racing</h2>
+        <h2 style="color:#FF6B00; margin-top:0;">Contact Form — Griffix Racing</h2>
         <p style="color:#aaa;"><strong style="color:#e5e5e5;">From:</strong> ${name} &lt;${email}&gt;</p>
         <p style="color:#aaa;"><strong style="color:#e5e5e5;">Subject:</strong> ${subject || '(no subject)'}</p>
         <p style="color:#aaa; white-space:pre-line;"><strong style="color:#e5e5e5;">Message:</strong><br>${message}</p>

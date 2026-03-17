@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Your Order | Griffix Racing</title>
+  <meta name="description" content="Look up your Griffix Racing order status and tracking information.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Archivo+Narrow:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            charcoal: { DEFAULT: '#2B2B2B', 700:'#353535', 800:'#1E1E1E', 900:'#141414' },
+            orange: { DEFAULT:'#FF6B00', dark:'#e55a00' },
+            tan: { DEFAULT:'#A39171', dark:'#7D6E56' },
+          },
+          fontFamily: { display:['Oswald','sans-serif'], body:['Archivo Narrow','sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="/shared/theme.css">
+  <style>
+    .status-step { display:flex; align-items:flex-start; gap:16px; position:relative; }
+    .status-step::before {
+      content:''; position:absolute; left:15px; top:36px; bottom:-20px; width:2px;
+      background:rgba(163,145,113,.15);
+    }
+    .status-step:last-child::before { display:none; }
+    .step-dot {
+      width:32px; height:32px; border-radius:50%; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      background:#1a1a1a; border:2px solid rgba(163,145,113,.2);
+      position:relative; z-index:1;
+    }
+    .step-dot.done  { background:#FF6B00; border-color:#FF6B00; }
+    .step-dot.active{ background:#181818; border-color:#FF6B00; box-shadow:0 0 0 4px rgba(255,107,0,.15); }
+    .step-dot.future{ background:#111; border-color:rgba(163,145,113,.15); }
+    .step-dot svg   { width:14px; height:14px; }
+  </style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<!-- Hero -->
+<section class="page-hero topo" style="padding-top:64px; position:relative;">
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse 70% 100% at 50% 120%, rgba(163,145,113,.12) 0%, transparent 60%);"></div>
+  <div class="relative z-10 max-w-7xl mx-auto px-6 py-14">
+    <div class="label mb-3">Griffix Racing</div>
+    <h1 class="font-display font-bold text-white" style="font-size:clamp(36px,6vw,72px); letter-spacing:-.03em; line-height:.95;">TRACK ORDER</h1>
+    <p class="mt-4" style="font-family:'Archivo Narrow',sans-serif; font-size:16px; color:#777; line-height:1.7; max-width:480px;">
+      Enter your order ID and email to see your current order status and tracking information.
+    </p>
+  </div>
+</section>
+
+<!-- Content -->
+<section style="padding:56px 0 96px; background:#0f0f0f; min-height:60vh;">
+  <div class="max-w-3xl mx-auto px-6">
+
+    <!-- Lookup form -->
+    <div id="lookup-form" style="background:#181818; border:1px solid rgba(163,145,113,.2); padding:36px;">
+      <h2 class="font-display text-white font-bold text-base tracking-widest uppercase mb-6">Find Your Order</h2>
+      <div style="display:grid; gap:16px;">
+        <div>
+          <label class="field-label">Order ID *</label>
+          <input id="input-order-id" type="text" class="form-input" placeholder="e.g. GRX-1E11B92C" autocomplete="off">
+        </div>
+        <div>
+          <label class="field-label">Email Address *</label>
+          <input id="input-email" type="email" class="form-input" placeholder="The email used at checkout" autocomplete="email">
+        </div>
+      </div>
+      <div id="lookup-error" style="display:none; background:#1a1010; border:1px solid rgba(200,50,50,.3); padding:14px 18px; margin-top:16px;">
+        <p id="lookup-error-msg" style="color:#c0a0a0; font-family:'Archivo Narrow',sans-serif; font-size:14px; margin:0;"></p>
+      </div>
+      <button id="lookup-btn" class="btn-primary mt-6" style="padding:14px 32px; font-size:14px; width:100%;">Look Up Order →</button>
+    </div>
+
+    <!-- Loading state -->
+    <div id="lookup-loading" style="display:none; text-align:center; padding:48px 0;">
+      <div class="skeleton" style="height:24px; width:200px; margin:0 auto 12px;"></div>
+      <div class="skeleton" style="height:16px; width:140px; margin:0 auto;"></div>
+    </div>
+
+    <!-- Order result -->
+    <div id="order-result" style="display:none;">
+
+      <!-- Status banner -->
+      <div id="status-banner" style="padding:20px 28px; margin-bottom:24px; display:flex; align-items:center; gap:16px;"></div>
+
+      <!-- Status timeline -->
+      <div style="background:#181818; border:1px solid rgba(163,145,113,.2); padding:28px 32px; margin-bottom:16px;">
+        <div class="font-display text-white font-bold text-sm tracking-widest uppercase mb-6">Order Progress</div>
+        <div id="status-timeline" style="display:grid; gap:20px; padding-bottom:4px;"></div>
+      </div>
+
+      <!-- Tracking card (shown only when tracking exists) -->
+      <div id="tracking-card" style="display:none; background:#0f1a0f; border:1px solid rgba(100,160,255,.25); border-left:4px solid #64a0ff; padding:24px 28px; margin-bottom:16px;">
+        <div class="font-display font-bold tracking-widest uppercase mb-3" style="color:#64a0ff; font-size:13px;">Shipment Tracking</div>
+        <div id="tracking-number-display" style="font-family:'Archivo Narrow',sans-serif; font-size:15px; color:#e5e5e5; margin-bottom:12px;"></div>
+        <a id="tracking-url-link" href="#" target="_blank" rel="noopener" style="display:none; font-family:'Oswald',sans-serif; font-size:13px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#0a0a0a; background:#64a0ff; padding:10px 22px; text-decoration:none;">
+          Track Package →
+        </a>
+      </div>
+
+      <!-- Order details -->
+      <div style="display:grid; md:grid-cols-2; gap:16px;">
+
+        <!-- Items -->
+        <div style="background:#181818; border:1px solid rgba(163,145,113,.2); padding:24px 28px;">
+          <div class="font-display text-white font-bold text-sm tracking-widest uppercase mb-4">Items Ordered</div>
+          <div id="result-items"></div>
+          <div style="border-top:1px solid rgba(163,145,113,.12); padding-top:14px; margin-top:8px; display:flex; flex-direction:column; gap:6px;">
+            <div style="display:flex; justify-content:space-between;">
+              <span style="font-family:'Archivo Narrow',sans-serif; font-size:13px; color:#555;">Subtotal</span>
+              <span id="result-subtotal" style="font-family:'Archivo Narrow',sans-serif; font-size:13px; color:#aaa;">—</span>
+            </div>
+            <div style="display:flex; justify-content:space-between;">
+              <span style="font-family:'Archivo Narrow',sans-serif; font-size:13px; color:#555;">Shipping</span>
+              <span id="result-shipping-cost" style="font-family:'Archivo Narrow',sans-serif; font-size:13px; color:#aaa;">—</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:baseline;">
+              <span class="font-display text-white font-bold text-sm uppercase tracking-wider">Total</span>
+              <span id="result-total" class="font-display font-bold" style="font-size:20px; color:#FF6B00;">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ship to + payment -->
+        <div style="background:#181818; border:1px solid rgba(163,145,113,.2); padding:24px 28px; margin-top:16px;">
+          <div class="font-display text-white font-bold text-sm tracking-widest uppercase mb-4">Shipment Details</div>
+          <div style="display:grid; gap:16px;">
+            <div>
+              <div style="font-family:'Archivo Narrow',sans-serif; font-size:11px; color:#555; text-transform:uppercase; letter-spacing:.08em; margin-bottom:4px;">Ship To</div>
+              <div id="result-address" style="font-family:'Archivo Narrow',sans-serif; font-size:14px; color:#aaa; line-height:1.7;">—</div>
+            </div>
+            <div>
+              <div style="font-family:'Archivo Narrow',sans-serif; font-size:11px; color:#555; text-transform:uppercase; letter-spacing:.08em; margin-bottom:4px;">Carrier</div>
+              <div id="result-carrier" style="font-family:'Archivo Narrow',sans-serif; font-size:14px; color:#aaa;">—</div>
+            </div>
+            <div>
+              <div style="font-family:'Archivo Narrow',sans-serif; font-size:11px; color:#555; text-transform:uppercase; letter-spacing:.08em; margin-bottom:4px;">Payment</div>
+              <div id="result-payment" style="font-family:'Archivo Narrow',sans-serif; font-size:14px; color:#aaa;">—</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Look up another -->
+      <div style="text-align:center; margin-top:28px;">
+        <button id="new-lookup-btn" class="btn-ghost" style="padding:12px 24px; font-size:13px;">← Look Up Another Order</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+
+<script src="/js/reveal.js"></script>
+<script src="/js/nav.js"></script>
+<script>
+
+// ── Status definitions ──────────────────────────────────────────────────────
+const STATUSES = [
+  { key:'pending',   label:'Order Received',      desc:'Your order has been placed and is awaiting payment verification.',         icon:'<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" fill="currentColor"/>', color:'#ffb400' },
+  { key:'paid',      label:'Payment Confirmed',   desc:'We\'ve received your payment. Your order is now being prepared.',          icon:'<polyline points="20 6 9 17 4 12" stroke="currentColor" stroke-width="2.5" fill="none"/>', color:'#64dc64' },
+  { key:'shipped',   label:'Shipped',             desc:'Your order has been dispatched and is on its way to you.',                 icon:'<path d="M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11a2 2 0 012 2v3m0 0h2l3 3v4h-2m-3-7H9" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>', color:'#64a0ff' },
+  { key:'delivered', label:'Delivered',           desc:'Your order has been delivered. Enjoy your Griffix kit!',                  icon:'<path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>', color:'#32dc82' },
+];
+
+const CANCELLED = { key:'cancelled', label:'Cancelled', desc:'This order has been cancelled.', color:'#c83c3c' };
+
+// ── Read query params ────────────────────────────────────────────────────────
+const params = new URLSearchParams(window.location.search);
+if (params.get('id') && params.get('email')) {
+  document.getElementById('input-order-id').value = params.get('id');
+  document.getElementById('input-email').value    = params.get('email');
+  // Auto-lookup
+  setTimeout(doLookup, 200);
+}
+
+// ── Lookup ────────────────────────────────────────────────────────────────────
+document.getElementById('lookup-btn').addEventListener('click', doLookup);
+document.getElementById('input-email').addEventListener('keydown', e => { if (e.key === 'Enter') doLookup(); });
+document.getElementById('input-order-id').addEventListener('keydown', e => { if (e.key === 'Enter') doLookup(); });
+
+async function doLookup() {
+  const orderId = document.getElementById('input-order-id').value.trim().toUpperCase();
+  const email   = document.getElementById('input-email').value.trim();
+
+  document.getElementById('lookup-error').style.display = 'none';
+
+  if (!orderId || !email) {
+    showError('Please enter both your Order ID and email address.');
+    return;
+  }
+
+  document.getElementById('lookup-form').style.display    = 'none';
+  document.getElementById('lookup-loading').style.display = 'block';
+  document.getElementById('order-result').style.display   = 'none';
+
+  try {
+    const res = await fetch(`/api/orders/track/${orderId}?email=${encodeURIComponent(email)}`);
+    const data = await res.json();
+
+    document.getElementById('lookup-loading').style.display = 'none';
+
+    if (!res.ok) {
+      document.getElementById('lookup-form').style.display = 'block';
+      showError(data.error || 'Order not found.');
+      return;
+    }
+
+    renderResult(data);
+  } catch {
+    document.getElementById('lookup-loading').style.display = 'none';
+    document.getElementById('lookup-form').style.display    = 'block';
+    showError('Could not connect to server. Please try again.');
+  }
+}
+
+function showError(msg) {
+  const el = document.getElementById('lookup-error');
+  document.getElementById('lookup-error-msg').textContent = msg;
+  el.style.display = 'block';
+}
+
+// ── Render result ─────────────────────────────────────────────────────────────
+function renderResult(order) {
+  document.getElementById('order-result').style.display = 'block';
+
+  const isCancelled = order.status === 'cancelled';
+
+  // Status banner
+  const statusDef = isCancelled ? CANCELLED : (STATUSES.find(s => s.key === order.status) || STATUSES[0]);
+  document.getElementById('status-banner').style.background = hexAlpha(statusDef.color, .08);
+  document.getElementById('status-banner').style.border = `1px solid ${hexAlpha(statusDef.color, .3)}`;
+  document.getElementById('status-banner').style.borderLeft = `4px solid ${statusDef.color}`;
+  document.getElementById('status-banner').innerHTML = `
+    <div>
+      <div class="font-display font-bold" style="font-size:18px; color:${statusDef.color}; letter-spacing:.04em;">${statusDef.label.toUpperCase()}</div>
+      <div style="font-family:'Archivo Narrow',sans-serif; font-size:13px; color:#777; margin-top:3px;">
+        Order <strong style="color:#e5e5e5;">#${order.orderId}</strong> · Placed ${new Date(order.createdAt).toLocaleDateString('en-AU', { dateStyle:'medium' })}
+      </div>
+    </div>
+  `;
+
+  // Timeline
+  const currentIdx = isCancelled ? -1 : STATUSES.findIndex(s => s.key === order.status);
+  const timelineEl = document.getElementById('status-timeline');
+
+  if (isCancelled) {
+    timelineEl.innerHTML = `
+      <div class="status-step">
+        <div class="step-dot" style="background:#2a1010; border-color:#c83c3c;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#c83c3c" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </div>
+        <div style="padding-top:6px; padding-bottom:20px;">
+          <div style="font-family:'Oswald',sans-serif; font-size:14px; font-weight:600; color:#c83c3c; letter-spacing:.04em;">CANCELLED</div>
+          <div style="font-family:'Archivo Narrow',sans-serif; font-size:13px; color:#666; margin-top:3px;">This order has been cancelled. Contact us if you believe this is a mistake.</div>
+        </div>
+      </div>`;
+  } else {
+    timelineEl.innerHTML = STATUSES.map((step, idx) => {
+      const isDone   = idx < currentIdx;
+      const isActive = idx === currentIdx;
+      const isFuture = idx > currentIdx;
+      const dotClass = isDone ? 'done' : isActive ? 'active' : 'future';
+      const labelColor = isDone || isActive ? '#e5e5e5' : '#444';
+      const descColor  = isDone ? '#555' : isActive ? '#888' : '#333';
+
+      return `
+        <div class="status-step">
+          <div class="step-dot ${dotClass}">
+            ${isDone
+              ? `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>`
+              : isActive
+                ? `<div style="width:10px; height:10px; border-radius:50%; background:#FF6B00;"></div>`
+                : `<div style="width:8px; height:8px; border-radius:50%; background:#2a2a2a;"></div>`}
+          </div>
+          <div style="padding-top:6px; padding-bottom:${idx < STATUSES.length-1 ? '20px' : '0'};">
+            <div style="font-family:'Oswald',sans-serif; font-size:14px; font-weight:600; color:${isActive ? step.color : labelColor}; letter-spacing:.04em;">${step.label.toUpperCase()}</div>
+            <div style="font-family:'Archivo Narrow',sans-serif; font-size:13px; color:${descColor}; margin-top:3px; line-height:1.5;">${isActive || isDone ? step.desc : ''}</div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // Tracking
+  if (order.trackingNumber) {
+    const card = document.getElementById('tracking-card');
+    card.style.display = 'block';
+    document.getElementById('tracking-number-display').innerHTML =
+      `<strong style="color:#555; font-size:12px; text-transform:uppercase; letter-spacing:.06em;">Tracking #:</strong> <span style="font-family:'Oswald',sans-serif; font-size:16px; letter-spacing:.04em;">${order.trackingNumber}</span>`;
+    if (order.trackingUrl) {
+      const lnk = document.getElementById('tracking-url-link');
+      lnk.href = order.trackingUrl;
+      lnk.style.display = 'inline-block';
+    }
+  }
+
+  // Items
+  document.getElementById('result-items').innerHTML = (order.items || []).map(item => `
+    <div style="display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px solid rgba(255,255,255,.04);">
+      <div style="flex:1; min-width:0;">
+        <div style="font-family:'Oswald',sans-serif; font-size:13px; font-weight:500; color:#e5e5e5;">${item.name}</div>
+        ${item.make || item.model || item.year ? `<div style="font-family:'Archivo Narrow',sans-serif; font-size:11px; color:#555; margin-top:2px;">${[item.make,item.model,item.year].filter(Boolean).join(' · ')}</div>` : ''}
+      </div>
+      <div style="text-align:right; flex-shrink:0;">
+        <div style="font-family:'Oswald',sans-serif; font-size:13px; color:#FF6B00;">$${(item.price * item.qty).toFixed(2)}</div>
+        <div style="font-family:'Archivo Narrow',sans-serif; font-size:11px; color:#555;">Qty ${item.qty}</div>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('result-subtotal').textContent      = `$${(order.subtotal || 0).toFixed(2)}`;
+  document.getElementById('result-shipping-cost').textContent = `$${parseFloat(order.shipping?.amount || 0).toFixed(2)} ${order.shipping?.currency || 'USD'}`;
+  document.getElementById('result-total').textContent         = `$${(order.total || 0).toFixed(2)}`;
+
+  // Shipment details
+  const a = order.shipping?.address;
+  document.getElementById('result-address').innerHTML = a
+    ? `${a.street1}${a.street2 ? '<br>' + a.street2 : ''}<br>${a.city}, ${a.state} ${a.zip}<br>${a.country}`
+    : '—';
+  document.getElementById('result-carrier').textContent = order.shipping
+    ? `${order.shipping.provider || ''} — ${order.shipping.servicelevel || ''}`.trim().replace(/^—\s*|^\s*—$/g,'') || '—'
+    : '—';
+  const payLabels = { paypal:'PayPal', venmo:'Venmo', zelle:'Zelle' };
+  document.getElementById('result-payment').textContent = payLabels[(order.paymentMethod || '').toLowerCase()] || order.paymentMethod || '—';
+}
+
+// ── Reset ─────────────────────────────────────────────────────────────────────
+document.getElementById('new-lookup-btn').addEventListener('click', () => {
+  document.getElementById('order-result').style.display   = 'none';
+  document.getElementById('tracking-card').style.display  = 'none';
+  document.getElementById('tracking-url-link').style.display = 'none';
+  document.getElementById('lookup-form').style.display    = 'block';
+  document.getElementById('lookup-error').style.display   = 'none';
+  document.getElementById('input-order-id').value         = '';
+  document.getElementById('input-email').value            = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+function hexAlpha(hex, alpha) {
+  const r = parseInt(hex.slice(1,3), 16);
+  const g = parseInt(hex.slice(3,5), 16);
+  const b = parseInt(hex.slice(5,7), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+</script>
+</body>
+</html>

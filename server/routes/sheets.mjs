@@ -41,7 +41,7 @@ export default router;
 // ── Placeholder data (used before Sheets is configured) ─────────────────
 function _placeholderProducts() {
   return [
-    { id: 'p1', name: 'KTM 250/350 SXF Stealth Kit', category: 'graphic-kit', make: 'KTM', model: '250/350 SXF', year_from: 2023, year_to: 2025, price: 249, sku: 'GRX-KTM-SXF-2325', image_url: '', description: 'Full graphic kit for KTM SXF, 3M laminate, UV rated.', in_stock: true, featured: true },
+    { id: 'p1', name: 'KTM 250/350 SXF Stealth Kit', category: 'graphic-kit', make: 'KTM', model: '250/350 SXF', year_from: 2023, year_to: 2025, price: 249, sku: 'GRX-KTM-SXF-2325', image_url: '', description: 'Full graphic kit for KTM SXF. Substance Inc. X1 UltraCurve with UltraCurve 1500 overlaminate, UV rated.', in_stock: true, featured: true },
     { id: 'p2', name: 'Husqvarna FE 350 Coyote Kit', category: 'graphic-kit', make: 'Husqvarna', model: 'FE 350', year_from: 2023, year_to: 2025, price: 249, sku: 'GRX-HQV-FE350-2325', image_url: '', description: 'Enduro graphic kit with Coyote Tan colourway.', in_stock: true, featured: true },
     { id: 'p3', name: 'Yamaha YZ250F Acid Kit', category: 'graphic-kit', make: 'Yamaha', model: 'YZ250F', year_from: 2024, year_to: 2025, price: 229, sku: 'GRX-YAM-YZ250F-2425', image_url: '', description: 'Acid Lime signature kit for Yamaha YZ250F.', in_stock: true, featured: true },
     { id: 'p4', name: 'Honda CRF 450R Stealth Kit', category: 'graphic-kit', make: 'Honda', model: 'CRF 450R', year_from: 2021, year_to: 2024, price: 229, sku: 'GRX-HON-CRF450R-2124', image_url: '', description: 'Stealth Charcoal full kit for Honda CRF 450R.', in_stock: true, featured: true },

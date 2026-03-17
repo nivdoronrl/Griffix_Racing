@@ -41,7 +41,9 @@ app.get('/api/health', (_req, res) => res.json({ ok: true, ts: Date.now() }));
 // ── Public config (non-sensitive env vars for frontend) ───────────────────────
 app.get('/api/config', (_req, res) => {
   res.json({
-    paypalMeUrl: process.env.PAYPAL_ME_URL || '',
+    paypalMeUrl:  process.env.PAYPAL_ME_URL || 'https://www.paypal.com/paypalme/GriffixRacing',
+    zelleContact: process.env.ZELLE_CONTACT || 'payments@griffixracing.com',
+    currency:     'USD',
   });
 });
 
