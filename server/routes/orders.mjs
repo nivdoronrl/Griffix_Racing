@@ -12,7 +12,8 @@ import { sendOrderNotification, sendCustomerConfirmation, sendTrackingUpdate } f
 
 const router = express.Router();
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ORDERS_FILE = join(__dirname, '../data/orders.json');
+const DATA_DIR   = process.env.DATA_DIR || join(__dirname, '../data');
+const ORDERS_FILE = join(DATA_DIR, 'orders.json');
 
 function readOrders() {
   try { return JSON.parse(readFileSync(ORDERS_FILE, 'utf8')); }

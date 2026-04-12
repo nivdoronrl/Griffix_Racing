@@ -3,7 +3,8 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const GALLERY_PATH = join(__dirname, '..', 'data', 'gallery.json');
+const DATA_DIR = process.env.DATA_DIR || join(__dirname, '..', 'data');
+const GALLERY_PATH = join(DATA_DIR, 'gallery.json');
 
 export async function readGallery() {
   const raw = await readFile(GALLERY_PATH, 'utf-8');

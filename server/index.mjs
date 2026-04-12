@@ -4,6 +4,9 @@ import cors from 'cors';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
+// Initialise directories and seed data files before anything else
+import { UPLOADS_DIR } from './startup.mjs';
+
 // Routes
 import ordersRouter from './routes/orders.mjs';
 import shippoRouter from './routes/shippo.mjs';
@@ -25,6 +28,11 @@ app.use(express.json());
 
 // ── Static files — serve the whole project root ────────────────────────────
 app.use(express.static(ROOT));
+
+// ── Uploads — serve from configurable directory (Railway persistent volume) ──
+// This must come AFTER the static root so that /uploads/* is handled here
+// even when UPLOADS_DIR points outside the project root.
+app.use('/uploads', express.static(UPLOADS_DIR));
 
 // ── API Routes ──────────────────────────────────────────────────────────────
 app.use('/api/orders', ordersRouter);

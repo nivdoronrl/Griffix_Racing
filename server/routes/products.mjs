@@ -24,7 +24,13 @@ import { readProducts, writeProducts } from '../lib/products-store.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..', '..');
-const UPLOADS_DIR = join(ROOT, 'uploads', 'products');
+const BASE_UPLOADS = process.env.UPLOADS_DIR || join(ROOT, 'uploads');
+const UPLOADS_DIR  = join(BASE_UPLOADS, 'products');
+
+// Resolve a stored relative url like 'uploads/products/xxx.png' to an absolute path
+function absPath(url) {
+  return join(BASE_UPLOADS, url.replace(/^uploads\//, ''));
+}
 
 // Ensure uploads directory exists
 if (!existsSync(UPLOADS_DIR)) {
@@ -175,8 +181,7 @@ router.delete('/:id', adminAuth, async (req, res) => {
 
     // Delete associated image files
     for (const imgPath of product.images) {
-      const fullPath = join(ROOT, imgPath);
-      try { await unlink(fullPath); } catch {}
+      try { await unlink(absPath(imgPath)); } catch {}
     }
 
     products.splice(idx, 1);
@@ -202,7 +207,7 @@ router.delete('/:id/images/:filename', adminAuth, async (req, res) => {
     await writeProducts(products);
 
     // Delete the file
-    try { await unlink(join(ROOT, imgPath)); } catch {}
+    try { await unlink(absPath(imgPath)); } catch {}
 
     res.json({ success: true, images: products[idx].images });
   } catch (err) {

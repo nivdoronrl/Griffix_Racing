@@ -22,7 +22,13 @@ import { readGallery, writeGallery } from '../lib/gallery-store.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..', '..');
-const UPLOADS_DIR = join(ROOT, 'uploads', 'gallery');
+const BASE_UPLOADS = process.env.UPLOADS_DIR || join(ROOT, 'uploads');
+const UPLOADS_DIR  = join(BASE_UPLOADS, 'gallery');
+
+// Resolve a stored relative url like 'uploads/gallery/xxx.jpg' to an absolute path
+function absPath(url) {
+  return join(BASE_UPLOADS, url.replace(/^uploads\//, ''));
+}
 
 if (!existsSync(UPLOADS_DIR)) {
   await mkdir(UPLOADS_DIR, { recursive: true });
@@ -120,7 +126,7 @@ router.put('/:id', adminAuth, upload.single('image'), async (req, res) => {
 
     // If a new image was uploaded, delete old file
     if (req.file && existing.image_url && !existing.image_url.startsWith('http')) {
-      try { await unlink(join(ROOT, existing.image_url)); } catch {}
+      try { await unlink(absPath(existing.image_url)); } catch {}
     }
 
     items[idx] = {
@@ -156,7 +162,7 @@ router.delete('/:id', adminAuth, async (req, res) => {
 
     const item = items[idx];
     if (item.image_url && !item.image_url.startsWith('http')) {
-      try { await unlink(join(ROOT, item.image_url)); } catch {}
+      try { await unlink(absPath(item.image_url)); } catch {}
     }
 
     items.splice(idx, 1);
