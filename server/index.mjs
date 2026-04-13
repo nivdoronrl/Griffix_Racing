@@ -26,6 +26,14 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+// Strip trailing slashes so proxies don't get redirect loops
+app.use((req, _res, next) => {
+  if (req.path.length > 1 && req.path.endsWith('/')) {
+    req.url = req.url.slice(0, -1) || '/';
+  }
+  next();
+});
+
 // ── Static files — serve the whole project root ────────────────────────────
 app.use(express.static(ROOT));
 
