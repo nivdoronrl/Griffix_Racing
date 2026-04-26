@@ -19,8 +19,9 @@ temporary screenshots/
 *.log
 npm-debug.log*
 
-# Uploaded user files — auto-created by server on first run
-uploads/
+# Uploaded user files — new uploads added via admin panel
+# (existing images are committed so they work on Render)
+uploads/.gitkeep
 
 # Live order data — contains customer PII, never commit
 server/data/orders.json
