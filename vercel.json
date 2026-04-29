@@ -1,6 +1,7 @@
 {
   "version": 2,
-"rewrites": [
+  "cleanUrls": true,
+  "rewrites": [
     {
       "source": "/api/:path*",
       "destination": "https://griffix-racing.onrender.com/api/:path*"
