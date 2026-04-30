@@ -232,44 +232,83 @@
 <!-- ── Facebook Feed ──────────────────────────────────────────────────────── -->
 <section style="background:#0d0d0d; padding:0 0 80px;">
 
-  <!-- Full-width frame -->
-  <div class="fb-frame" style="border-radius:0; box-shadow:none; border-left:none; border-right:none; position:relative;">
+  <!-- Orange top bar accent -->
+  <div style="height:3px; background:linear-gradient(to right, transparent, #FF6B00 30%, #FF6B00 70%, transparent);"></div>
 
-    <!-- Orange top bar accent -->
-    <div style="height:3px; background:linear-gradient(to right, #FF6B00, rgba(255,107,0,.2), transparent);"></div>
+  <!-- Three-column layout: side panel | feed | side panel -->
+  <div style="display:grid; grid-template-columns:1fr 500px 1fr; min-height:1080px; position:relative;">
 
-    <!-- Loading state -->
-    <div class="fb-loader" id="fb-loader">
-      <div class="fb-loader-logo">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="rgba(163,145,113,.5)"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+    <!-- Left decorative panel -->
+    <div style="background:#0a0a0a; border-right:1px solid rgba(163,145,113,.08); display:flex; flex-direction:column; justify-content:center; align-items:flex-end; padding:60px 40px; gap:48px;">
+
+      <!-- Stat block -->
+      <div style="text-align:right;">
+        <div style="font-family:'Oswald',sans-serif; font-size:48px; font-weight:700; color:#fff; line-height:1; letter-spacing:-.03em;">621</div>
+        <div style="font-family:'Archivo Narrow',sans-serif; font-size:11px; color:#A39171; letter-spacing:.18em; margin-top:6px;">FOLLOWERS</div>
       </div>
-      <div class="fb-loader-bar"></div>
-      <span style="font-family:'Archivo Narrow',sans-serif; font-size:12px; color:#444;">Loading feed…</span>
+      <div style="width:1px; height:80px; background:linear-gradient(to bottom, transparent, rgba(163,145,113,.3), transparent);"></div>
+      <div style="text-align:right;">
+        <div style="font-family:'Archivo Narrow',sans-serif; font-size:13px; color:#555; line-height:1.7; max-width:180px;">
+          Every post, photo, and video goes live here the moment we share it.
+        </div>
+      </div>
+      <div style="width:1px; height:80px; background:linear-gradient(to bottom, transparent, rgba(163,145,113,.3), transparent);"></div>
+      <!-- Side label -->
+      <div class="side-label" style="opacity:.25;">LIVE FEED</div>
     </div>
 
-    <!-- Facebook Page Plugin — full width -->
-    <iframe
-      id="fb-iframe"
-      src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FGriffixRacing%2F&tabs=timeline%2Cphotos&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false&lazy=true"
-      height="1000"
-      scrolling="yes"
-      frameborder="0"
-      allowfullscreen="true"
-      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-      style="width:100%; min-height:1000px; display:block;"
-      onload="document.getElementById('fb-loader').classList.add('hidden')"
-    ></iframe>
-  </div>
+    <!-- Centre: Facebook feed -->
+    <div class="fb-frame fb-frame-inner" style="border-radius:0; position:relative;">
 
-  <!-- Footer -->
-  <div class="max-w-7xl mx-auto px-6" style="margin-top:32px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;">
-    <p style="font-family:'Archivo Narrow',sans-serif; font-size:13px; color:#444; line-height:1.6;">
-      This feed updates automatically — every photo, video and post goes live here the moment we share it.
-    </p>
-    <a href="https://www.facebook.com/GriffixRacing/" target="_blank" rel="noopener" class="fb-cta">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-      FOLLOW ON FACEBOOK
-    </a>
+      <!-- Loading state -->
+      <div class="fb-loader" id="fb-loader">
+        <div class="fb-loader-logo">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="rgba(163,145,113,.5)"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </div>
+        <div class="fb-loader-bar"></div>
+        <span style="font-family:'Archivo Narrow',sans-serif; font-size:12px; color:#444;">Loading feed…</span>
+      </div>
+
+      <iframe
+        id="fb-iframe"
+        src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FGriffixRacing%2F&tabs=timeline%2Cphotos&width=500&small_header=false&adapt_container_width=false&hide_cover=false&show_facepile=false&lazy=true"
+        width="500"
+        height="1080"
+        scrolling="yes"
+        frameborder="0"
+        allowfullscreen="true"
+        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+        style="display:block; width:500px;"
+        onload="document.getElementById('fb-loader').classList.add('hidden')"
+      ></iframe>
+    </div>
+
+    <!-- Right decorative panel -->
+    <div style="background:#0a0a0a; border-left:1px solid rgba(163,145,113,.08); display:flex; flex-direction:column; justify-content:center; align-items:flex-start; padding:60px 40px; gap:48px;">
+
+      <!-- CTA -->
+      <div>
+        <div style="font-family:'Oswald',sans-serif; font-size:13px; font-weight:600; letter-spacing:.18em; color:#A39171; margin-bottom:16px;">FOLLOW ALONG</div>
+        <a href="https://www.facebook.com/GriffixRacing/" target="_blank" rel="noopener" class="fb-cta" style="display:inline-flex;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          FOLLOW ON FACEBOOK
+        </a>
+      </div>
+
+      <div style="width:1px; height:80px; background:linear-gradient(to bottom, transparent, rgba(163,145,113,.3), transparent);"></div>
+
+      <!-- Tags -->
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div style="font-family:'Archivo Narrow',sans-serif; font-size:11px; letter-spacing:.15em; color:#333;">#GRIFFIXRACING</div>
+        <div style="font-family:'Archivo Narrow',sans-serif; font-size:11px; letter-spacing:.15em; color:#333;">#MXGRAPHICS</div>
+        <div style="font-family:'Archivo Narrow',sans-serif; font-size:11px; letter-spacing:.15em; color:#333;">#MOTOCROSS</div>
+        <div style="font-family:'Archivo Narrow',sans-serif; font-size:11px; letter-spacing:.15em; color:#333;">#ENDURO</div>
+      </div>
+
+      <div style="width:1px; height:80px; background:linear-gradient(to bottom, transparent, rgba(163,145,113,.3), transparent);"></div>
+      <div class="side-label" style="opacity:.25;">REAL TIME</div>
+    </div>
+
   </div>
 
 </section>
