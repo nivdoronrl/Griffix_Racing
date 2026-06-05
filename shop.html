@@ -196,17 +196,38 @@ let _ffModel = '';
 let _ffYear = '';
 
 // ── Boot ─────────────────────────────────────────────────────────────────────
+function fetchWithTimeout(url, ms) {
+  const ctrl = new AbortController();
+  const id = setTimeout(() => ctrl.abort(), ms);
+  return fetch(url, { signal: ctrl.signal }).finally(() => clearTimeout(id));
+}
+
 async function boot() {
   try {
     const [bikeRes, prodRes] = await Promise.all([
-      fetch('/api/products/bikes'),
-      fetch('/api/products'),
+      fetchWithTimeout('/api/products/bikes', 15000),
+      fetchWithTimeout('/api/products', 15000),
     ]);
     _bikes = await bikeRes.json();
     const data = await prodRes.json();
     _allProducts = data.products || [];
-  } catch {
-    _allProducts = _fallbackProducts();
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      // Server warming up — retry once silently
+      try {
+        const [bikeRes, prodRes] = await Promise.all([
+          fetchWithTimeout('/api/products/bikes', 30000),
+          fetchWithTimeout('/api/products', 30000),
+        ]);
+        _bikes = await bikeRes.json();
+        const data = await prodRes.json();
+        _allProducts = data.products || [];
+      } catch {
+        _allProducts = _fallbackProducts();
+      }
+    } else {
+      _allProducts = _fallbackProducts();
+    }
   }
   populateFitFinder();
   applyFiltersFromURL();
@@ -339,8 +360,8 @@ function filterProducts() {
   const category = getActiveCategory();
   return _allProducts.filter(p => {
     if (category && p.category !== category) return false;
-    if (_ffMake && p.make && p.make !== _ffMake) return false;
-    if (_ffModel && p.model && p.model !== _ffModel) return false;
+    if (_ffMake && p.make !== _ffMake) return false;
+    if (_ffModel && p.model !== _ffModel) return false;
     if (_ffYear) {
       const y = parseInt(_ffYear);
       if (p.year_from && y < parseInt(p.year_from)) return false;
