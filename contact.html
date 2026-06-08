@@ -171,15 +171,19 @@ document.getElementById('contact-form').addEventListener('submit', async (e) => 
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, subject, message }),
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Send failed');
+    let data;
+    try { data = await res.json(); } catch { data = {}; }
+    if (!res.ok) throw new Error(data.error || 'Message could not be sent. Please try again.');
 
     document.getElementById('contact-form').style.display = 'none';
     document.getElementById('contact-success').style.display = 'block';
   } catch (err) {
     btn.style.display = 'inline-block';
     loading.style.display = 'none';
-    errorEl.textContent = err.message || 'Message could not be sent. Please try again.';
+    const msg = (err.message && !err.message.includes('token') && !err.message.includes('JSON'))
+      ? err.message
+      : 'Message could not be sent. Please try again in a moment.';
+    errorEl.textContent = msg;
     errorEl.style.display = 'block';
   }
 });
