@@ -840,49 +840,102 @@
 <!-- ═══════════════════════════════════════════════
      RIDE GALLERY
 ═══════════════════════════════════════════════ -->
-<section style="padding:96px 0; background:#141414;">
-  <div class="max-w-7xl mx-auto px-6">
-    <div class="text-center mb-10">
-      <div class="label mb-4 justify-center">#GriffixRacing</div>
-      <h2 class="font-display font-bold text-white" style="font-size:clamp(34px,4.5vw,52px); letter-spacing:-.03em;">FROM THE PACK</h2>
+<section style="padding:96px 0; background:#141414; position:relative; overflow:hidden;">
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse 80% 60% at 50% 50%, rgba(255,107,0,.03) 0%, transparent 65%);"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-6">
+
+    <!-- Header -->
+    <div style="display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:20px; margin-bottom:40px;">
+      <div>
+        <div class="label mb-4">#GriffixRacing</div>
+        <h2 class="font-display font-bold text-white" style="font-size:clamp(34px,4.5vw,52px); letter-spacing:-.03em; line-height:.95;">
+          SEE THE WORK
+        </h2>
+        <p style="font-family:'Archivo Narrow',sans-serif; font-size:15px; color:#666; margin-top:10px; max-width:420px; line-height:1.7;">
+          Every kit we produce. Every build out in the wild. Browse our full photo gallery on Facebook.
+        </p>
+      </div>
+      <a href="https://www.facebook.com/GriffixRacing/photos" target="_blank" rel="noopener"
+         style="display:inline-flex; align-items:center; gap:10px; padding:13px 26px; background:#1877F2; color:#fff; font-family:'Oswald',sans-serif; font-size:13px; font-weight:600; letter-spacing:.08em; text-decoration:none; border-radius:3px; flex-shrink:0; transition:opacity .2s, transform .2s;"
+         onmouseover="this.style.opacity='.88';this.style.transform='translateY(-2px)'"
+         onmouseout="this.style.opacity='1';this.style.transform='translateY(0)'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        VIEW ALL PHOTOS
+      </a>
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-1">
-      <div class="gallery-img" style="height:260px;">
-        <img src="https://images.pexels.com/photos/564094/pexels-photo-564094.jpeg?auto=compress&cs=tinysrgb&w=600&h=520&fit=crop"
-             alt="Griffix Racing — motocross kit in action" class="absolute inset-0 w-full h-full object-cover" onerror="this.style.display='none'">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-        <div class="absolute inset-0" style="background:radial-gradient(ellipse at 30% 60%, rgba(255,107,0,.10) 0%, transparent 50%);"></div>
-        <div class="lime-tint"></div>
-      </div>
-      <div class="gallery-img" style="height:260px;">
-        <img src="https://images.pexels.com/photos/776108/pexels-photo-776108.jpeg?auto=compress&cs=tinysrgb&w=600&h=520&fit=crop"
-             alt="Griffix Racing — dirt bike graphics" class="absolute inset-0 w-full h-full object-cover" onerror="this.style.display='none'">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-        <div class="absolute inset-0" style="background:radial-gradient(ellipse at 70% 40%, rgba(163,145,113,.12) 0%, transparent 50%);"></div>
-        <div class="lime-tint"></div>
-      </div>
-      <div class="gallery-img" style="height:260px;">
-        <img src="https://images.pexels.com/photos/2745827/pexels-photo-2745827.jpeg?auto=compress&cs=tinysrgb&w=600&h=520&fit=crop"
-             alt="Griffix Racing — hard enduro kit" class="absolute inset-0 w-full h-full object-cover" onerror="this.style.display='none'">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-        <div class="absolute inset-0" style="background:radial-gradient(ellipse at 50% 70%, rgba(255,107,0,.09) 0%, transparent 50%);"></div>
-        <div class="lime-tint"></div>
-      </div>
-      <div class="gallery-img" style="height:260px;">
-        <img src="https://images.pexels.com/photos/3536269/pexels-photo-3536269.jpeg?auto=compress&cs=tinysrgb&w=600&h=520&fit=crop"
-             alt="Griffix Racing — custom dirt bike kit" class="absolute inset-0 w-full h-full object-cover" onerror="this.style.display='none'">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-        <div class="absolute inset-0" style="background:radial-gradient(ellipse at 30% 30%, rgba(255,107,0,.09) 0%, transparent 50%);"></div>
-        <div class="lime-tint"></div>
-      </div>
+    <!-- Photo grid — loads from gallery API -->
+    <div id="hp-gallery-grid" style="display:grid; grid-template-columns:repeat(4,1fr); gap:4px;">
+      <!-- Skeleton placeholders while loading -->
+      <div class="hp-skel" style="height:240px; background:#1a1a1a; animation:hp-pulse 1.4s ease-in-out infinite;"></div>
+      <div class="hp-skel" style="height:240px; background:#1a1a1a; animation:hp-pulse 1.4s ease-in-out infinite .2s;"></div>
+      <div class="hp-skel" style="height:240px; background:#1a1a1a; animation:hp-pulse 1.4s ease-in-out infinite .4s;"></div>
+      <div class="hp-skel" style="height:240px; background:#1a1a1a; animation:hp-pulse 1.4s ease-in-out infinite .6s;"></div>
+      <div class="hp-skel" style="height:240px; background:#1a1a1a; animation:hp-pulse 1.4s ease-in-out infinite .1s;"></div>
+      <div class="hp-skel" style="height:240px; background:#1a1a1a; animation:hp-pulse 1.4s ease-in-out infinite .3s;"></div>
+      <div class="hp-skel" style="height:240px; background:#1a1a1a; animation:hp-pulse 1.4s ease-in-out infinite .5s;"></div>
+      <div class="hp-skel" style="height:240px; background:#1a1a1a; animation:hp-pulse 1.4s ease-in-out infinite .7s;"></div>
     </div>
 
-    <div class="text-center mt-8">
-      <a href="https://www.facebook.com/GriffixRacing" target="_blank" rel="noopener" class="btn-ghost">Follow @GriffixRacing</a>
-    </div>
+    <!-- Full gallery CTA bar -->
+    <a href="https://www.facebook.com/GriffixRacing/photos" target="_blank" rel="noopener"
+       style="display:flex; align-items:center; justify-content:center; gap:14px; margin-top:4px; padding:22px; background:#0f0f0f; border:1px solid rgba(163,145,113,.12); text-decoration:none; transition:border-color .2s, background .2s;"
+       onmouseover="this.style.borderColor='rgba(255,107,0,.4)';this.style.background='#111'"
+       onmouseout="this.style.borderColor='rgba(163,145,113,.12)';this.style.background='#0f0f0f'">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      <span style="font-family:'Oswald',sans-serif; font-size:13px; font-weight:600; letter-spacing:.14em; color:#A39171;">SEE ALL OUR WORK ON FACEBOOK PHOTOS →</span>
+    </a>
+
   </div>
 </section>
+
+<style>
+@keyframes hp-pulse {
+  0%,100% { opacity:.4; } 50% { opacity:.8; }
+}
+#hp-gallery-grid a.hp-tile {
+  position:relative; overflow:hidden; display:block; height:240px; background:#111;
+}
+#hp-gallery-grid a.hp-tile img {
+  width:100%; height:100%; object-fit:cover; display:block;
+  transition:transform .4s ease;
+}
+#hp-gallery-grid a.hp-tile:hover img { transform:scale(1.06); }
+#hp-gallery-grid a.hp-tile .hp-overlay {
+  position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(0,0,0,.65) 0%, transparent 50%);
+  opacity:0; transition:opacity .3s;
+}
+#hp-gallery-grid a.hp-tile:hover .hp-overlay { opacity:1; }
+#hp-gallery-grid a.hp-tile .hp-eye {
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  opacity:0; transition:opacity .3s;
+}
+#hp-gallery-grid a.hp-tile:hover .hp-eye { opacity:1; }
+</style>
+
+<script>
+(function() {
+  fetch('/api/gallery')
+    .then(r => r.json())
+    .then(({ gallery }) => {
+      const items = (gallery || []).filter(i => i.image_url).slice(0, 8);
+      if (!items.length) return;
+      const grid = document.getElementById('hp-gallery-grid');
+      grid.innerHTML = items.map(item => `
+        <a href="https://www.facebook.com/GriffixRacing/photos" target="_blank" rel="noopener" class="hp-tile">
+          <img src="/${item.image_url}" alt="${item.title || 'Griffix Racing graphic kit'}" loading="lazy">
+          <div class="hp-overlay"></div>
+          <div class="hp-eye">
+            <svg width="28" height="28" fill="none" stroke="#fff" stroke-width="1.5" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+        </a>
+      `).join('');
+    })
+    .catch(() => {});
+})();
+</script>
 
 
 <!-- ═══════════════════════════════════════════════
