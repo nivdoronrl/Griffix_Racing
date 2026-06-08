@@ -1,227 +1,182 @@
 /**
- * mailer.mjs
- * Nodemailer helper. Sends order confirmation emails.
+ * mailer.mjs — Resend API helper for all transactional emails.
  */
 
-import nodemailer from 'nodemailer';
+const FROM_ORDERS  = 'Griffix Racing Orders <orders@griffixracing.com>';
+const FROM_DEFAULT = 'Griffix Racing <noreply@griffixracing.com>';
 
-let _transport = null;
+async function resendSend({ from, to, replyTo, subject, html }) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    console.log('[mailer] No RESEND_API_KEY — skipping send. Subject:', subject);
+    return;
+  }
+  const body = { from, to, subject, html };
+  if (replyTo) body.reply_to = replyTo;
 
-function _getTransport() {
-  if (_transport) return _transport;
-  _transport = nodemailer.createTransport({
-    host:   process.env.SMTP_HOST || 'smtp.gmail.com',
-    port:   parseInt(process.env.SMTP_PORT) || 587,
-    secure: false,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
     },
+    body: JSON.stringify(body),
   });
-  return _transport;
+
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Resend error ${res.status}: ${err}`);
+  }
+  return res.json();
 }
 
-/**
- * Send an order notification email to the shop owner.
- * @param {Object} order  — full order object from orders.mjs
- */
 export async function sendOrderNotification(order) {
-  const transport = _getTransport();
-
   const itemRows = order.items.map(i =>
     `<tr>
-      <td style="padding:8px 12px; border-bottom:1px solid #222; font-family:'Helvetica',sans-serif; font-size:14px; color:#ccc;">${i.name}</td>
+      <td style="padding:8px 12px; border-bottom:1px solid #222; font-family:Helvetica,sans-serif; font-size:14px; color:#ccc;">${i.name}</td>
       <td style="padding:8px 12px; border-bottom:1px solid #222; text-align:center; color:#ccc;">${i.make || ''} ${i.model || ''} ${i.year || ''}</td>
       <td style="padding:8px 12px; border-bottom:1px solid #222; text-align:center; color:#ccc;">${i.qty}</td>
       <td style="padding:8px 12px; border-bottom:1px solid #222; text-align:right; color:#FF6B00;">$${(i.price * i.qty).toFixed(2)}</td>
     </tr>`
   ).join('');
 
-  const html = `
-<!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"></head>
-<body style="background:#0f0f0f; margin:0; padding:32px; font-family:'Helvetica',sans-serif;">
-  <div style="max-width:600px; margin:0 auto; background:#181818; border:1px solid #2a2a2a;">
-
-    <div style="background:#FF6B00; padding:20px 28px;">
-      <h1 style="margin:0; font-size:22px; font-weight:700; letter-spacing:.06em; color:#0f0f0f; text-transform:uppercase;">New Order — Griffix Racing</h1>
-    </div>
-
-    <div style="padding:28px;">
-      <p style="color:#aaa; font-size:14px; margin-top:0;">
-        Order <strong style="color:#fff;">#${order.orderId}</strong> received on ${new Date(order.createdAt).toLocaleString('en-AU')}.
-      </p>
-
-      <h2 style="color:#fff; font-size:15px; text-transform:uppercase; letter-spacing:.08em; border-bottom:1px solid #2a2a2a; padding-bottom:10px; margin-bottom:0;">Customer</h2>
-      <table style="width:100%; margin-bottom:24px; margin-top:10px;">
-        <tr><td style="color:#777; font-size:13px; padding:4px 0; width:120px;">Name</td><td style="color:#e5e5e5; font-size:13px;">${order.customer.name}</td></tr>
-        <tr><td style="color:#777; font-size:13px; padding:4px 0;">Email</td><td style="color:#e5e5e5; font-size:13px;">${order.customer.email}</td></tr>
-        <tr><td style="color:#777; font-size:13px; padding:4px 0;">Phone</td><td style="color:#e5e5e5; font-size:13px;">${order.customer.phone || '—'}</td></tr>
-      </table>
-
-      <h2 style="color:#fff; font-size:15px; text-transform:uppercase; letter-spacing:.08em; border-bottom:1px solid #2a2a2a; padding-bottom:10px; margin-bottom:0;">Ship To</h2>
-      <p style="color:#e5e5e5; font-size:13px; margin:10px 0 24px;">
-        ${order.shipping.address.street1}${order.shipping.address.street2 ? ', ' + order.shipping.address.street2 : ''}<br>
-        ${order.shipping.address.city}, ${order.shipping.address.state} ${order.shipping.address.zip}<br>
-        ${order.shipping.address.country}
-      </p>
-
-      <h2 style="color:#fff; font-size:15px; text-transform:uppercase; letter-spacing:.08em; border-bottom:1px solid #2a2a2a; padding-bottom:10px; margin-bottom:0;">Items</h2>
-      <table style="width:100%; border-collapse:collapse; margin-top:10px;">
-        <thead>
-          <tr style="background:#222;">
-            <th style="padding:8px 12px; text-align:left; color:#777; font-size:12px; font-weight:500; text-transform:uppercase; letter-spacing:.06em;">Item</th>
-            <th style="padding:8px 12px; text-align:center; color:#777; font-size:12px; font-weight:500; text-transform:uppercase; letter-spacing:.06em;">Fitment</th>
-            <th style="padding:8px 12px; text-align:center; color:#777; font-size:12px; font-weight:500; text-transform:uppercase; letter-spacing:.06em;">Qty</th>
-            <th style="padding:8px 12px; text-align:right; color:#777; font-size:12px; font-weight:500; text-transform:uppercase; letter-spacing:.06em;">Price</th>
-          </tr>
-        </thead>
-        <tbody>${itemRows}</tbody>
-      </table>
-
-      <table style="width:100%; margin-top:16px;">
-        <tr><td style="color:#777; font-size:13px; padding:4px 0;">Subtotal</td><td style="text-align:right; color:#ccc; font-size:13px;">$${order.subtotal.toFixed(2)}</td></tr>
-        <tr><td style="color:#777; font-size:13px; padding:4px 0;">Shipping (${order.shipping.provider} ${order.shipping.servicelevel})</td><td style="text-align:right; color:#ccc; font-size:13px;">$${parseFloat(order.shipping.amount).toFixed(2)}</td></tr>
-        <tr style="border-top:1px solid #2a2a2a;">
-          <td style="color:#fff; font-size:15px; font-weight:700; padding:10px 0 0;">Total</td>
-          <td style="text-align:right; color:#FF6B00; font-size:18px; font-weight:700; padding:10px 0 0;">$${order.total.toFixed(2)}</td>
-        </tr>
-      </table>
-
-      <div style="background:#111; border:1px solid #2a2a2a; padding:16px; margin-top:28px;">
-        <p style="color:#777; font-size:12px; margin:0 0 6px; text-transform:uppercase; letter-spacing:.06em;">Payment Method</p>
-        <p style="color:#e5e5e5; font-size:14px; margin:0;">${order.paymentMethod || 'Not specified'}</p>
-      </div>
-    </div>
-
-    <div style="padding:16px 28px; border-top:1px solid #2a2a2a;">
-      <p style="color:#444; font-size:11px; margin:0;">Griffix Racing — Auto-generated order notification. Do not reply.</p>
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"></head>
+<body style="background:#0f0f0f;margin:0;padding:32px;font-family:Helvetica,sans-serif;">
+<div style="max-width:600px;margin:0 auto;background:#181818;border:1px solid #2a2a2a;">
+  <div style="background:#FF6B00;padding:20px 28px;">
+    <h1 style="margin:0;font-size:22px;font-weight:700;letter-spacing:.06em;color:#0f0f0f;text-transform:uppercase;">New Order — Griffix Racing</h1>
+  </div>
+  <div style="padding:28px;">
+    <p style="color:#aaa;font-size:14px;margin-top:0;">Order <strong style="color:#fff;">#${order.orderId}</strong> received on ${new Date(order.createdAt).toLocaleString('en-AU')}.</p>
+    <h2 style="color:#fff;font-size:15px;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid #2a2a2a;padding-bottom:10px;">Customer</h2>
+    <table style="width:100%;margin-bottom:24px;margin-top:10px;">
+      <tr><td style="color:#777;font-size:13px;padding:4px 0;width:120px;">Name</td><td style="color:#e5e5e5;font-size:13px;">${order.customer.name}</td></tr>
+      <tr><td style="color:#777;font-size:13px;padding:4px 0;">Email</td><td style="color:#e5e5e5;font-size:13px;">${order.customer.email}</td></tr>
+      <tr><td style="color:#777;font-size:13px;padding:4px 0;">Phone</td><td style="color:#e5e5e5;font-size:13px;">${order.customer.phone || '—'}</td></tr>
+    </table>
+    <h2 style="color:#fff;font-size:15px;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid #2a2a2a;padding-bottom:10px;">Ship To</h2>
+    <p style="color:#e5e5e5;font-size:13px;margin:10px 0 24px;">
+      ${order.shipping.address.street1}${order.shipping.address.street2 ? ', '+order.shipping.address.street2 : ''}<br>
+      ${order.shipping.address.city}, ${order.shipping.address.state} ${order.shipping.address.zip}<br>
+      ${order.shipping.address.country}
+    </p>
+    <h2 style="color:#fff;font-size:15px;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid #2a2a2a;padding-bottom:10px;">Items</h2>
+    <table style="width:100%;border-collapse:collapse;margin-top:10px;">
+      <thead><tr style="background:#222;">
+        <th style="padding:8px 12px;text-align:left;color:#777;font-size:12px;text-transform:uppercase;">Item</th>
+        <th style="padding:8px 12px;text-align:center;color:#777;font-size:12px;text-transform:uppercase;">Fitment</th>
+        <th style="padding:8px 12px;text-align:center;color:#777;font-size:12px;text-transform:uppercase;">Qty</th>
+        <th style="padding:8px 12px;text-align:right;color:#777;font-size:12px;text-transform:uppercase;">Price</th>
+      </tr></thead>
+      <tbody>${itemRows}</tbody>
+    </table>
+    <table style="width:100%;margin-top:16px;">
+      <tr><td style="color:#777;font-size:13px;padding:4px 0;">Subtotal</td><td style="text-align:right;color:#ccc;font-size:13px;">$${order.subtotal.toFixed(2)}</td></tr>
+      <tr><td style="color:#777;font-size:13px;padding:4px 0;">Shipping</td><td style="text-align:right;color:#ccc;font-size:13px;">$${parseFloat(order.shipping.amount).toFixed(2)}</td></tr>
+      <tr style="border-top:1px solid #2a2a2a;">
+        <td style="color:#fff;font-size:15px;font-weight:700;padding:10px 0 0;">Total</td>
+        <td style="text-align:right;color:#FF6B00;font-size:18px;font-weight:700;padding:10px 0 0;">$${order.total.toFixed(2)}</td>
+      </tr>
+    </table>
+    <div style="background:#111;border:1px solid #2a2a2a;padding:16px;margin-top:28px;">
+      <p style="color:#777;font-size:12px;margin:0 0 6px;text-transform:uppercase;">Payment Method</p>
+      <p style="color:#e5e5e5;font-size:14px;margin:0;">${order.paymentMethod || 'Not specified'}</p>
     </div>
   </div>
-</body>
-</html>
-  `;
+  <div style="padding:16px 28px;border-top:1px solid #2a2a2a;">
+    <p style="color:#444;font-size:11px;margin:0;">Griffix Racing — Auto-generated order notification.</p>
+  </div>
+</div></body></html>`;
 
-  await transport.sendMail({
-    from: `"Griffix Racing Orders" <${process.env.SMTP_USER}>`,
-    to: process.env.OWNER_EMAIL,
+  await resendSend({
+    from: FROM_ORDERS,
+    to: process.env.OWNER_EMAIL || 'griffixracing@gmail.com',
     subject: `New Order #${order.orderId} — $${order.total.toFixed(2)}`,
     html,
   });
 }
 
-/**
- * Send tracking update to the customer when a tracking number is added.
- */
 export async function sendTrackingUpdate(order) {
-  const transport = _getTransport();
-
   const trackingBlock = order.trackingUrl
-    ? `<a href="${order.trackingUrl}" style="display:inline-block; margin-top:12px; padding:10px 22px; background:#FF6B00; color:#0f0f0f; font-family:'Helvetica',sans-serif; font-size:13px; font-weight:700; text-decoration:none; text-transform:uppercase; letter-spacing:.06em;">Track Package →</a>`
-    : `<p style="color:#e5e5e5; font-size:15px; font-weight:700; letter-spacing:.04em; margin:8px 0 0;">${order.trackingNumber}</p>`;
+    ? `<a href="${order.trackingUrl}" style="display:inline-block;margin-top:12px;padding:10px 22px;background:#FF6B00;color:#0f0f0f;font-size:13px;font-weight:700;text-decoration:none;text-transform:uppercase;">Track Package →</a>`
+    : `<p style="color:#e5e5e5;font-size:15px;font-weight:700;margin:8px 0 0;">${order.trackingNumber}</p>`;
 
-  const html = `
-<!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"></head>
-<body style="background:#0f0f0f; margin:0; padding:32px; font-family:'Helvetica',sans-serif;">
-  <div style="max-width:600px; margin:0 auto; background:#181818; border:1px solid #2a2a2a;">
-
-    <div style="background:#FF6B00; padding:20px 28px;">
-      <h1 style="margin:0; font-size:22px; font-weight:700; letter-spacing:.06em; color:#0f0f0f; text-transform:uppercase;">Your Order Has Shipped!</h1>
-    </div>
-
-    <div style="padding:28px;">
-      <p style="color:#aaa; font-size:15px; margin-top:0; line-height:1.6;">
-        Hey ${order.customer.name.split(' ')[0]}! Your Griffix Racing order <strong style="color:#FF6B00;">#${order.orderId}</strong> is on its way.
-      </p>
-
-      <div style="background:#111; border-left:3px solid #FF6B00; padding:16px 20px; margin:24px 0;">
-        <p style="color:#777; font-size:12px; margin:0 0 6px; text-transform:uppercase; letter-spacing:.06em;">Tracking Number</p>
-        ${trackingBlock}
-      </div>
-
-      <table style="width:100%; margin-bottom:24px;">
-        <tr><td style="color:#777; font-size:13px; padding:4px 0; width:160px;">Carrier / Service</td><td style="color:#e5e5e5; font-size:13px;">${order.shipping.provider} — ${order.shipping.servicelevel}</td></tr>
-        <tr><td style="color:#777; font-size:13px; padding:4px 0;">Ship To</td>
-          <td style="color:#e5e5e5; font-size:13px;">
-            ${order.shipping.address.street1}${order.shipping.address.street2 ? ', ' + order.shipping.address.street2 : ''},
-            ${order.shipping.address.city}, ${order.shipping.address.state} ${order.shipping.address.zip}
-          </td>
-        </tr>
-      </table>
-
-      <p style="color:#555; font-size:12px; margin:0;">
-        Questions? Contact us at <a href="mailto:${process.env.OWNER_EMAIL}" style="color:#FF6B00;">${process.env.OWNER_EMAIL}</a>
-      </p>
-    </div>
-
-    <div style="padding:16px 28px; border-top:1px solid #2a2a2a;">
-      <p style="color:#444; font-size:11px; margin:0;">Griffix Racing — Order #${order.orderId}</p>
-    </div>
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"></head>
+<body style="background:#0f0f0f;margin:0;padding:32px;font-family:Helvetica,sans-serif;">
+<div style="max-width:600px;margin:0 auto;background:#181818;border:1px solid #2a2a2a;">
+  <div style="background:#FF6B00;padding:20px 28px;">
+    <h1 style="margin:0;font-size:22px;font-weight:700;color:#0f0f0f;text-transform:uppercase;">Your Order Has Shipped!</h1>
   </div>
-</body>
-</html>
-  `;
+  <div style="padding:28px;">
+    <p style="color:#aaa;font-size:15px;margin-top:0;line-height:1.6;">Hey ${order.customer.name.split(' ')[0]}! Your order <strong style="color:#FF6B00;">#${order.orderId}</strong> is on its way.</p>
+    <div style="background:#111;border-left:3px solid #FF6B00;padding:16px 20px;margin:24px 0;">
+      <p style="color:#777;font-size:12px;margin:0 0 6px;text-transform:uppercase;">Tracking Number</p>
+      ${trackingBlock}
+    </div>
+    <p style="color:#555;font-size:12px;margin:0;">Questions? Contact us at <a href="mailto:orders@griffixracing.com" style="color:#FF6B00;">orders@griffixracing.com</a></p>
+  </div>
+  <div style="padding:16px 28px;border-top:1px solid #2a2a2a;">
+    <p style="color:#444;font-size:11px;margin:0;">Griffix Racing — Order #${order.orderId}</p>
+  </div>
+</div></body></html>`;
 
-  await transport.sendMail({
-    from: `"Griffix Racing" <${process.env.SMTP_USER}>`,
+  await resendSend({
+    from: FROM_DEFAULT,
     to: order.customer.email,
     subject: `Your Order #${order.orderId} Has Shipped — Griffix Racing`,
     html,
   });
 }
 
-/**
- * Send order confirmation to the customer.
- */
 export async function sendCustomerConfirmation(order) {
-  const transport = _getTransport();
-
-  const paypalUrl = process.env.PAYPAL_ME_URL
-    ? `${process.env.PAYPAL_ME_URL}/${order.total.toFixed(2)}`
-    : null;
-
-  const html = `
-<!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"></head>
-<body style="background:#0f0f0f; margin:0; padding:32px; font-family:'Helvetica',sans-serif;">
-  <div style="max-width:600px; margin:0 auto; background:#181818; border:1px solid #2a2a2a;">
-
-    <div style="background:#FF6B00; padding:20px 28px;">
-      <h1 style="margin:0; font-size:22px; font-weight:700; letter-spacing:.06em; color:#0f0f0f; text-transform:uppercase;">Order Confirmed</h1>
-    </div>
-
-    <div style="padding:28px;">
-      <p style="color:#aaa; font-size:15px; margin-top:0; line-height:1.6;">
-        Thanks ${order.customer.name.split(' ')[0]}! Your order <strong style="color:#FF6B00;">#${order.orderId}</strong> has been received.
-        We'll get it packed and shipped within 48 hours.
-      </p>
-
-      <div style="background:#111; border-left:3px solid #FF6B00; padding:16px 20px; margin:24px 0;">
-        <h2 style="color:#FF6B00; font-size:14px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; margin:0 0 12px;">Payment Instructions</h2>
-        <p style="color:#aaa; font-size:13px; margin:0 0 8px;">Total due: <strong style="color:#fff; font-size:16px;">$${order.total.toFixed(2)} ${order.shipping.currency || 'USD'}</strong></p>
-        <p style="color:#aaa; font-size:13px; margin:0 0 4px;">Please pay via one of the following methods and include your order number <strong style="color:#FF6B00;">#${order.orderId}</strong> in the reference:</p>
-        <ul style="color:#ccc; font-size:13px; margin:10px 0 0; padding-left:20px; line-height:1.8;">
-          ${paypalUrl ? `<li>PayPal: <a href="${paypalUrl}" style="color:#FF6B00;">${paypalUrl}</a></li>` : ''}
-          <li>Venmo: @GrifficRacing (send screenshot to confirm)</li>
-          <li>Zelle: Contact us for details at ${process.env.OWNER_EMAIL}</li>
-        </ul>
-      </div>
-
-      <p style="color:#666; font-size:12px;">Order will not be dispatched until payment is confirmed. Questions? Reply to this email or contact us at ${process.env.OWNER_EMAIL}.</p>
-    </div>
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"></head>
+<body style="background:#0f0f0f;margin:0;padding:32px;font-family:Helvetica,sans-serif;">
+<div style="max-width:600px;margin:0 auto;background:#181818;border:1px solid #2a2a2a;">
+  <div style="background:#FF6B00;padding:20px 28px;">
+    <h1 style="margin:0;font-size:22px;font-weight:700;color:#0f0f0f;text-transform:uppercase;">Order Confirmed</h1>
   </div>
-</body>
-</html>
-  `;
+  <div style="padding:28px;">
+    <p style="color:#aaa;font-size:15px;margin-top:0;line-height:1.6;">Thanks ${order.customer.name.split(' ')[0]}! Your order <strong style="color:#FF6B00;">#${order.orderId}</strong> has been received. We'll get it packed and shipped within 48 hours.</p>
+    <div style="background:#111;border-left:3px solid #FF6B00;padding:16px 20px;margin:24px 0;">
+      <p style="color:#aaa;font-size:13px;margin:0 0 8px;">Total due: <strong style="color:#fff;font-size:16px;">$${order.total.toFixed(2)}</strong></p>
+      <p style="color:#aaa;font-size:13px;margin:0;">Please include order number <strong style="color:#FF6B00;">#${order.orderId}</strong> as reference when paying.</p>
+    </div>
+    <p style="color:#666;font-size:12px;">Questions? Email us at <a href="mailto:orders@griffixracing.com" style="color:#FF6B00;">orders@griffixracing.com</a></p>
+  </div>
+</div></body></html>`;
 
-  await transport.sendMail({
-    from: `"Griffix Racing" <${process.env.SMTP_USER}>`,
+  await resendSend({
+    from: FROM_ORDERS,
     to: order.customer.email,
     subject: `Order Confirmed — #${order.orderId} — Griffix Racing`,
+    html,
+  });
+}
+
+export async function sendContactNotification({ name, email, subject, message }) {
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"></head>
+<body style="background:#0f0f0f;margin:0;padding:32px;font-family:Helvetica,sans-serif;">
+<div style="max-width:600px;margin:0 auto;background:#181818;border:1px solid #2a2a2a;">
+  <div style="background:#FF6B00;padding:20px 28px;">
+    <h1 style="margin:0;font-size:22px;font-weight:700;color:#0f0f0f;text-transform:uppercase;">New Contact Form Message</h1>
+  </div>
+  <div style="padding:28px;">
+    <table style="width:100%;margin-bottom:20px;">
+      <tr><td style="color:#777;font-size:13px;padding:4px 0;width:100px;">From</td><td style="color:#e5e5e5;font-size:13px;">${name} &lt;${email}&gt;</td></tr>
+      <tr><td style="color:#777;font-size:13px;padding:4px 0;">Subject</td><td style="color:#e5e5e5;font-size:13px;">${subject || '(no subject)'}</td></tr>
+    </table>
+    <div style="background:#111;border-left:3px solid #FF6B00;padding:16px 20px;">
+      <p style="color:#ccc;font-size:14px;line-height:1.7;margin:0;white-space:pre-line;">${message}</p>
+    </div>
+    <p style="color:#555;font-size:12px;margin-top:20px;">Reply directly to this email to respond to ${name}.</p>
+  </div>
+</div></body></html>`;
+
+  await resendSend({
+    from: FROM_DEFAULT,
+    to: process.env.OWNER_EMAIL || 'griffixracing@gmail.com',
+    replyTo: email,
+    subject: `Contact: ${subject || name} — Griffix Racing`,
     html,
   });
 }
