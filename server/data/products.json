@@ -1572,10 +1572,11 @@
     "model": "",
     "year_from": null,
     "year_to": null,
-    "price": 12,
+    "price": 1200,
     "description": "Digital template file. Instant download upon purchase.",
     "images": [
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/KTM_350_EXC_defensie_luchtmobiel.jpg/500px-KTM_350_EXC_defensie_luchtmobiel.jpg"
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/KTM_350_EXC_defensie_luchtmobiel.jpg/500px-KTM_350_EXC_defensie_luchtmobiel.jpg",
+      "uploads/products/3c5516e7-080d-4e78-8e63-773696a18c62.png"
     ],
     "in_stock": true,
     "featured": false,
