@@ -145,7 +145,8 @@
       <h1 class="font-display text-white font-bold" style="font-size:26px; letter-spacing:-.01em;">PRODUCTS</h1>
       <p id="product-count-label" style="font-size:12px; color:#444; margin-top:2px;"></p>
     </div>
-    <button id="add-btn" class="btn-primary-admin" style="padding:10px 22px;">+ ADD PRODUCT</button>
+   <button id="publish-btn" class="btn-cancel" style="padding:10px 22px; border-color:#FF6B00; color:#FF6B00;">↓ PUBLISH DATA</button>
+<button id="add-btn" class="btn-primary-admin" style="padding:10px 22px;">+ ADD PRODUCT</button>
   </div>
 
   <!-- Toolbar -->
@@ -862,6 +863,16 @@ zone.addEventListener('drop', e => {
 document.getElementById('logout-btn').addEventListener('click', () => {
   clearToken();
   window.location.href = '/admin/index.html';
+});
+document.getElementById('publish-btn').addEventListener('click', async () => {
+  const res = await fetch('/api/products');
+  const data = await res.json();
+  const blob = new Blob([JSON.stringify(data.products || [], null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'products.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
 });
 
 boot();
