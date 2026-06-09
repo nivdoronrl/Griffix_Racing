@@ -8,8 +8,8 @@
     "model": "SX-F 250",
     "year_from": 2023,
     "year_to": 2025,
-    "price": 249,
-    "description": "Full graphic kit for KTM SX-F 250/350. Printed on Substance Inc. X1 UltraCurve with UltraCurve 1500 overlaminate, UV-resistant. Includes shroud, tank, fork guard, and side plate graphics. Fits 2023–2025 models.",
+    "price": 250,
+    "description": "Full graphic kit for KTM SX-F 250/350. Printed on Substance Inc. X1 UltraCurve with UltraCurve 1500 overlaminate, UV-resistant. Includes shroud, tank, fork guard, and side plate graphics. Fits 2023\u20132025 models.",
     "images": [
       "uploads/products/cc5e67a7-d409-4edc-bca7-e376fddfa673.png"
     ],
@@ -26,7 +26,7 @@
     "model": "FE 350",
     "year_from": 2023,
     "year_to": 2025,
-    "price": 249,
+    "price": 250,
     "description": "Enduro graphic kit with Coyote Tan colourway. Designed for the Husqvarna FE 350. Printed on Substance Inc. X1 UltraCurve with UltraCurve 1500 overlaminate.",
     "images": [
       "uploads/products/0b68bb44-e7cd-4fb1-a14f-29ced063ac27.png"
@@ -44,8 +44,8 @@
     "model": "YZ 250F",
     "year_from": 2024,
     "year_to": 2025,
-    "price": 229,
-    "description": "Acid Lime signature kit for Yamaha YZ250F. Fits 2024–2025 models. Full shroud, tank and fork guard graphics.",
+    "price": 250,
+    "description": "Acid Lime signature kit for Yamaha YZ250F. Fits 2024\u20132025 models. Full shroud, tank and fork guard graphics.",
     "images": [
       "uploads/products/8cc0faa7-0d0e-4fb2-a379-d20c376f63bf.png"
     ],
@@ -62,8 +62,8 @@
     "model": "CRF 450R",
     "year_from": 2021,
     "year_to": 2024,
-    "price": 229,
-    "description": "Stealth Charcoal full kit for Honda CRF 450R. Fits 2021–2024 models.",
+    "price": 250,
+    "description": "Stealth Charcoal full kit for Honda CRF 450R. Fits 2021\u20132024 models.",
     "images": [
       "uploads/products/4554cd51-47a8-45d7-8495-c6f987dd4e70.png"
     ],
@@ -80,8 +80,8 @@
     "model": "SX-F 250",
     "year_from": 2023,
     "year_to": 2025,
-    "price": 89,
-    "description": "Gripper seat cover matched to Griffix graphic kits. Ribbed gripper surface for maximum control. Fits KTM SX-F 250/350/450 2023–2025.",
+    "price": 250,
+    "description": "Gripper seat cover matched to Griffix graphic kits. Ribbed gripper surface for maximum control. Fits KTM SX-F 250/350/450 2023\u20132025.",
     "images": [
       "uploads/products/f5083621-a0e2-4e89-8d5e-5502568c7cbf.jpg"
     ],
@@ -98,32 +98,14 @@
     "model": "",
     "year_from": null,
     "year_to": null,
-    "price": 49,
-    "description": "Custom printed number plates, set of 3 (front + two sides). Choose your number, background and font. Universal fit — trimmed to shape.",
+    "price": 250,
+    "description": "Custom printed number plates, set of 3 (front + two sides). Choose your number, background and font. Universal fit \u2014 trimmed to shape.",
     "images": [
       "uploads/products/1a83103c-ff25-4451-b77f-6a92b652afdc.png"
     ],
     "in_stock": true,
     "featured": false,
     "created_at": "2025-01-01T00:00:00.000Z"
-  },
-  {
-    "id": "e17288a4-b7b8-4eb1-bdcc-240e5eeeafc0",
-    "sku": "",
-    "name": "test",
-    "category": "graphic-kit",
-    "make": "",
-    "model": "",
-    "year_from": null,
-    "year_to": null,
-    "price": 100,
-    "description": "",
-    "images": [
-      "uploads/products/f82c0ca2-f084-4e4e-8443-dd6972070dbd.png"
-    ],
-    "in_stock": true,
-    "featured": false,
-    "created_at": "2026-02-27T12:34:47.605Z"
   },
   {
     "id": "209db94e-ed1b-4fd1-a578-4c7c675a3db8",
@@ -134,7 +116,7 @@
     "model": "SX-F 250",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with thick high-gloss laminate for maximum durability. Bold Factory 26 design with striking orange and blue colour scheme. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/b63206b6-3d7f-41d4-bcaa-c173f592d799.png"
@@ -152,7 +134,7 @@
     "model": "SX-F 450",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Scribble design with bold, energetic graphics in multiple colour options. High-tac vinyl with premium gloss laminate for long-lasting durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/fdbcac58-4aab-4057-80c3-c9db49ef223d.png",
@@ -163,38 +145,6 @@
     "created_at": "2026-03-01T21:32:30.010Z"
   },
   {
-    "id": "4d1d2480-9128-4cdb-8a47-ada4f093e04c",
-    "sku": "",
-    "name": "Test API Product",
-    "category": "graphic-kit",
-    "make": "",
-    "model": "",
-    "year_from": null,
-    "year_to": null,
-    "price": 200,
-    "description": "",
-    "images": [],
-    "in_stock": true,
-    "featured": false,
-    "created_at": "2026-03-01T22:09:53.748Z"
-  },
-  {
-    "id": "d39be41d-04c7-43b8-8899-29020d1db3fd",
-    "sku": "TEST-002",
-    "name": "Test Auth 2",
-    "category": "graphic-kit",
-    "make": "Honda",
-    "model": "",
-    "year_from": 2023,
-    "year_to": 2026,
-    "price": 200,
-    "description": "Test",
-    "images": [],
-    "in_stock": true,
-    "featured": false,
-    "created_at": "2026-03-01T22:20:50.005Z"
-  },
-  {
     "id": "18d6dbe6-711b-4a8a-8fe8-75aed78c90eb",
     "sku": "GRX-KTM-SCR-HYP-NEO-2425",
     "name": "Scribble Hyper Neon Graphic Kit for KTM",
@@ -203,7 +153,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/d7954761-6db6-4a32-92ea-ac00137441d6.png"
@@ -221,7 +171,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/060fb778-1910-4b70-9857-f7af06fd6117.png"
@@ -239,7 +189,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/f5d74687-5bfc-409c-a3ab-7e28f7ae1af1.png"
@@ -257,7 +207,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/72389c61-5677-4fe6-8fa9-35c2160479a8.png"
@@ -275,7 +225,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/732ebd80-47dc-4527-a9a4-fd37b633da32.png"
@@ -293,7 +243,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/66bd0600-7238-4b3c-91fe-df291f8b5a72.png"
@@ -311,7 +261,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/c40da9ea-ec5f-40bd-94a6-bd9b738f651d.png"
@@ -329,7 +279,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/8ea81ed8-9e16-4cd6-9e97-366deaf9d62c.png"
@@ -347,7 +297,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/0af6c5aa-d239-47a9-9123-c0a7b0e2ae19.png"
@@ -365,7 +315,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/0cfc4311-78eb-40df-8930-f5c1ebb09948.png"
@@ -383,7 +333,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/b7347928-9f47-4608-abf4-884f3fbb8124.png"
@@ -401,7 +351,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/77ebca95-8531-4087-9d2a-387a28c447a1.png"
@@ -419,7 +369,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/baf5f673-00f6-40bc-961b-91d7682e8872.png"
@@ -437,7 +387,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/534af2f2-c8d3-4d49-afa3-0a9bca9910e5.jpg"
@@ -455,7 +405,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/676bed0d-5aab-4d58-97ed-eee3512c5787.jpg"
@@ -473,7 +423,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/4d362a8f-aec5-44b2-a283-81dc47ba971a.png"
@@ -491,7 +441,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/a697fae3-dbeb-4049-85ab-e9bbb069e07b.png"
@@ -509,7 +459,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/6f16bee6-c8ed-4838-9f6c-8d43df9794f5.png"
@@ -527,7 +477,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/069b0e41-f6d6-4275-91f6-0961ea76c8ac.png"
@@ -545,7 +495,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/e7557b39-1387-40e2-a560-3550b856409a.png"
@@ -563,7 +513,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/531e7556-d004-4f81-98b0-b260e3e769aa.png"
@@ -581,7 +531,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/36f854c4-b206-49cb-9b8a-c9587d8ea441.png"
@@ -599,7 +549,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/05e6e5f0-03d3-4a6e-ac4e-ceb57b98e7c2.png"
@@ -617,7 +567,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/bff01a91-cf21-46a4-808a-38e07dc25824.png"
@@ -635,7 +585,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/376f8145-fc02-4578-aeed-ba0823e2df0c.png"
@@ -653,7 +603,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/a4610306-604a-47ca-a5c0-62afdc76dc84.png"
@@ -671,7 +621,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/01c76679-2ea7-4a44-802e-129b9674f59b.png"
@@ -689,7 +639,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/da82d9a4-740c-48d5-9075-9d70203e6ed3.png"
@@ -707,7 +657,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/40f0a73a-6cbe-426f-b96d-88b763cf0155.png"
@@ -725,7 +675,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/067004a1-17d5-44b8-bc21-01a20cabe878.jpg"
@@ -743,7 +693,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/f3b73e9d-a23b-4e4f-8083-4df556b80857.png"
@@ -761,7 +711,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/b2353778-7bb3-4001-be3a-92a0b3a061cd.png"
@@ -779,7 +729,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/066a087a-fa52-4230-b8b0-9ced6b3be30d.jpg",
@@ -798,7 +748,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/f4dc4320-9ec7-4690-a57b-b5e085b91685.png",
@@ -817,7 +767,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/c26978a3-6281-4092-a61f-b9d59c0960ea.png",
@@ -836,7 +786,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/d51bf8eb-08f7-4128-a497-577f2e682489.png"
@@ -854,7 +804,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/5f9fb7aa-6a3c-45c3-ab83-93b39fada2cf.png",
@@ -873,7 +823,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/9f9f16cf-9dbc-4e89-b339-0ac8cdee1a33.png",
@@ -892,7 +842,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/46502a1a-ab5e-4540-809e-abc2ef084c5b.png",
@@ -911,7 +861,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/68b165c8-6161-4260-bea3-5e056a803644.png"
@@ -929,7 +879,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/f155b896-fc39-46c1-9cc9-7b2a94ecf80e.png"
@@ -947,7 +897,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/8d04ca9d-7669-4cde-9b3f-477a6d9a6256.png"
@@ -965,7 +915,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/955766fd-1da4-44ab-a413-5913ecd595c0.png"
@@ -983,7 +933,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/92e6ae5e-d661-4c27-ac80-6eea86578893.png"
@@ -1001,7 +951,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [
       "uploads/products/c9a38c28-46e5-449c-bce7-ac6642d2fdfb.png"
@@ -1019,7 +969,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
@@ -1035,7 +985,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
@@ -1051,7 +1001,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
@@ -1067,7 +1017,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
@@ -1083,7 +1033,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
@@ -1099,7 +1049,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
@@ -1115,7 +1065,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
@@ -1131,7 +1081,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
@@ -1147,7 +1097,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
@@ -1163,7 +1113,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
@@ -1179,7 +1129,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
@@ -1195,7 +1145,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
@@ -1211,7 +1161,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
@@ -1227,7 +1177,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
@@ -1243,7 +1193,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
@@ -1259,7 +1209,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
@@ -1275,7 +1225,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
@@ -1291,7 +1241,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
@@ -1307,7 +1257,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
@@ -1323,7 +1273,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
@@ -1339,7 +1289,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
@@ -1355,7 +1305,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
@@ -1371,7 +1321,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
@@ -1387,7 +1337,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
@@ -1403,7 +1353,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
@@ -1419,7 +1369,7 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
@@ -1435,27 +1385,11 @@
     "model": "",
     "year_from": 2023,
     "year_to": 2026,
-    "price": 200,
+    "price": 250,
     "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
     "images": [],
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:26:21.771Z"
-  },
-  {
-    "id": "ea672197-4dc1-437e-acd2-3fead177273b",
-    "sku": "",
-    "name": "Untitled Product",
-    "category": "graphic-kit",
-    "make": "",
-    "model": "",
-    "year_from": null,
-    "year_to": null,
-    "price": 0,
-    "description": "",
-    "images": [],
-    "in_stock": false,
-    "featured": false,
-    "created_at": "2026-03-05T03:43:03.463Z"
   }
 ]
