@@ -97,6 +97,19 @@
 
   window.Cart = Cart;
 
+  // ── Template discount ─────────────────────────────────────────────────────
+  // Auto $10 template discount: if cart has a template + graphic-kit with same make
+  function calcTemplateDiscount(items) {
+    const templateMakes = new Set(
+      items.filter(i => i.category && i.category.startsWith('template') && i.make)
+           .map(i => i.make)
+    );
+    const hasMatchingKit = items.some(
+      i => i.category === 'graphic-kit' && i.make && templateMakes.has(i.make)
+    );
+    return hasMatchingKit ? 10 : 0;
+  }
+
   // ── Drawer HTML injection ─────────────────────────────────────────────────
   function _injectDrawer() {
     if (document.getElementById('cart-drawer')) return;
@@ -186,11 +199,29 @@
     });
 
     const subtotal = Cart.getSubtotal();
+    const templateDiscount = calcTemplateDiscount(items);
+    const total = Math.max(0, subtotal - templateDiscount);
     footerEl.innerHTML = `
       <div class="cart-subtotal-row">
         <span style="font-family:'Archivo Narrow',sans-serif; color:#aaa; font-size:13px;">Subtotal (excl. shipping)</span>
-        <span style="font-family:'Oswald',sans-serif; color:#FF6B00; font-size:20px; font-weight:600;">$${subtotal.toFixed(2)}</span>
+        <span style="font-family:'Oswald',sans-serif; color:#e5e5e5; font-size:18px; font-weight:600;">$${subtotal.toFixed(2)}</span>
       </div>
+      ${templateDiscount > 0 ? `
+      <div class="cart-subtotal-row">
+        <span style="font-family:'Archivo Narrow',sans-serif; color:#FF6B00; font-size:13px;">Template discount</span>
+        <span style="font-family:'Oswald',sans-serif; color:#FF6B00; font-size:16px; font-weight:600;">−$${templateDiscount.toFixed(2)}</span>
+      </div>
+      <div class="cart-subtotal-row" style="border-top:1px solid rgba(163,145,113,.15); padding-top:10px;">
+        <span style="font-family:'Archivo Narrow',sans-serif; color:#aaa; font-size:13px;">Total</span>
+        <span style="font-family:'Oswald',sans-serif; color:#FF6B00; font-size:20px; font-weight:600;">$${total.toFixed(2)}</span>
+      </div>
+      ` : `
+      <div style="border-top:1px solid rgba(163,145,113,.08); margin-top:4px;"></div>
+      <div class="cart-subtotal-row" style="padding-top:4px;">
+        <span style="font-family:'Archivo Narrow',sans-serif; color:#aaa; font-size:13px;">Total</span>
+        <span style="font-family:'Oswald',sans-serif; color:#FF6B00; font-size:20px; font-weight:600;">$${total.toFixed(2)}</span>
+      </div>
+      `}
       <a href="/cart.html" class="btn-primary" style="display:block; text-align:center; text-decoration:none; margin-bottom:10px; font-size:14px; padding:14px;">View Cart</a>
       <a href="/checkout.html" style="display:block; text-align:center; text-decoration:none; padding:14px; font-size:14px; font-family:'Oswald',sans-serif; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:#0f0f0f; background:#A39171; border:none; cursor:pointer;">Checkout →</a>
     `;
