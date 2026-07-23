@@ -5,21 +5,22 @@
 * lib/github-sync.mjs) as a free alternative to a paid persistent disk:
 *
 * DATA_DIR -- where products.json / gallery.json / orders.json live
-* default: <server>/data
+*   default: <server>/data
 * UPLOADS_DIR -- where uploaded images live
-* default: <project-root>/uploads
+*   default: <project-root>/uploads
 *
 * On boot, this script first tries to restore products.json / gallery.json /
 * bikes.json from the GitHub data branch (the latest data saved by the admin
 * panel -- see lib/github-sync.mjs). If GitHub sync isn't configured, or a
 * file has genuinely never existed, it falls back to copying the committed
-* defaults from this repo so the site still has data to show.
+* defaults from this repo so the site still has data to show. It then
+* restores any images referenced by that data that are missing locally.
 */
 
-import { existsSync, mkdirSync, copyFileSync, writeFileSync } from 'fs';
+import { existsSync, mkdirSync, copyFileSync, writeFileSync, readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import { githubSyncEnabled, pullFromGitHub } from './lib/github-sync.mjs';
+import { githubSyncEnabled, pullFromGitHub, pullBufferFromGitHub } from './lib/github-sync.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const projectRoot = join(__dirname, '..');
@@ -66,4 +67,47 @@ const ordersPath = join(DATA_DIR, 'orders.json');
 if (!existsSync(ordersPath)) {
   writeFileSync(ordersPath, '[]');
   console.log('[startup] Created empty orders.json');
+}
+
+// Restore any product/gallery images referenced in the data that are
+// missing locally (e.g. uploaded through the admin panel since the last
+// deploy, then wiped by a disk reset). Skipped entirely if GitHub sync
+// isn't configured.
+if (githubSyncEnabled()) {
+  await restoreMissingImages();
+}
+
+async function restoreMissingImages() {
+  const imagePaths = new Set();
+
+try {
+  const products = JSON.parse(readFileSync(join(DATA_DIR, 'products.json'), 'utf-8'));
+  for (const p of products) {
+    for (const img of (p.images || [])) imagePaths.add(img);
+  }
+} catch {}
+
+try {
+  const gallery = JSON.parse(readFileSync(join(DATA_DIR, 'gallery.json'), 'utf-8'));
+  for (const g of gallery) {
+    if (g.image_url && !g.image_url.startsWith('http')) imagePaths.add(g.image_url);
+  }
+} catch {}
+
+let restored = 0;
+  for (const relPath of imagePaths) {
+    const localPath = join(UPLOADS_DIR, relPath.replace(/^uploads\//, ''));
+    if (existsSync(localPath)) continue;
+
+  const buf = await pullBufferFromGitHub(relPath);
+    if (buf) {
+      mkdirSync(dirname(localPath), { recursive: true });
+      writeFileSync(localPath, buf);
+      restored++;
+    }
+  }
+
+if (restored > 0) {
+  console.log(`[startup] Restored ${restored} missing image(s) from GitHub`);
+}
 }
