@@ -1,33 +1,42 @@
 /**
- * gallery.mjs — /api/gallery
- *
- * Public:
- *   GET  /api/gallery          — list all
- *   GET  /api/gallery/:id      — single item
- *
- * Admin-only (x-admin-token required):
- *   POST   /api/gallery        — create (multipart: image field)
- *   PUT    /api/gallery/:id    — update (multipart: image field optional)
- *   DELETE /api/gallery/:id    — delete item + image file
- */
+* gallery.mjs -- /api/gallery
+*
+* Public:
+*   GET  /api/gallery      -- list all
+*   GET  /api/gallery/:id  -- single item
+*
+* Admin-only (x-admin-token required):
+*   POST   /api/gallery      -- create (multipart: image field)
+*   PUT    /api/gallery/:id  -- update (multipart: image field optional)
+*   DELETE /api/gallery/:id  -- delete item + image file
+*/
 
 import express from 'express';
 import multer from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { unlink, mkdir } from 'fs/promises';
+import { unlink, mkdir, readFile } from 'fs/promises';
 import { existsSync } from 'fs';
 import { readGallery, writeGallery } from '../lib/gallery-store.mjs';
+import { pushToGitHub } from '../lib/github-sync.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..', '..');
 const BASE_UPLOADS = process.env.UPLOADS_DIR || join(ROOT, 'uploads');
-const UPLOADS_DIR  = join(BASE_UPLOADS, 'gallery');
+const UPLOADS_DIR = join(BASE_UPLOADS, 'gallery');
 
 // Resolve a stored relative url like 'uploads/gallery/xxx.jpg' to an absolute path
 function absPath(url) {
   return join(BASE_UPLOADS, url.replace(/^uploads\//, ''));
+}
+
+// Best-effort: back up an uploaded image to GitHub so it survives an
+// ephemeral disk reset even before anyone manually commits it to git.
+function syncImageToGitHub(filename) {
+  readFile(join(UPLOADS_DIR, filename))
+  .then(buf => pushToGitHub(`uploads/gallery/${filename}`, buf, `Add gallery image ${filename}`))
+  .catch(err => console.error('[gallery] image sync failed:', err.message));
 }
 
 if (!existsSync(UPLOADS_DIR)) {
@@ -90,24 +99,27 @@ router.post('/', adminAuth, upload.single('image'), async (req, res) => {
     const body = req.body;
     const maxOrder = items.length ? Math.max(...items.map(i => i.order || 0)) : 0;
 
-    const item = {
-      id: uuidv4(),
-      tab: body.tab || 'our-designs',
-      title: body.title || 'Untitled',
-      bike_make: body.bike_make || '',
-      bike_model: body.bike_model || '',
-      image_url: req.file
-        ? `uploads/gallery/${req.file.filename}`
-        : (body.image_url || ''),
-      customer_name: body.customer_name || '',
-      featured: body.featured === 'true' || body.featured === true,
-      order: parseInt(body.order) || maxOrder + 1,
-      created_at: new Date().toISOString(),
-    };
+  const item = {
+    id: uuidv4(),
+    tab: body.tab || 'our-designs',
+    title: body.title || 'Untitled',
+    bike_make: body.bike_make || '',
+    bike_model: body.bike_model || '',
+    image_url: req.file
+    ? `uploads/gallery/${req.file.filename}`
+      : (body.image_url || ''),
+    customer_name: body.customer_name || '',
+    featured: body.featured === 'true' || body.featured === true,
+    order: parseInt(body.order) || maxOrder + 1,
+    created_at: new Date().toISOString(),
+  };
 
-    items.push(item);
+  items.push(item);
     await writeGallery(items);
-    res.status(201).json({ item });
+
+  if (req.file) syncImageToGitHub(req.file.filename);
+
+  res.status(201).json({ item });
   } catch (err) {
     console.error('Gallery create error:', err);
     res.status(500).json({ error: err.message });
@@ -121,32 +133,35 @@ router.put('/:id', adminAuth, upload.single('image'), async (req, res) => {
     const idx = items.findIndex(i => i.id === req.params.id);
     if (idx === -1) return res.status(404).json({ error: 'Not found.' });
 
-    const body = req.body;
+  const body = req.body;
     const existing = items[idx];
 
-    // If a new image was uploaded, delete old file
-    if (req.file && existing.image_url && !existing.image_url.startsWith('http')) {
-      try { await unlink(absPath(existing.image_url)); } catch {}
-    }
+  // If a new image was uploaded, delete old file
+  if (req.file && existing.image_url && !existing.image_url.startsWith('http')) {
+    try { await unlink(absPath(existing.image_url)); } catch {}
+  }
 
-    items[idx] = {
-      ...existing,
-      tab: body.tab ?? existing.tab,
-      title: body.title ?? existing.title,
-      bike_make: body.bike_make ?? existing.bike_make,
-      bike_model: body.bike_model ?? existing.bike_model,
-      image_url: req.file
-        ? `uploads/gallery/${req.file.filename}`
-        : (body.image_url ?? existing.image_url),
-      customer_name: body.customer_name ?? existing.customer_name,
-      featured: body.featured !== undefined
-        ? (body.featured === 'true' || body.featured === true)
-        : existing.featured,
-      order: body.order !== undefined ? parseInt(body.order) : existing.order,
-    };
+  items[idx] = {
+    ...existing,
+    tab: body.tab ?? existing.tab,
+    title: body.title ?? existing.title,
+    bike_make: body.bike_make ?? existing.bike_make,
+    bike_model: body.bike_model ?? existing.bike_model,
+    image_url: req.file
+    ? `uploads/gallery/${req.file.filename}`
+      : (body.image_url ?? existing.image_url),
+    customer_name: body.customer_name ?? existing.customer_name,
+    featured: body.featured !== undefined
+    ? (body.featured === 'true' || body.featured === true)
+      : existing.featured,
+    order: body.order !== undefined ? parseInt(body.order) : existing.order,
+  };
 
-    await writeGallery(items);
-    res.json({ item: items[idx] });
+  await writeGallery(items);
+
+  if (req.file) syncImageToGitHub(req.file.filename);
+
+  res.json({ item: items[idx] });
   } catch (err) {
     console.error('Gallery update error:', err);
     res.status(500).json({ error: err.message });
@@ -160,12 +175,12 @@ router.delete('/:id', adminAuth, async (req, res) => {
     const idx = items.findIndex(i => i.id === req.params.id);
     if (idx === -1) return res.status(404).json({ error: 'Not found.' });
 
-    const item = items[idx];
+  const item = items[idx];
     if (item.image_url && !item.image_url.startsWith('http')) {
       try { await unlink(absPath(item.image_url)); } catch {}
     }
 
-    items.splice(idx, 1);
+  items.splice(idx, 1);
     await writeGallery(items);
     res.json({ success: true });
   } catch (err) {
