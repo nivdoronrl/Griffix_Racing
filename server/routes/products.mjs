@@ -1,35 +1,44 @@
 /**
- * products.mjs — /api/products
- *
- * Public:
- *   GET  /api/products          — list all
- *   GET  /api/products/bikes    — full bike catalog (makes/models/years)
- *   GET  /api/products/:id      — single product
- *
- * Admin-only (requires x-admin-token header):
- *   POST   /api/products              — create product (multipart or JSON)
- *   PUT    /api/products/:id          — update product (multipart or JSON)
- *   DELETE /api/products/:id          — delete product + its images
- *   DELETE /api/products/:id/images/:filename — remove one image
- */
+* products.mjs -- /api/products
+*
+* Public:
+*   GET  /api/products               -- list all
+*   GET  /api/products/bikes         -- full bike catalog (makes/models/years)
+*   GET  /api/products/:id           -- single product
+*
+* Admin-only (requires x-admin-token header):
+*   POST   /api/products             -- create product (multipart or JSON)
+*   PUT    /api/products/:id         -- update product (multipart or JSON)
+*   DELETE /api/products/:id         -- delete product + its images
+*   DELETE /api/products/:id/images/:filename -- remove one image
+*/
 
 import express from 'express';
 import multer from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import { join, dirname, basename } from 'path';
 import { fileURLToPath } from 'url';
-import { unlink, mkdir } from 'fs/promises';
+import { unlink, mkdir, readFile } from 'fs/promises';
 import { existsSync } from 'fs';
 import { readProducts, writeProducts } from '../lib/products-store.mjs';
+import { pushToGitHub } from '../lib/github-sync.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..', '..');
 const BASE_UPLOADS = process.env.UPLOADS_DIR || join(ROOT, 'uploads');
-const UPLOADS_DIR  = join(BASE_UPLOADS, 'products');
+const UPLOADS_DIR = join(BASE_UPLOADS, 'products');
 
 // Resolve a stored relative url like 'uploads/products/xxx.png' to an absolute path
 function absPath(url) {
   return join(BASE_UPLOADS, url.replace(/^uploads\//, ''));
+}
+
+// Best-effort: back up an uploaded image to GitHub so it survives an
+// ephemeral disk reset even before anyone manually commits it to git.
+function syncImageToGitHub(filename) {
+  readFile(join(UPLOADS_DIR, filename))
+  .then(buf => pushToGitHub(`uploads/products/${filename}`, buf, `Add product image ${filename}`))
+  .catch(err => console.error('[products] image sync failed:', err.message));
 }
 
 // Ensure uploads directory exists
@@ -67,7 +76,6 @@ function adminAuth(req, res, next) {
 }
 
 // ── GET /api/products/bikes ───────────────────────────────────────────────────
-import { readFile } from 'fs/promises';
 const BIKES_PATH = join(__dirname, '..', 'data', 'bikes.json');
 
 router.get('/bikes', async (_req, res) => {
@@ -107,26 +115,29 @@ router.post('/', adminAuth, upload.array('images', 20), async (req, res) => {
     const products = await readProducts();
     const body = req.body;
 
-    const product = {
-      id: uuidv4(),
-      sku: body.sku || '',
-      name: body.name || 'Untitled Product',
-      category: body.category || 'graphic-kit',
-      make: body.make || '',
-      model: body.model || '',
-      year_from: body.year_from ? parseInt(body.year_from) : null,
-      year_to: body.year_to ? parseInt(body.year_to) : null,
-      price: parseFloat(body.price) || 0,
-      description: body.description || '',
-      images: (req.files || []).map(f => `uploads/products/${f.filename}`),
-      in_stock: body.in_stock === 'true' || body.in_stock === true,
-      featured: body.featured === 'true' || body.featured === true,
-      created_at: new Date().toISOString(),
-    };
+  const product = {
+    id: uuidv4(),
+    sku: body.sku || '',
+    name: body.name || 'Untitled Product',
+    category: body.category || 'graphic-kit',
+    make: body.make || '',
+    model: body.model || '',
+    year_from: body.year_from ? parseInt(body.year_from) : null,
+    year_to: body.year_to ? parseInt(body.year_to) : null,
+    price: parseFloat(body.price) || 0,
+    description: body.description || '',
+    images: (req.files || []).map(f => `uploads/products/${f.filename}`),
+    in_stock: body.in_stock === 'true' || body.in_stock === true,
+    featured: body.featured === 'true' || body.featured === true,
+    created_at: new Date().toISOString(),
+  };
 
-    products.push(product);
+  products.push(product);
     await writeProducts(products);
-    res.status(201).json({ product });
+
+  (req.files || []).forEach(f => syncImageToGitHub(f.filename));
+
+  res.status(201).json({ product });
   } catch (err) {
     console.error('Create product error:', err);
     res.status(500).json({ error: err.message });
@@ -140,30 +151,33 @@ router.put('/:id', adminAuth, upload.array('images', 20), async (req, res) => {
     const idx = products.findIndex(p => p.id === req.params.id);
     if (idx === -1) return res.status(404).json({ error: 'Not found.' });
 
-    const body = req.body;
+  const body = req.body;
     const existing = products[idx];
 
-    // New uploaded images get appended to existing ones
-    const newImages = (req.files || []).map(f => `uploads/products/${f.filename}`);
+  // New uploaded images get appended to existing ones
+  const newImages = (req.files || []).map(f => `uploads/products/${f.filename}`);
 
-    products[idx] = {
-      ...existing,
-      sku: body.sku ?? existing.sku,
-      name: body.name ?? existing.name,
-      category: body.category ?? existing.category,
-      make: body.make ?? existing.make,
-      model: body.model ?? existing.model,
-      year_from: body.year_from !== undefined ? (body.year_from ? parseInt(body.year_from) : null) : existing.year_from,
-      year_to: body.year_to !== undefined ? (body.year_to ? parseInt(body.year_to) : null) : existing.year_to,
-      price: body.price !== undefined ? (parseFloat(body.price) || 0) : existing.price,
-      description: body.description ?? existing.description,
-      images: [...existing.images, ...newImages],
-      in_stock: body.in_stock !== undefined ? (body.in_stock === 'true' || body.in_stock === true) : existing.in_stock,
-      featured: body.featured !== undefined ? (body.featured === 'true' || body.featured === true) : existing.featured,
-    };
+  products[idx] = {
+    ...existing,
+    sku: body.sku ?? existing.sku,
+    name: body.name ?? existing.name,
+    category: body.category ?? existing.category,
+    make: body.make ?? existing.make,
+    model: body.model ?? existing.model,
+    year_from: body.year_from !== undefined ? (body.year_from ? parseInt(body.year_from) : null) : existing.year_from,
+    year_to: body.year_to !== undefined ? (body.year_to ? parseInt(body.year_to) : null) : existing.year_to,
+    price: body.price !== undefined ? (parseFloat(body.price) || 0) : existing.price,
+    description: body.description ?? existing.description,
+    images: [...existing.images, ...newImages],
+    in_stock: body.in_stock !== undefined ? (body.in_stock === 'true' || body.in_stock === true) : existing.in_stock,
+    featured: body.featured !== undefined ? (body.featured === 'true' || body.featured === true) : existing.featured,
+  };
 
-    await writeProducts(products);
-    res.json({ product: products[idx] });
+  await writeProducts(products);
+
+  (req.files || []).forEach(f => syncImageToGitHub(f.filename));
+
+  res.json({ product: products[idx] });
   } catch (err) {
     console.error('Update product error:', err);
     res.status(500).json({ error: err.message });
@@ -177,14 +191,14 @@ router.delete('/:id', adminAuth, async (req, res) => {
     const idx = products.findIndex(p => p.id === req.params.id);
     if (idx === -1) return res.status(404).json({ error: 'Not found.' });
 
-    const product = products[idx];
+  const product = products[idx];
 
-    // Delete associated image files
-    for (const imgPath of product.images) {
-      try { await unlink(absPath(imgPath)); } catch {}
-    }
+  // Delete associated image files
+  for (const imgPath of product.images) {
+    try { await unlink(absPath(imgPath)); } catch {}
+  }
 
-    products.splice(idx, 1);
+  products.splice(idx, 1);
     await writeProducts(products);
     res.json({ success: true });
   } catch (err) {
@@ -200,16 +214,16 @@ router.delete('/:id/images/:filename', adminAuth, async (req, res) => {
     const idx = products.findIndex(p => p.id === req.params.id);
     if (idx === -1) return res.status(404).json({ error: 'Not found.' });
 
-    const filename = req.params.filename;
+  const filename = req.params.filename;
     const imgPath = `uploads/products/${filename}`;
 
-    products[idx].images = products[idx].images.filter(i => i !== imgPath);
+  products[idx].images = products[idx].images.filter(i => i !== imgPath);
     await writeProducts(products);
 
-    // Delete the file
-    try { await unlink(absPath(imgPath)); } catch {}
+  // Delete the file
+  try { await unlink(absPath(imgPath)); } catch {}
 
-    res.json({ success: true, images: products[idx].images });
+  res.json({ success: true, images: products[idx].images });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
