@@ -991,24 +991,6 @@
     "created_at": "2026-03-01T22:26:09.766Z"
   },
   {
-    "id": "eccb5df0-0f4a-4ff3-b868-c9f23f425f7d",
-    "sku": "GRX-GG-STR-2425",
-    "name": "Gas Gas Stryke Graphic Kit",
-    "category": "graphic-kit",
-    "make": "GasGas",
-    "model": "",
-    "year_from": 2023,
-    "year_to": 2026,
-    "price": 250,
-    "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
-    "images": [
-      "uploads/products/35f58156-0119-4077-814a-07aae9cf04f6.jpg"
-    ],
-    "in_stock": true,
-    "featured": false,
-    "created_at": "2026-03-01T22:26:10.769Z"
-  },
-  {
     "id": "3d206af0-702b-4ed2-8dfe-a7fb4fb3b76d",
     "sku": "GRX-GG-VIB-2425",
     "name": "Gas Gas Vibes Graphic Kit",
