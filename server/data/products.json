@@ -973,24 +973,6 @@
     "created_at": "2026-03-01T22:25:58.771Z"
   },
   {
-    "id": "8bcb518e-f454-4497-a430-2cf00d2a3629",
-    "sku": "GRX-YAM-YAM-MX3-2425",
-    "name": "Yamaha MX37 Graphic Kit",
-    "category": "graphic-kit",
-    "make": "Yamaha",
-    "model": "",
-    "year_from": 2023,
-    "year_to": 2026,
-    "price": 250,
-    "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
-    "images": [
-      "uploads/products/34682407-186a-47e1-9923-e3ce8c816650.jpg"
-    ],
-    "in_stock": true,
-    "featured": false,
-    "created_at": "2026-03-01T22:25:59.771Z"
-  },
-  {
     "id": "2288de28-9554-4484-8445-fd4a3336c7f6",
     "sku": "GRX-SUZ-SUZ-SCR-2425",
     "name": "Suzuki Scribble Graphic Kit",
