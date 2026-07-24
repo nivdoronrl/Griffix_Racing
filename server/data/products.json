@@ -701,24 +701,6 @@
     "created_at": "2026-03-01T22:25:43.770Z"
   },
   {
-    "id": "d2692690-4adc-4771-a741-705bd2faa99c",
-    "sku": "GRX-KAW-KAW-MX3-2425",
-    "name": "Kawasaki MX37 Graphic Kit",
-    "category": "graphic-kit",
-    "make": "Kawasaki",
-    "model": "",
-    "year_from": 2023,
-    "year_to": 2026,
-    "price": 250,
-    "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
-    "images": [
-      "uploads/products/46a96a01-6ade-4e60-9f2f-21c70096e853.jpg"
-    ],
-    "in_stock": true,
-    "featured": false,
-    "created_at": "2026-03-01T22:25:45.769Z"
-  },
-  {
     "id": "a5c983b8-b902-461d-bd85-7ac02e84e55f",
     "sku": "GRX-KAW-KAW-MX3-2425",
     "name": "Kawasaki MX35 Graphic Kit",
