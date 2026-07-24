@@ -510,24 +510,6 @@
     "created_at": "2026-03-01T22:25:25.766Z"
   },
   {
-    "id": "0f951fb7-1607-4c07-86e7-246a93bb8e59",
-    "sku": "GRX-HON-SUP-HON-2425",
-    "name": "Supertech Graphic Kit for Honda's",
-    "category": "graphic-kit",
-    "make": "Honda",
-    "model": "",
-    "year_from": 2023,
-    "year_to": 2026,
-    "price": 250,
-    "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
-    "images": [
-      "uploads/products/c4ffc9ec-5f9e-4830-ab5c-e7b64ab95442.jpg"
-    ],
-    "in_stock": true,
-    "featured": false,
-    "created_at": "2026-03-01T22:25:29.770Z"
-  },
-  {
     "id": "93a07420-fb0c-45a7-9e94-b980a7c11cc6",
     "sku": "GRX-HON-MX3-HON-2425",
     "name": "MX35 Graphic Kit for Honda's",
