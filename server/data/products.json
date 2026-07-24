@@ -900,24 +900,6 @@
     "created_at": "2026-03-01T22:25:52.771Z"
   },
   {
-    "id": "74dae0f2-9832-4fcb-b03c-95d2ea680e25",
-    "sku": "GRX-YAM-YAM-STR-2425",
-    "name": "Yamaha Stryke Graphic Kit",
-    "category": "graphic-kit",
-    "make": "Yamaha",
-    "model": "",
-    "year_from": 2023,
-    "year_to": 2026,
-    "price": 250,
-    "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
-    "images": [
-      "uploads/products/b1595c6f-a242-4014-8241-35f411c24407.jpg"
-    ],
-    "in_stock": true,
-    "featured": false,
-    "created_at": "2026-03-01T22:25:53.771Z"
-  },
-  {
     "id": "dc837802-f120-4e9d-bb27-d61c8852eca2",
     "sku": "GRX-YAM-YAM-FAC-26-2425",
     "name": "Yamaha Factory 26 Graphic Kit",
