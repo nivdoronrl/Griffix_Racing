@@ -1009,24 +1009,6 @@
     "created_at": "2026-03-01T22:26:11.769Z"
   },
   {
-    "id": "7d438451-b845-425d-9cdb-0fd348c007fa",
-    "sku": "GRX-GG-SUP-2425",
-    "name": "Gas Gas Supertech Graphic Kit",
-    "category": "graphic-kit",
-    "make": "GasGas",
-    "model": "",
-    "year_from": 2023,
-    "year_to": 2026,
-    "price": 250,
-    "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
-    "images": [
-      "uploads/products/d4ce4ab6-5e3e-4a98-9eab-b50467743e7a.jpg"
-    ],
-    "in_stock": true,
-    "featured": false,
-    "created_at": "2026-03-01T22:26:12.769Z"
-  },
-  {
     "id": "ad84f0cf-9806-4151-95a4-9a1fc3b0c80d",
     "sku": "GRX-BTA-BET-APE-2425",
     "name": "Beta Apex Graphic Kit",
