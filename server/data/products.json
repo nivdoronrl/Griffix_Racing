@@ -454,24 +454,6 @@
     "created_at": "2026-03-01T22:25:19.769Z"
   },
   {
-    "id": "45c99159-a6b1-4a1d-8e26-0d4e5a95f85b",
-    "sku": "GRX-HQV-HUS-FAC-26-2425",
-    "name": "Husqvarna Factory 26 Graphic Kit",
-    "category": "graphic-kit",
-    "make": "Husqvarna",
-    "model": "",
-    "year_from": 2023,
-    "year_to": 2026,
-    "price": 250,
-    "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
-    "images": [
-      "uploads/products/e3af686d-4a88-428c-a93a-df3f1b3ee3f0.jpg"
-    ],
-    "in_stock": true,
-    "featured": false,
-    "created_at": "2026-03-01T22:25:21.771Z"
-  },
-  {
     "id": "cdd19185-9f9a-4b6f-8ad5-f2a490baa070",
     "sku": "GRX-HQV-HUS-STR-2425",
     "name": "Husqvarna Stryke Graphic Kit",
