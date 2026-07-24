@@ -701,24 +701,6 @@
     "created_at": "2026-03-01T22:25:43.770Z"
   },
   {
-    "id": "e067b88a-d236-4b54-a69b-bc551d692c28",
-    "sku": "GRX-KAW-KAW-STR-2425",
-    "name": "Kawasaki Stryke Graphic Kit",
-    "category": "graphic-kit",
-    "make": "Kawasaki",
-    "model": "",
-    "year_from": 2023,
-    "year_to": 2026,
-    "price": 250,
-    "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
-    "images": [
-      "uploads/products/80567dd6-5d18-4e72-b78e-421f8e1c6bcc.jpg"
-    ],
-    "in_stock": true,
-    "featured": false,
-    "created_at": "2026-03-01T22:25:44.771Z"
-  },
-  {
     "id": "d2692690-4adc-4771-a741-705bd2faa99c",
     "sku": "GRX-KAW-KAW-MX3-2425",
     "name": "Kawasaki MX37 Graphic Kit",
