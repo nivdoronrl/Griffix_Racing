@@ -1027,24 +1027,6 @@
     "created_at": "2026-03-01T22:26:12.769Z"
   },
   {
-    "id": "cc97540f-5edb-4fe0-b0b7-97520496e7c9",
-    "sku": "GRX-GG-MX3-2425",
-    "name": "Gas Gas MX37 Graphic Kit",
-    "category": "graphic-kit",
-    "make": "GasGas",
-    "model": "",
-    "year_from": 2023,
-    "year_to": 2026,
-    "price": 250,
-    "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
-    "images": [
-      "uploads/products/dac2d0f5-0eaa-4ef6-916c-16f2d067849d.jpg"
-    ],
-    "in_stock": true,
-    "featured": false,
-    "created_at": "2026-03-01T22:26:14.770Z"
-  },
-  {
     "id": "1dc7b13e-f5c5-4840-851b-60485516625c",
     "sku": "GRX-GG-MX3-2425",
     "name": "Gas Gas MX34 Graphic Kit",
