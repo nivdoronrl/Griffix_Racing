@@ -510,24 +510,6 @@
     "created_at": "2026-03-01T22:25:25.766Z"
   },
   {
-    "id": "3c39b8a2-4508-4eed-af0a-1bf0e2a125df",
-    "sku": "GRX-HON-MX3-HON-2425",
-    "name": "MX37 Graphic Kit for Honda's",
-    "category": "graphic-kit",
-    "make": "Honda",
-    "model": "",
-    "year_from": 2023,
-    "year_to": 2026,
-    "price": 250,
-    "description": "Full Graphics Kit includes printed graphics for Tank Shrouds, Side Number Plates, Airbox, Rear Fender, Front Fender, Front Number Plate, Fork Guards, and Swingarms. Printed on high-tac vinyl with premium gloss laminate for maximum durability. Does not include seat covers or plastics.",
-    "images": [
-      "uploads/products/a7b37536-8c27-4427-ae0c-9c78b883f84f.jpg"
-    ],
-    "in_stock": true,
-    "featured": false,
-    "created_at": "2026-03-01T22:25:26.770Z"
-  },
-  {
     "id": "70817c60-a5b7-4041-b593-5969484a1da4",
     "sku": "GRX-HON-STR-HON-2425",
     "name": "Stryke Graphic Kit for Honda's",
