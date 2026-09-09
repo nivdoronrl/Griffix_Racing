@@ -4,6 +4,18 @@
  */
 
 (async function initNav() {
+  // Analytics loader (draft) — inert until real G-… ID; skip /admin/*
+  (function loadGriffixAnalytics() {
+    try {
+      if (/^\/admin(\/|$)/i.test(location.pathname || '')) return;
+      if (document.querySelector('script[src="/js/analytics.js"]')) return;
+      var s = document.createElement('script');
+      s.src = '/js/analytics.js';
+      s.async = true;
+      (document.head || document.documentElement).appendChild(s);
+    } catch (e) { /* ignore */ }
+  })();
+
   // ── Load footer ──────────────────────────────────────────────────────────
   const footerPlaceholder = document.getElementById('footer-placeholder');
   if (footerPlaceholder) {
