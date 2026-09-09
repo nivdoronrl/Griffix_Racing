@@ -87,7 +87,7 @@
     loadScript('https://cdn.vercel-insights.com/v1/script.js', { 'data-endpoint': '/_vercel/insights' });
   }
 
-  function euro(value) {
+  function toNumber(value) {
     var n = Number(value);
     return isFinite(n) ? n : 0;
   }
@@ -111,13 +111,13 @@
       item = item || {};
       gaEvent('view_item', {
         currency: item.currency || 'USD',
-        value: euro(item.value),
+        value: toNumber(item.value),
         items: item.items || [],
       });
       fbTrack('ViewContent', {
         content_ids: item.content_ids || [],
         content_type: 'product',
-        value: euro(item.value),
+        value: toNumber(item.value),
         currency: item.currency || 'USD',
       });
     },
@@ -125,13 +125,13 @@
       item = item || {};
       gaEvent('add_to_cart', {
         currency: item.currency || 'USD',
-        value: euro(item.value),
+        value: toNumber(item.value),
         items: item.items || [],
       });
       fbTrack('AddToCart', {
         content_ids: item.content_ids || [],
         content_type: 'product',
-        value: euro(item.value),
+        value: toNumber(item.value),
         currency: item.currency || 'USD',
       });
     },
@@ -139,11 +139,11 @@
       cart = cart || {};
       gaEvent('begin_checkout', {
         currency: cart.currency || 'USD',
-        value: euro(cart.value),
+        value: toNumber(cart.value),
         items: cart.items || [],
       });
       fbTrack('InitiateCheckout', {
-        value: euro(cart.value),
+        value: toNumber(cart.value),
         currency: cart.currency || 'USD',
         num_items: cart.num_items,
       });
@@ -153,11 +153,11 @@
       gaEvent('purchase', {
         transaction_id: order.transaction_id,
         currency: order.currency || 'USD',
-        value: euro(order.value),
+        value: toNumber(order.value),
         items: order.items || [],
       });
       fbTrack('Purchase', {
-        value: euro(order.value),
+        value: toNumber(order.value),
         currency: order.currency || 'USD',
       });
     },
