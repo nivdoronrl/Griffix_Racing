@@ -11,7 +11,7 @@
 
   var CONFIG = {
     // Replace after NIv creates GA4 property — e.g. 'G-XXXXXXXX'
-    GA4_MEASUREMENT_ID: 'G-XXXXXXXX',
+    GA4_MEASUREMENT_ID: 'G-Y4HPSRMVMX',
     // Empty string = skip Meta Pixel
     META_PIXEL_ID: '',
     // Set true only after Vercel Web Analytics enabled in project UI + NIv OK
