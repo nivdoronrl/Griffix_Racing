@@ -110,7 +110,7 @@
     viewItem: function (item) {
       item = item || {};
       gaEvent('view_item', {
-        currency: item.currency || 'AUD',
+        currency: item.currency || 'USD',
         value: euro(item.value),
         items: item.items || [],
       });
@@ -118,13 +118,13 @@
         content_ids: item.content_ids || [],
         content_type: 'product',
         value: euro(item.value),
-        currency: item.currency || 'AUD',
+        currency: item.currency || 'USD',
       });
     },
     addToCart: function (item) {
       item = item || {};
       gaEvent('add_to_cart', {
-        currency: item.currency || 'AUD',
+        currency: item.currency || 'USD',
         value: euro(item.value),
         items: item.items || [],
       });
@@ -132,19 +132,19 @@
         content_ids: item.content_ids || [],
         content_type: 'product',
         value: euro(item.value),
-        currency: item.currency || 'AUD',
+        currency: item.currency || 'USD',
       });
     },
     beginCheckout: function (cart) {
       cart = cart || {};
       gaEvent('begin_checkout', {
-        currency: cart.currency || 'AUD',
+        currency: cart.currency || 'USD',
         value: euro(cart.value),
         items: cart.items || [],
       });
       fbTrack('InitiateCheckout', {
         value: euro(cart.value),
-        currency: cart.currency || 'AUD',
+        currency: cart.currency || 'USD',
         num_items: cart.num_items,
       });
     },
@@ -152,13 +152,13 @@
       order = order || {};
       gaEvent('purchase', {
         transaction_id: order.transaction_id,
-        currency: order.currency || 'AUD',
+        currency: order.currency || 'USD',
         value: euro(order.value),
         items: order.items || [],
       });
       fbTrack('Purchase', {
         value: euro(order.value),
-        currency: order.currency || 'AUD',
+        currency: order.currency || 'USD',
       });
     },
   };
