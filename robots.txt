@@ -15,4 +15,4 @@ Disallow: /checkout
 Disallow: /api/
 Disallow: /uploads/
 
-Sitemap: https://www.griffixracing.com/sitemap.xml
+Sitemap: https://www.griffixracing.com/sitemap_index.xml

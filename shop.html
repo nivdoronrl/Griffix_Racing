@@ -432,7 +432,7 @@ function renderProducts(products) {
   grid.innerHTML = products.map(p => {
     const firstImg = p.images && p.images.length ? p.images[0] : null;
     return `
-    <div class="product-card reveal shadow-card" onclick="if(!event.target.closest('.atc-btn')) location.href='/product.html?id=${p.id}'" style="cursor:pointer;">
+    <div class="product-card reveal shadow-card" onclick="if(!event.target.closest('.atc-btn')) location.href='${p.slug ? '/products/' + p.slug + '/' : '/product.html?id=' + p.id}'" style="cursor:pointer;">
       <div class="relative overflow-hidden" style="height:250px;">
         ${firstImg
           ? `<img src="/${firstImg}" alt="${p.name}" class="w-full h-full object-cover">`

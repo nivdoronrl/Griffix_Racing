@@ -5,6 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title id="page-title">Product — Griffix Racing</title>
   <meta id="page-meta" name="description" content="Premium motocross graphics kit by Griffix Racing.">
+  <link id="page-canonical" rel="canonical" href="https://www.griffixracing.com/product">
+  <!-- Legacy ?id= URLs: client redirect to /products/{slug}/ when map is known -->
+  <script>
+  (function () {
+    var params = new URLSearchParams(window.location.search);
+    var id = params.get('id');
+    if (!id) return;
+    var CONTROLLER = new AbortController();
+    var timer = setTimeout(function () { CONTROLLER.abort(); }, 2500);
+    fetch('/product-id-to-slug.json', { signal: CONTROLLER.signal, cache: 'force-cache' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (map) {
+        clearTimeout(timer);
+        if (!map) return;
+        var slug = map[id];
+        if (!slug) return;
+        var dest = '/products/' + encodeURIComponent(slug) + '/';
+        var link = document.getElementById('page-canonical');
+        if (link) link.setAttribute('href', 'https://www.griffixracing.com' + dest);
+        if (window.location.pathname.indexOf('/products/') === 0) return;
+        window.location.replace(dest);
+      })
+      .catch(function () { clearTimeout(timer); });
+  })();
+  </script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -205,6 +230,16 @@ async function loadProduct() {
   document.getElementById('page-title').textContent = `${_product.name} | Griffix Racing`;
   document.getElementById('page-meta').content = `Buy the ${_product.name} from Griffix Racing. ${_product.make || ''} ${_product.model || ''} graphics kit. Printed on Substance Inc. X1 UltraCurve with UltraCurve 1500 overlaminate, UV resistant.`;
   document.getElementById('breadcrumb-name').textContent = _product.name;
+  if (_product.slug) {
+    const canon = `https://www.griffixracing.com/products/${_product.slug}/`;
+    const link = document.getElementById('page-canonical');
+    if (link) link.setAttribute('href', canon);
+    // Prefer slug URL if still on legacy shell
+    if (window.location.pathname === '/product' || window.location.pathname === '/product.html') {
+      window.location.replace(`/products/${_product.slug}/`);
+      return;
+    }
+  }
 
   // Category + make badges
   document.getElementById('pd-category-badge').textContent = (catLabels[_product.category] || _product.category || 'Product').toUpperCase();
@@ -274,7 +309,7 @@ function renderRelated(products) {
   const grid = document.getElementById('related-grid');
   if (!products.length) { grid.closest('section').style.display = 'none'; return; }
   grid.innerHTML = products.map(p => `
-    <a href="/product.html?id=${p.id}" class="product-card reveal shadow-card" style="display:block; text-decoration:none;">
+    <a href="${p.slug ? '/products/' + p.slug + '/' : '/product.html?id=' + p.id}" class="product-card reveal shadow-card" style="display:block; text-decoration:none;">
       <div class="relative overflow-hidden" style="height:220px;">
         <div class="absolute inset-0" style="background:#1a1a1a; background-image:radial-gradient(ellipse at 60% 40%, rgba(255,107,0,.05) 0%, transparent 55%);"></div>
         ${p.images && p.images.length
