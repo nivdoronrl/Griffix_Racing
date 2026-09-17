@@ -1,7 +1,6 @@
 {
   "version": 2,
   "cleanUrls": true,
-  "buildCommand": "npm run build",
   "rewrites": [
     {
       "source": "/api/:path*",
