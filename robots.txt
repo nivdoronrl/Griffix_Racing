@@ -1,0 +1,18 @@
+# Griffix Racing — robots.txt
+# Site: https://www.griffixracing.com
+User-agent: *
+Allow: /
+
+# Do not index admin or commerce funnel pages
+Disallow: /admin
+Disallow: /admin/
+Disallow: /cart.html
+Disallow: /cart
+Disallow: /checkout.html
+Disallow: /checkout
+
+# Optional noise reduction (API / uploads are not landing pages)
+Disallow: /api/
+Disallow: /uploads/
+
+Sitemap: https://www.griffixracing.com/sitemap.xml
