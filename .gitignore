@@ -29,6 +29,6 @@ server/data/orders.json
 # Reference/scratch screenshots in root
 us.skda.com.au_.png
 
-# Generated PDP HTML — full tree built on Vercel (`npm run build`).
+# Generated PDP HTML — committed static pages for Vercel (no install/build on deploy).
 # Commit only the sample pages below for PR review.
 # products/{slug}/index.html are committed (static Vercel deploy; no build-time puppeteer install)

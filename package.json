@@ -9,7 +9,7 @@
     "build:samples": "node scripts/generate-product-pages.mjs --sample-only",
     "slugs": "node scripts/ensure-product-slugs.mjs",
     "slugs:check": "node scripts/ensure-product-slugs.mjs --check",
-    "vercel-build": "node -e \"console.log('Static product HTML is committed; skipping generate on Vercel')\""
+    "build:vercel-skip": "node -e \"console.log('Static HTML is committed; Vercel skips install/build')\""
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -19,7 +19,9 @@
     "multer": "^2.0.2",
     "node-fetch": "^3.3.2",
     "nodemailer": "^6.9.14",
-    "puppeteer": "^24.37.5",
     "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "puppeteer": "^24.37.5"
   }
 }
