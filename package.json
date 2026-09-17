@@ -8,7 +8,8 @@
     "build": "node scripts/ensure-product-slugs.mjs --check && node scripts/generate-product-pages.mjs",
     "build:samples": "node scripts/generate-product-pages.mjs --sample-only",
     "slugs": "node scripts/ensure-product-slugs.mjs",
-    "slugs:check": "node scripts/ensure-product-slugs.mjs --check"
+    "slugs:check": "node scripts/ensure-product-slugs.mjs --check",
+    "vercel-build": "node -e \"console.log('Static product HTML is committed; skipping generate on Vercel')\""
   },
   "dependencies": {
     "cors": "^2.8.5",

@@ -31,10 +31,4 @@ us.skda.com.au_.png
 
 # Generated PDP HTML — full tree built on Vercel (`npm run build`).
 # Commit only the sample pages below for PR review.
-/products/*
-!/products/ktm-sx-f-250-350-stealth-kit/
-!/products/ktm-sx-f-250-350-stealth-kit/**
-!/products/husqvarna-fe-350-coyote-kit/
-!/products/husqvarna-fe-350-coyote-kit/**
-!/products/yamaha-yz250f-acid-kit/
-!/products/yamaha-yz250f-acid-kit/**
+# products/{slug}/index.html are committed (static Vercel deploy; no build-time puppeteer install)
