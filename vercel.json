@@ -10,5 +10,8 @@
       "source": "/uploads/:path*",
       "destination": "https://griffix-racing.onrender.com/uploads/:path*"
     }
-  ]
+  ],
+  "installCommand": "",
+  "buildCommand": "",
+  "framework": null
 }
