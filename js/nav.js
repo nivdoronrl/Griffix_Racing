@@ -145,7 +145,7 @@
         searchResults.innerHTML = `<div style="padding:20px; color:#555; font-family:'Archivo Narrow',sans-serif; font-size:14px; text-align:center;">No products found for "${searchInput.value}"</div>`;
       } else {
         searchResults.innerHTML = matches.map(p => `
-          <a href="/product.html?id=${p.id}" onclick="closeSearch()" style="display:flex; align-items:center; gap:14px; padding:14px 20px; border-bottom:1px solid rgba(255,255,255,.04); text-decoration:none; transition:background .15s ease;" onmouseover="this.style.background='rgba(255,107,0,.04)'" onmouseout="this.style.background=''">
+          <a href="${p.slug ? '/products/' + p.slug + '/' : '/product.html?id=' + p.id}" onclick="closeSearch()" style="display:flex; align-items:center; gap:14px; padding:14px 20px; border-bottom:1px solid rgba(255,255,255,.04); text-decoration:none; transition:background .15s ease;" onmouseover="this.style.background='rgba(255,107,0,.04)'" onmouseout="this.style.background=''">
             <div style="width:40px; height:40px; background:#222; flex-shrink:0; display:flex; align-items:center; justify-content:center;">
               <span style="font-family:'Oswald',sans-serif; font-weight:700; font-size:10px; color:#A39171; letter-spacing:.05em;">${(p.make||'KIT').substring(0,3).toUpperCase()}</span>
             </div>

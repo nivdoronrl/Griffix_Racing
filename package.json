@@ -4,7 +4,11 @@
   "type": "module",
   "scripts": {
     "start": "node server/index.mjs",
-    "dev": "node --watch server/index.mjs"
+    "dev": "node --watch server/index.mjs",
+    "build": "node scripts/ensure-product-slugs.mjs --check && node scripts/generate-product-pages.mjs",
+    "build:samples": "node scripts/generate-product-pages.mjs --sample-only",
+    "slugs": "node scripts/ensure-product-slugs.mjs",
+    "slugs:check": "node scripts/ensure-product-slugs.mjs --check"
   },
   "dependencies": {
     "cors": "^2.8.5",
