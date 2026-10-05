@@ -58,7 +58,7 @@ app.get('/api/health', (_req, res) => res.json({ ok: true, ts: Date.now() }));
 app.get('/api/config', (_req, res) => {
   res.json({
     paypalMeUrl:  process.env.PAYPAL_ME_URL || 'https://www.paypal.com/paypalme/GriffixRacing',
-    zelleContact: process.env.ZELLE_CONTACT || 'payments@griffixracing.com',
+    zelleContact: process.env.ZELLE_CONTACT || 'nivdoron1@gmail.com',
     currency:     'USD',
   });
 });
