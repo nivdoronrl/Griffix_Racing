@@ -1,22 +1,28 @@
 /**
- * Griffix Racing — shared analytics loader (DRAFT)
- * Measurement IDs are public-by-design in frontend, but do NOT deploy
- * until NIv supplies real IDs and approves production.
- *
- * Load once via js/nav.js (dynamic script into <head>).
- * Skip on /admin/* paths.
+ * Griffix Racing — shared analytics loader
+ * GA4 + optional Vercel Web Analytics + first-touch UTM attribution.
+ * Loaded once via js/nav.js. Skips /admin/* paths.
  */
 (function () {
   'use strict';
 
   var CONFIG = {
-    // Replace after NIv creates GA4 property — e.g. 'G-XXXXXXXX'
     GA4_MEASUREMENT_ID: 'G-Y4HPSRMVMX',
-    // Empty string = skip Meta Pixel
     META_PIXEL_ID: '',
-    // Set true only after Vercel Web Analytics enabled in project UI + NIv OK
-    ENABLE_VERCEL_ANALYTICS: false,
+    // Script 404s harmlessly until NIv enables Web Analytics in the Vercel dashboard
+    ENABLE_VERCEL_ANALYTICS: true,
   };
+
+  var ATTR_KEY = 'griffix_attribution';
+  var ATTR_KEYS = [
+    'utm_source',
+    'utm_medium',
+    'utm_campaign',
+    'utm_term',
+    'utm_content',
+    'referrer',
+    'landing_page',
+  ];
 
   function pathIsAdmin() {
     try {
@@ -82,9 +88,100 @@
   }
 
   function initVercelAnalytics() {
-    // Plain HTML static sites: inject Vercel's Web Analytics script when enabled in dashboard.
-    // Exact snippet may match current Vercel docs — confirm at enable time.
-    loadScript('https://cdn.vercel-insights.com/v1/script.js', { 'data-endpoint': '/_vercel/insights' });
+    // Standard Vercel Web Analytics queue + script for static HTML sites
+    window.va =
+      window.va ||
+      function () {
+        (window.vaq = window.vaq || []).push(arguments);
+      };
+    loadScript('/_vercel/insights/script.js', { defer: 'defer' });
+  }
+
+  function readStoredAttribution() {
+    try {
+      var raw = localStorage.getItem(ATTR_KEY);
+      if (!raw) return null;
+      var parsed = JSON.parse(raw);
+      return parsed && typeof parsed === 'object' ? parsed : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function writeStoredAttribution(data) {
+    try {
+      localStorage.setItem(ATTR_KEY, JSON.stringify(data));
+    } catch (e) {
+      /* ignore quota / private mode */
+    }
+  }
+
+  /**
+   * Capture first-touch UTMs + referrer + landing page.
+   * Does NOT strip the query string — GA4 reads location.search itself.
+   */
+  function captureAttribution() {
+    var params;
+    try {
+      params = new URLSearchParams(location.search || '');
+    } catch (e) {
+      params = { get: function () { return null; } };
+    }
+
+    var existing = readStoredAttribution() || {};
+    var next = {};
+    ATTR_KEYS.forEach(function (k) {
+      next[k] = existing[k] || '';
+    });
+
+    var hasUtm = false;
+    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].forEach(function (k) {
+      var v = (params.get(k) || '').trim();
+      if (v) {
+        hasUtm = true;
+        // First-touch: only set if empty
+        if (!next[k]) next[k] = v.slice(0, 200);
+      }
+    });
+
+    if (!next.referrer) {
+      try {
+        var ref = document.referrer || '';
+        if (ref && ref.indexOf(location.hostname) === -1) {
+          next.referrer = ref.slice(0, 500);
+        }
+      } catch (e) { /* ignore */ }
+    }
+
+    if (!next.landing_page) {
+      try {
+        next.landing_page = (location.pathname + location.search).slice(0, 500);
+      } catch (e) {
+        next.landing_page = '/';
+      }
+    }
+
+    // Always persist on first visit or when new first-touch UTMs arrive
+    if (hasUtm || !existing.landing_page) {
+      writeStoredAttribution(next);
+    }
+
+    return next;
+  }
+
+  function getAttribution() {
+    return readStoredAttribution() || captureAttribution();
+  }
+
+  /** Fill hidden inputs named after ATTR_KEYS inside a form */
+  function fillAttributionFields(form) {
+    if (!form || !form.querySelector) return getAttribution();
+    var attr = getAttribution();
+    ATTR_KEYS.forEach(function (k) {
+      var el = form.querySelector('[name="' + k + '"]');
+      if (el) el.value = attr[k] || '';
+    });
+    return attr;
   }
 
   function toNumber(value) {
@@ -104,9 +201,21 @@
     }
   }
 
-  /** Public stubs — safe no-ops until IDs are real and hooks are wired */
   window.GriffixAnalytics = {
     config: CONFIG,
+    getAttribution: getAttribution,
+    fillAttributionFields: fillAttributionFields,
+    generateLead: function (params) {
+      params = params || {};
+      var attr = getAttribution();
+      gaEvent('generate_lead', {
+        lead_type: params.lead_type || '',
+        source: params.source || '',
+        utm_source: params.utm_source || attr.utm_source || '',
+        currency: 'USD',
+        value: toNumber(params.value),
+      });
+    },
     viewItem: function (item) {
       item = item || {};
       gaEvent('view_item', {
@@ -164,6 +273,9 @@
   };
 
   if (pathIsAdmin()) return;
+
+  // Capture UTMs before GA4 config so first-touch is stored; do not strip location.search
+  captureAttribution();
 
   if (hasRealGa4Id(CONFIG.GA4_MEASUREMENT_ID)) {
     initGa4(CONFIG.GA4_MEASUREMENT_ID);
