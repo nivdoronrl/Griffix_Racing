@@ -320,8 +320,12 @@ let _zelleContact = 'nivdoron1@gmail.com';
 // Fetch public config
 fetch('/api/config').then(r => r.json()).then(cfg => {
   if (cfg.paypalMeUrl) _paypalMeBase = cfg.paypalMeUrl;
-  if (cfg.zelleContact) {
-    _zelleContact = cfg.zelleContact;
+  // Ignore empty or legacy @griffixracing.com Zelle values (Render env may still
+  // return payments@… until updated). Keep hardcoded nivdoron1@gmail.com.
+  // A different valid address from Render still overrides.
+  const zc = (cfg.zelleContact || '').trim();
+  if (zc && !zc.toLowerCase().endsWith('@griffixracing.com')) {
+    _zelleContact = zc;
     document.getElementById('zelle-contact-display').textContent = _zelleContact;
   }
 }).catch(() => {});
