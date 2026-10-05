@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Dirt Bike Graphics — Get a Quote | Griffix Racing</title>
+  <meta name="description" content="Custom dirt bike graphics, number plates and stickers designed around your bike, colors, name and number. Send your details and get a quote.">
+  <link rel="canonical" href="https://www.griffixracing.com/custom-graphics/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Griffix Racing">
+  <meta property="og:title" content="Custom Dirt Bike Graphics — Get a Quote | Griffix Racing">
+  <meta property="og:description" content="Custom dirt bike graphics, number plates and stickers designed around your bike, colors, name and number. Send your details and get a quote.">
+  <meta property="og:url" content="https://www.griffixracing.com/custom-graphics/">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Archivo+Narrow:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            charcoal: { DEFAULT: '#2B2B2B', 700: '#353535', 800: '#1E1E1E', 900: '#141414' },
+            orange: { DEFAULT: '#FF6B00', dark: '#e55a00' },
+            tan: { DEFAULT: '#A39171', dark: '#7D6E56' }
+          },
+          fontFamily: {
+            display: ['Oswald', 'sans-serif'],
+            body: ['Archivo Narrow', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="/shared/theme.css">
+  <style>
+    .hp-field { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; opacity: 0; }
+    .quote-file-hint { font-family: 'Archivo Narrow', sans-serif; font-size: 12px; color: #666; margin-top: 6px; }
+    details.quote-faq summary { cursor: pointer; list-style: none; }
+    details.quote-faq summary::-webkit-details-marker { display: none; }
+  </style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<!-- Hero + form above the fold on mobile -->
+<section class="page-hero topo" style="padding-top:64px;">
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse 70% 100% at 70% 120%, rgba(163,145,113,.14) 0%, transparent 60%);"></div>
+  <div class="relative z-10 max-w-7xl mx-auto px-6 py-10 lg:py-14">
+    <div class="label mb-3">Custom Work</div>
+    <h1 class="font-display font-bold text-white" style="font-size:clamp(34px,5.5vw,64px); letter-spacing:-.03em; line-height:.95;">CUSTOM DIRT BIKE GRAPHICS</h1>
+    <p class="text-[#e5e5e5] mt-3" style="font-family:'Archivo Narrow',sans-serif; font-size:clamp(16px,2vw,20px);">Your bike, your colors, your number.</p>
+    <ul class="flex flex-wrap gap-x-6 gap-y-2 mt-4 text-[#888]" style="font-family:'Archivo Narrow',sans-serif; font-size:14px;">
+      <li class="flex items-center gap-2"><span style="color:#FF6B00;">●</span> Full kits</li>
+      <li class="flex items-center gap-2"><span style="color:#FF6B00;">●</span> Number plates</li>
+      <li class="flex items-center gap-2"><span style="color:#FF6B00;">●</span> Club / team stickers</li>
+    </ul>
+    <a href="#quote" class="btn-primary mt-6" style="padding:12px 28px; font-size:13px;">Get a Quote</a>
+  </div>
+</section>
+
+<section id="quote" style="padding:48px 0 80px; background:#0f0f0f; scroll-margin-top:72px;">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid lg:grid-cols-5 gap-10">
+
+      <div class="lg:col-span-3">
+        <div id="quote-success" style="display:none; background:#181818; border:1px solid rgba(255,107,0,.3); border-left:3px solid #FF6B00; padding:32px; text-align:center;">
+          <svg width="40" height="40" fill="none" stroke="#FF6B00" stroke-width="2" viewBox="0 0 24 24" style="margin:0 auto 16px;"><polyline points="20 6 9 17 4 12"/></svg>
+          <h2 class="font-display text-white font-bold text-xl mb-2">QUOTE REQUEST SENT</h2>
+          <p class="text-[#888]" style="font-family:'Archivo Narrow',sans-serif; font-size:15px; line-height:1.7;">Thanks — we'll reply within 24 hours with next steps. If you selected reference photos, reply to our email and attach them.</p>
+        </div>
+
+        <form id="quote-form" novalidate>
+          <div class="label mb-4">Quote Request</div>
+          <h2 class="font-display font-bold text-white mb-6" style="font-size:clamp(24px,3vw,32px); letter-spacing:-.02em;">TELL US WHAT YOU NEED</h2>
+
+          <!-- Honeypot -->
+          <div class="hp-field" aria-hidden="true">
+            <label for="q-website">Website</label>
+            <input type="text" id="q-website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="field-label" for="q-name">Name *</label>
+              <input id="q-name" name="name" type="text" class="form-input" placeholder="Your name" autocomplete="name" required maxlength="120">
+            </div>
+            <div>
+              <label class="field-label" for="q-email">Email *</label>
+              <input id="q-email" name="email" type="email" class="form-input" placeholder="you@email.com" autocomplete="email" required maxlength="200">
+            </div>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="field-label" for="q-phone">Phone <span style="color:#555; text-transform:none; letter-spacing:0;">(optional)</span></label>
+              <input id="q-phone" name="phone" type="tel" class="form-input" placeholder="For text updates" autocomplete="tel" maxlength="40">
+            </div>
+            <div>
+              <label class="field-label" for="q-need">What do you need? *</label>
+              <select id="q-need" name="need" class="form-input" required>
+                <option value="">Select…</option>
+                <option value="Full graphics kit">Full graphics kit</option>
+                <option value="Number plates only">Number plates only</option>
+                <option value="Stickers or decals">Stickers or decals</option>
+                <option value="Not sure">Not sure</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="field-label" for="q-make">Bike make *</label>
+              <select id="q-make" name="make" class="form-input" required>
+                <option value="">Select…</option>
+                <option>KTM</option>
+                <option>Husqvarna</option>
+                <option>GasGas</option>
+                <option>Honda</option>
+                <option>Yamaha</option>
+                <option>Kawasaki</option>
+                <option>Suzuki</option>
+                <option>Beta</option>
+                <option>Sherco</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label" for="q-model-year">Model + year *</label>
+              <input id="q-model-year" name="model_year" type="text" class="form-input" placeholder="e.g. SX-F 450 2024" required maxlength="120">
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="field-label" for="q-notes">Colors / style / ideas *</label>
+            <textarea id="q-notes" name="notes" class="form-input" rows="5" placeholder="Colors, sponsors, vibes, race number placement…" required maxlength="4000"></textarea>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="field-label" for="q-name-number">Name &amp; number <span style="color:#555; text-transform:none; letter-spacing:0;">(optional)</span></label>
+              <input id="q-name-number" name="name_number" type="text" class="form-input" placeholder="e.g. DORON 21" maxlength="80">
+            </div>
+            <div>
+              <label class="field-label" for="q-need-by">Need it by <span style="color:#555; text-transform:none; letter-spacing:0;">(optional)</span></label>
+              <input id="q-need-by" name="need_by" type="date" class="form-input">
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="field-label" for="q-files">Upload photos / logos / references <span style="color:#555; text-transform:none; letter-spacing:0;">(optional)</span></label>
+            <input id="q-files" name="files" type="file" class="form-input" accept="image/jpeg,image/png,image/webp,image/gif,application/pdf,.jpg,.jpeg,.png,.webp,.gif,.pdf" multiple>
+            <p class="quote-file-hint">JPEG, PNG, WebP, GIF or PDF · max 5 files · 4 MB each. File names are included in your quote email; we'll ask you to attach the files when we reply.</p>
+            <p id="q-files-error" style="display:none; color:#c0a0a0; font-family:'Archivo Narrow',sans-serif; font-size:13px; margin-top:6px;"></p>
+          </div>
+
+          <div class="mb-6">
+            <label class="field-label" for="q-source">How did you find us? *</label>
+            <select id="q-source" name="source" class="form-input" required>
+              <option value="">Select…</option>
+              <option value="Instagram">Instagram</option>
+              <option value="Facebook">Facebook</option>
+              <option value="Google">Google</option>
+              <option value="Friend">Friend</option>
+              <option value="At a race">At a race</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <!-- Attribution (filled by GriffixAnalytics) -->
+          <input type="hidden" name="utm_source" id="q-utm-source" value="">
+          <input type="hidden" name="utm_medium" id="q-utm-medium" value="">
+          <input type="hidden" name="utm_campaign" id="q-utm-campaign" value="">
+          <input type="hidden" name="utm_term" id="q-utm-term" value="">
+          <input type="hidden" name="utm_content" id="q-utm-content" value="">
+          <input type="hidden" name="referrer" id="q-referrer" value="">
+          <input type="hidden" name="landing_page" id="q-landing" value="">
+
+          <div class="flex flex-wrap items-center gap-4">
+            <button type="submit" id="quote-submit" class="btn-primary" style="padding:14px 36px; font-size:14px;">Send Quote Request</button>
+            <span id="quote-submitting" style="display:none; color:#666; font-family:'Archivo Narrow',sans-serif; font-size:13px;">Sending…</span>
+          </div>
+          <div id="quote-error" style="display:none; color:#c0a0a0; font-family:'Archivo Narrow',sans-serif; font-size:13px; margin-top:12px;"></div>
+        </form>
+      </div>
+
+      <aside class="lg:col-span-2 space-y-6">
+        <div style="background:#181818; padding:28px; border:1px solid rgba(163,145,113,.2);">
+          <h3 class="font-display text-white font-bold text-sm tracking-widest uppercase mb-5">How it works</h3>
+          <ol class="space-y-4" style="font-family:'Archivo Narrow',sans-serif; font-size:14px; color:#888; list-style:none; padding:0; margin:0; counter-reset:step;">
+            <li class="flex gap-3"><span style="color:#FF6B00; font-family:'Oswald',sans-serif; font-weight:600; min-width:1.5rem;">1</span><span>Send your details</span></li>
+            <li class="flex gap-3"><span style="color:#FF6B00; font-family:'Oswald',sans-serif; font-weight:600; min-width:1.5rem;">2</span><span>We design and send a proof</span></li>
+            <li class="flex gap-3"><span style="color:#FF6B00; font-family:'Oswald',sans-serif; font-weight:600; min-width:1.5rem;">3</span><span>You approve</span></li>
+            <li class="flex gap-3"><span style="color:#FF6B00; font-family:'Oswald',sans-serif; font-weight:600; min-width:1.5rem;">4</span><span>We print and ship</span></li>
+          </ol>
+          <p style="font-family:'Archivo Narrow',sans-serif; font-size:13px; color:#666; margin-top:16px; line-height:1.6;">Custom kits typically take 5–7 business days after approval. We reply to quote requests within 24 hours.</p>
+        </div>
+
+        <div style="background:#181818; padding:28px; border:1px solid rgba(163,145,113,.2);">
+          <h3 class="font-display text-white font-bold text-sm tracking-widest uppercase mb-3">Prefer a printable form?</h3>
+          <p style="font-family:'Archivo Narrow',sans-serif; font-size:13px; color:#777; line-height:1.6; margin-bottom:16px;">Download the PDF order form, fill it out by hand, and email it back.</p>
+          <a href="https://drive.google.com/file/d/1uZXpJQViAzTRQp2Ru1c8CpWPl2HJ38gS/view?usp=sharing" target="_blank" rel="noopener" class="btn-ghost" style="display:block; text-align:center; padding:12px; font-size:12px;">Download PDF Order Form</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section style="padding:72px 0; background:#111; border-top:1px solid rgba(163,145,113,.15);">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="label mb-3">What we make</div>
+    <h2 class="font-display font-bold text-white mb-8" style="font-size:clamp(28px,4vw,40px); letter-spacing:-.03em;">FULL KITS · PLATES · STICKERS</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div style="background:#181818; border:1px solid rgba(163,145,113,.2); padding:28px;">
+        <h3 class="font-display text-white font-bold text-lg mb-2">Full graphics kits</h3>
+        <p style="font-family:'Archivo Narrow',sans-serif; font-size:14px; color:#777; line-height:1.7;">Complete shroud, fender, and side-panel kits cut for your year and model.</p>
+        <a href="#quote" class="text-[#FF6B00] text-sm mt-4 inline-block" style="font-family:'Archivo Narrow',sans-serif;">Request a kit quote →</a>
+      </div>
+      <div style="background:#181818; border:1px solid rgba(163,145,113,.2); padding:28px;">
+        <h3 class="font-display text-white font-bold text-lg mb-2">Number plates</h3>
+        <p style="font-family:'Archivo Narrow',sans-serif; font-size:14px; color:#777; line-height:1.7;">Front and side plates with your number and name — race-ready.</p>
+        <a href="#quote" class="text-[#FF6B00] text-sm mt-4 inline-block" style="font-family:'Archivo Narrow',sans-serif;">Request plates →</a>
+      </div>
+      <div style="background:#181818; border:1px solid rgba(163,145,113,.2); padding:28px;">
+        <h3 class="font-display text-white font-bold text-lg mb-2">Stickers &amp; decals</h3>
+        <p style="font-family:'Archivo Narrow',sans-serif; font-size:14px; color:#777; line-height:1.7;">Club, team, and sponsor stickers for bikes, helmets, and pits.</p>
+        <a href="#quote" class="text-[#FF6B00] text-sm mt-4 inline-block" style="font-family:'Archivo Narrow',sans-serif;">Request stickers →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:72px 0; background:#0f0f0f;">
+  <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-10 items-start">
+    <div>
+      <div class="label mb-3">Materials</div>
+      <h2 class="font-display font-bold text-white mb-4" style="font-size:clamp(26px,3.5vw,36px); letter-spacing:-.03em;">BUILT FOR WOODS AND MX</h2>
+      <p style="font-family:'Archivo Narrow',sans-serif; font-size:15px; color:#888; line-height:1.75;">We print on durable vinyl with X1 UltraCurve / UltraCurve 1500 laminate so kits hold up in the woods and on the track. See install tips and care notes on our FAQ.</p>
+      <a href="/faq.html" class="btn-ghost mt-6" style="padding:12px 22px; font-size:12px;">Read the FAQ</a>
+    </div>
+    <div>
+      <div class="label mb-3">Recent work</div>
+      <h2 class="font-display font-bold text-white mb-4" style="font-size:clamp(26px,3.5vw,36px); letter-spacing:-.03em;">SEE IT ON THE BIKE</h2>
+      <p style="font-family:'Archivo Narrow',sans-serif; font-size:15px; color:#888; line-height:1.75; margin-bottom:20px;">Browse real Griffix kits and customer builds in the gallery.</p>
+      <a href="/gallery.html" class="btn-primary" style="padding:12px 22px; font-size:12px;">View Gallery</a>
+    </div>
+  </div>
+</section>
+
+<section style="padding:72px 0; background:#111; border-top:1px solid rgba(163,145,113,.15);">
+  <div class="max-w-3xl mx-auto px-6">
+    <div class="label mb-3 justify-center" style="display:flex;">Custom graphics FAQ</div>
+    <h2 class="font-display font-bold text-white mb-8 text-center" style="font-size:clamp(26px,3.5vw,36px); letter-spacing:-.03em;">QUICK ANSWERS</h2>
+    <div class="space-y-3">
+      <details class="quote-faq" style="background:#181818; border:1px solid rgba(163,145,113,.2); padding:18px 22px;">
+        <summary class="font-display text-white font-semibold text-sm tracking-wide uppercase">How long does a custom kit take?</summary>
+        <p style="font-family:'Archivo Narrow',sans-serif; font-size:14px; color:#888; line-height:1.7; margin-top:12px;">After you approve the proof, custom kits typically take 5–7 business days to produce before shipping.</p>
+      </details>
+      <details class="quote-faq" style="background:#181818; border:1px solid rgba(163,145,113,.2); padding:18px 22px;">
+        <summary class="font-display text-white font-semibold text-sm tracking-wide uppercase">Do I need my exact bike year and model?</summary>
+        <p style="font-family:'Archivo Narrow',sans-serif; font-size:14px; color:#888; line-height:1.7; margin-top:12px;">Yes for full kits — plastics change by year. Include make, model, and year so we cut for the right fitment.</p>
+      </details>
+      <details class="quote-faq" style="background:#181818; border:1px solid rgba(163,145,113,.2); padding:18px 22px;">
+        <summary class="font-display text-white font-semibold text-sm tracking-wide uppercase">Can you match my colors and sponsors?</summary>
+        <p style="font-family:'Archivo Narrow',sans-serif; font-size:14px; color:#888; line-height:1.7; margin-top:12px;">Absolutely. Describe colors and upload logos or reference photos in the quote form. We'll send a proof before printing.</p>
+      </details>
+      <details class="quote-faq" style="background:#181818; border:1px solid rgba(163,145,113,.2); padding:18px 22px;">
+        <summary class="font-display text-white font-semibold text-sm tracking-wide uppercase">What if I only need number plates or stickers?</summary>
+        <p style="font-family:'Archivo Narrow',sans-serif; font-size:14px; color:#888; line-height:1.7; margin-top:12px;">Select that option in the form — smaller jobs often turn around faster than full kits.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section style="padding:64px 0 96px; background:#0f0f0f;">
+  <div class="max-w-7xl mx-auto px-6 text-center">
+    <div class="label mb-3 justify-center" style="display:flex;">Shop by make</div>
+    <h2 class="font-display font-bold text-white mb-6" style="font-size:clamp(24px,3vw,32px);">ALREADY KNOW YOUR BIKE?</h2>
+    <div class="flex flex-wrap gap-3 justify-center mb-8">
+      <a href="/shop.html?make=KTM" class="btn-ghost" style="padding:10px 18px; font-size:12px;">KTM</a>
+      <a href="/shop.html?make=Husqvarna" class="btn-ghost" style="padding:10px 18px; font-size:12px;">Husqvarna</a>
+      <a href="/shop.html?make=Yamaha" class="btn-ghost" style="padding:10px 18px; font-size:12px;">Yamaha</a>
+      <a href="/shop.html?make=Honda" class="btn-ghost" style="padding:10px 18px; font-size:12px;">Honda</a>
+      <a href="/shop.html?make=Kawasaki" class="btn-ghost" style="padding:10px 18px; font-size:12px;">Kawasaki</a>
+      <a href="/shop.html?make=GasGas" class="btn-ghost" style="padding:10px 18px; font-size:12px;">GasGas</a>
+      <a href="/shop.html" class="btn-primary" style="padding:10px 18px; font-size:12px;">All shop</a>
+    </div>
+    <p style="font-family:'Archivo Narrow',sans-serif; font-size:14px; color:#666;">No stock kit for your bike? <a href="#quote" style="color:#FF6B00;">Get a custom quote</a>.</p>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+
+<script src="/js/reveal.js"></script>
+<script src="/js/cart.js"></script>
+<script src="/js/nav.js"></script>
+<script>
+(function () {
+  var MAX_FILES = 5;
+  var MAX_BYTES = 4 * 1024 * 1024;
+  var ALLOWED = {
+    'image/jpeg': true,
+    'image/png': true,
+    'image/webp': true,
+    'image/gif': true,
+    'application/pdf': true,
+  };
+
+  var form = document.getElementById('quote-form');
+  var fileInput = document.getElementById('q-files');
+  var filesError = document.getElementById('q-files-error');
+
+  function emailOk(v) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  }
+
+  function validateFiles(files) {
+    if (!files || !files.length) return '';
+    if (files.length > MAX_FILES) return 'Please select at most ' + MAX_FILES + ' files.';
+    for (var i = 0; i < files.length; i++) {
+      var f = files[i];
+      var typeOk = ALLOWED[f.type];
+      if (!typeOk) {
+        var name = (f.name || '').toLowerCase();
+        typeOk = /\.(jpe?g|png|webp|gif|pdf)$/.test(name);
+      }
+      if (!typeOk) return 'Unsupported file type: ' + (f.name || 'file') + '. Use JPEG, PNG, WebP, GIF, or PDF.';
+      if (f.size > MAX_BYTES) return (f.name || 'File') + ' is over 4 MB.';
+    }
+    return '';
+  }
+
+  function leadTypeFromNeed(need) {
+    if (/plate/i.test(need)) return 'plates';
+    if (/sticker|decal/i.test(need)) return 'stickers';
+    if (/kit/i.test(need)) return 'kit';
+    return 'other';
+  }
+
+  function fillAttr() {
+    if (window.GriffixAnalytics && window.GriffixAnalytics.fillAttributionFields) {
+      return window.GriffixAnalytics.fillAttributionFields(form);
+    }
+    return {};
+  }
+
+  // Prefill attribution once analytics loads
+  function tryFill() {
+    fillAttr();
+  }
+  tryFill();
+  setTimeout(tryFill, 200);
+  setTimeout(tryFill, 800);
+
+  fileInput.addEventListener('change', function () {
+    var err = validateFiles(fileInput.files);
+    filesError.textContent = err;
+    filesError.style.display = err ? 'block' : 'none';
+  });
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var btn = document.getElementById('quote-submit');
+    var loading = document.getElementById('quote-submitting');
+    var errorEl = document.getElementById('quote-error');
+    errorEl.style.display = 'none';
+
+    // Honeypot: pretend success, do not send
+    if ((document.getElementById('q-website').value || '').trim()) {
+      form.style.display = 'none';
+      document.getElementById('quote-success').style.display = 'block';
+      return;
+    }
+
+    var name = document.getElementById('q-name').value.trim();
+    var email = document.getElementById('q-email').value.trim();
+    var phone = document.getElementById('q-phone').value.trim();
+    var need = document.getElementById('q-need').value;
+    var make = document.getElementById('q-make').value;
+    var modelYear = document.getElementById('q-model-year').value.trim();
+    var notes = document.getElementById('q-notes').value.trim();
+    var nameNumber = document.getElementById('q-name-number').value.trim();
+    var needBy = document.getElementById('q-need-by').value;
+    var source = document.getElementById('q-source').value;
+    var fileErr = validateFiles(fileInput.files);
+
+    if (!name || !email || !need || !make || !modelYear || !notes || !source) {
+      errorEl.textContent = 'Please fill in all required fields.';
+      errorEl.style.display = 'block';
+      return;
+    }
+    if (!emailOk(email)) {
+      errorEl.textContent = 'Please enter a valid email address.';
+      errorEl.style.display = 'block';
+      return;
+    }
+    if (name.length > 120 || email.length > 200 || notes.length > 4000) {
+      errorEl.textContent = 'One or more fields exceed the length limit.';
+      errorEl.style.display = 'block';
+      return;
+    }
+    if (fileErr) {
+      filesError.textContent = fileErr;
+      filesError.style.display = 'block';
+      errorEl.textContent = fileErr;
+      errorEl.style.display = 'block';
+      return;
+    }
+
+    var attr = fillAttr();
+    var fileNames = [];
+    if (fileInput.files && fileInput.files.length) {
+      for (var i = 0; i < fileInput.files.length; i++) {
+        fileNames.push(fileInput.files[i].name + ' (' + Math.round(fileInput.files[i].size / 1024) + ' KB)');
+      }
+    }
+
+    var messageLines = [
+      'QUOTE REQUEST (via /custom-graphics/)',
+      '',
+      'Need: ' + need,
+      'Bike make: ' + make,
+      'Model + year: ' + modelYear,
+      'Name & number: ' + (nameNumber || '—'),
+      'Need by: ' + (needBy || '—'),
+      'Phone: ' + (phone || '—'),
+      'How found us: ' + source,
+      '',
+      'Colors / style / ideas:',
+      notes,
+      '',
+      'Reference files selected: ' + (fileNames.length ? fileNames.join(', ') : 'none'),
+      '',
+      'Attribution:',
+      'utm_source: ' + (attr.utm_source || '—'),
+      'utm_medium: ' + (attr.utm_medium || '—'),
+      'utm_campaign: ' + (attr.utm_campaign || '—'),
+      'utm_term: ' + (attr.utm_term || '—'),
+      'utm_content: ' + (attr.utm_content || '—'),
+      'referrer: ' + (attr.referrer || '—'),
+      'landing_page: ' + (attr.landing_page || '—'),
+    ];
+
+    btn.style.display = 'none';
+    loading.style.display = 'inline';
+
+    try {
+      // Reuses production /api/contact so preview submissions deliver before any Render redeploy
+      var res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          subject: 'Quote Request: ' + need,
+          message: messageLines.join('\n'),
+          website: '', // honeypot field for future server-side check
+        }),
+      });
+      var data;
+      try { data = await res.json(); } catch (err) { data = {}; }
+      if (!res.ok) throw new Error(data.error || 'Quote could not be sent. Please try again.');
+
+      if (window.GriffixAnalytics && window.GriffixAnalytics.generateLead) {
+        window.GriffixAnalytics.generateLead({
+          lead_type: leadTypeFromNeed(need),
+          source: source,
+          utm_source: attr.utm_source || '',
+        });
+      }
+
+      form.style.display = 'none';
+      document.getElementById('quote-success').style.display = 'block';
+      try {
+        history.replaceState(null, '', location.pathname + location.search + '#quote');
+      } catch (err) { /* ignore */ }
+    } catch (err) {
+      btn.style.display = 'inline-block';
+      loading.style.display = 'none';
+      var msg = (err.message && err.message.indexOf('token') === -1 && err.message.indexOf('JSON') === -1)
+        ? err.message
+        : 'Quote could not be sent. Please try again in a moment.';
+      errorEl.textContent = msg;
+      errorEl.style.display = 'block';
+    }
+  });
+})();
+</script>
+</body>
+</html>
