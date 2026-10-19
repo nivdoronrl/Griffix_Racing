@@ -96,6 +96,15 @@
   </style>
 </head>
 <body>
+<!-- Admin is disabled: the site runs with no backend/env vars (see docs/VERCEL_MIGRATION.md) -->
+<div id="admin-unavailable" role="alertdialog" aria-modal="true" aria-labelledby="admin-unavailable-title" style="position:fixed; inset:0; z-index:2147483647; background:#0a0a0a; display:flex; align-items:center; justify-content:center; padding:24px;">
+  <div style="max-width:460px; background:#181818; border:1px solid rgba(163,145,113,.25); border-left:3px solid #FF6B00; padding:32px; text-align:left;">
+    <h1 id="admin-unavailable-title" style="font-family:Oswald,sans-serif; color:#fff; font-size:22px; font-weight:700; margin:0 0 10px; letter-spacing:.02em;">ADMIN TEMPORARILY UNAVAILABLE</h1>
+    <p style="font-family:'Archivo Narrow',sans-serif; color:#aaa; font-size:15px; line-height:1.7; margin:0 0 16px;">The admin panel is offline while the site runs without a server. Orders, quotes and messages arrive by email at griffixracing@gmail.com. Catalog changes are made in the site repository.</p>
+    <a href="/" style="font-family:Oswald,sans-serif; color:#FF6B00; font-size:13px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;">← Back to the site</a>
+  </div>
+</div>
+
 
 <div class="admin-nav">
   <img src="/brand_assets/Griffix logo.png" alt="Griffix" class="logo-lime" style="height:28px; flex-shrink:0;">

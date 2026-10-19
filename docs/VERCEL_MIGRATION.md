@@ -1,5 +1,16 @@
 # Running Griffix Racing on Vercel alone (no Render)
 
+> **Current setup (2026-10-19, latest):** the site needs **no backend and no
+> environment variables**. Vercel serves only static files. The contact form,
+> the `/custom-graphics/` quote form and checkout open a pre-filled `mailto:`
+> email to griffixracing@gmail.com (`js/mailto-submit.js`). After submit the
+> page shows a summary with "Copy details" and "Open email again". Order
+> tracking points customers to email. Admin pages show "Admin temporarily
+> unavailable". The Vercel Functions in `api/` are kept in the repo but
+> excluded from deployment via `.vercelignore`, and `installCommand` is empty.
+> Sections below that describe functions, SMTP and env vars are for a future
+> server-backed setup and are **not required** now.
+
 Render's free workspace was suspended (over 5 GB bandwidth), so every `/api/*` and
 `/uploads/*` request on www.griffixracing.com returned 503. This branch serves
 everything from the Vercel deployment. Render config (`server/`, `railway.toml`)

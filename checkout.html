@@ -253,26 +253,17 @@
           </div>
         </div>
 
-        <!-- ── STEP 4: Order Confirmed ──────────────────────────────────── -->
-        <div id="step-4" style="display:none; text-align:center; padding:40px 0;" class="checkout-step">
-          <div style="background:#FF6B00; width:72px; height:72px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 24px;">
-            <svg width="32" height="32" fill="none" stroke="#0f0f0f" stroke-width="3" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-          <h2 class="font-display text-white font-bold mb-3" style="font-size:clamp(28px,4vw,48px); letter-spacing:-.02em;">ORDER CONFIRMED!</h2>
-          <p class="text-[#aaa] mb-2" style="font-family:'Archivo Narrow',sans-serif; font-size:15px;">
-            Order <strong id="confirm-order-id" style="color:#FF6B00;"></strong> has been received and your payment is being verified.
+        <!-- ── STEP 4: Send the order email (mailto, no backend) ──────────── -->
+        <div id="step-4" style="display:none; padding:8px 0 40px;" class="checkout-step">
+          <p class="text-[#aaa] mb-4" style="font-family:'Archivo Narrow',sans-serif; font-size:15px;">
+            Order <strong id="confirm-order-id" style="color:#FF6B00;"></strong>
           </p>
-          <p class="text-[#666]" style="font-family:'Archivo Narrow',sans-serif; font-size:14px;">
-            We'll dispatch within 48 hours of payment confirmation. Check your email for updates.
-          </p>
-
-          <div id="order-confirm-details" style="background:#181818; border:1px solid rgba(163,145,113,.2); border-left:4px solid #A39171; padding:24px; margin:32px 0; text-align:left;">
-            <h3 class="font-display font-bold text-sm tracking-widest uppercase mb-4" style="color:#A39171;">Payment Summary</h3>
-            <div id="confirm-payment-summary"></div>
+          <div id="order-mail-confirm"></div>
+          <div id="order-sent-thanks" style="display:none; background:#181818; border:1px solid rgba(163,145,113,.2); border-left:4px solid #A39171; padding:24px; margin:24px 0;">
+            <h3 class="font-display font-bold text-sm tracking-widest uppercase mb-2" style="color:#A39171;">Thanks — order sent</h3>
+            <p style="font-family:'Archivo Narrow',sans-serif; font-size:14px; color:#aaa; line-height:1.7; margin:0;">We'll confirm by email and dispatch within 48 hours of payment confirmation. Questions? Email <a href="mailto:griffixracing@gmail.com" style="color:#FF6B00;">griffixracing@gmail.com</a> with your Order ID.</p>
           </div>
-
-          <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
-            <a id="track-order-link" href="/order-tracking.html" class="btn-primary inline-block no-underline" style="padding:13px 28px; font-size:13px;">Track Your Order →</a>
+          <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:20px;">
             <a href="/shop.html" class="btn-ghost inline-block no-underline" style="padding:12px 28px;">Continue Shopping</a>
           </div>
         </div>
@@ -308,6 +299,7 @@
 <script src="/js/reveal.js"></script>
 <script src="/js/cart.js"></script>
 <script src="/js/nav.js"></script>
+<script src="/js/mailto-submit.js"></script>
 <script>
 // ── State ─────────────────────────────────────────────────────────────────────
 let _currentStep = 1;
@@ -337,10 +329,39 @@ setTimeout(() => {
   }
 }, 300);
 
+// ── Catalog prices (static /api/products), not the price stored in the cart ──
+let _catalogById = null;
+fetch('/api/products').then(r => r.json()).then(d => {
+  _catalogById = {};
+  (d.products || []).forEach(p => {
+    _catalogById[p.id] = p;
+    if (p.sku) _catalogById['sku:' + p.sku] = p;
+  });
+  renderSummary();
+}).catch(() => { _catalogById = {}; });
+
+function catalogFor(item) {
+  if (!_catalogById) return null;
+  return _catalogById[item.productId] || _catalogById[item.id] || _catalogById['sku:' + item.id] || null;
+}
+// Cart items with the current catalog price (falls back to the cart price if
+// the product isn't in the catalog snapshot; flagged in the order email).
+function pricedItems() {
+  const items = window.Cart ? window.Cart.getItems() : [];
+  return items.map(i => {
+    const p = catalogFor(i);
+    const price = p && typeof p.price === 'number' ? p.price : (parseFloat(i.price) || 0);
+    return { ...i, price, catalogMatched: !!p, qty: parseInt(i.qty, 10) || 1 };
+  });
+}
+function checkoutSubtotal() {
+  return Math.round(pricedItems().reduce((s, i) => s + i.price * i.qty, 0) * 100) / 100;
+}
+
 // ── Render order summary panel ────────────────────────────────────────────────
 function renderSummary() {
-  const items = window.Cart ? window.Cart.getItems() : [];
-  const subtotal = window.Cart ? window.Cart.getSubtotal() : 0;
+  const items = pricedItems();
+  const subtotal = checkoutSubtotal();
   const shipping = _selectedRate ? parseFloat(_selectedRate.amount) : 0;
   const total = subtotal + shipping;
 
@@ -485,7 +506,7 @@ function autoSelectPaypal() {
 
 // ── Show payment action for selected method ────────────────────────────────────
 function showPaymentAction(method) {
-  const subtotal = window.Cart.getSubtotal();
+  const subtotal = checkoutSubtotal();
   const shipping = _selectedRate ? parseFloat(_selectedRate.amount) : 0;
   const total = (subtotal + shipping).toFixed(2);
 
@@ -517,101 +538,98 @@ function showPaymentAction(method) {
   }
 }
 
-// ── Confirm buttons — submit order only AFTER customer confirms payment ────────
-document.getElementById('paypal-confirm-btn').addEventListener('click', async function() {
-  this.disabled = true;
-  this.textContent = 'Confirming Order…';
-  await submitOrder(this, "I'VE PAID — CONFIRM ORDER →");
-});
-document.getElementById('venmo-confirm-btn').addEventListener('click', async function() {
-  this.disabled = true;
-  this.textContent = 'Confirming Order…';
-  await submitOrder(this, "I'VE SENT PAYMENT — CONFIRM ORDER →");
-});
-document.getElementById('zelle-confirm-btn').addEventListener('click', async function() {
-  this.disabled = true;
-  this.textContent = 'Confirming Order…';
-  await submitOrder(this, "I'VE SENT PAYMENT — CONFIRM ORDER →");
+// ── Confirm buttons — build the order email only AFTER customer confirms payment
+['paypal', 'venmo', 'zelle'].forEach(m => {
+  document.getElementById(`${m}-confirm-btn`).addEventListener('click', function () { submitOrder(this); });
 });
 
-// ── Submit order to API ────────────────────────────────────────────────────────
-async function submitOrder(btn, resetLabel) {
-  const customer = {
-    name:  document.getElementById('cust-name').value.trim(),
-    email: document.getElementById('cust-email').value.trim(),
-    phone: document.getElementById('cust-phone').value.trim(),
-  };
-  const shippingData = {
-    address: {
-      street1: document.getElementById('addr-street1').value.trim(),
-      street2: document.getElementById('addr-street2').value.trim(),
-      city:    document.getElementById('addr-city').value.trim(),
-      state:   document.getElementById('addr-state').value.trim(),
-      zip:     document.getElementById('addr-zip').value.trim(),
-      country: document.getElementById('addr-country').value,
-    },
-    provider:     _selectedRate?.provider || '',
-    servicelevel: _selectedRate?.servicelevel || '',
-    amount:       _selectedRate?.amount || '0',
-    currency:     _selectedRate?.currency || 'USD',
-  };
-
-  const payload = {
-    customer,
-    items:         window.Cart.getItems(),
-    shipping:      shippingData,
-    paymentMethod: _selectedPayment,
-    subtotal:      window.Cart.getSubtotal(),
-  };
-
-  try {
-    const res = await fetch('/api/orders', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-    const data = await res.json();
-
-    if (!res.ok || !data.orderId) throw new Error(data.error || 'Order failed');
-
-    _placedOrderId = data.orderId;
-    window.Cart.clear();
-
-    const subtotal = payload.subtotal;
-    const shipping = parseFloat(shippingData.amount || 0);
-    // Prefer the server-computed total (flat $20 shipping applied server-side)
-    const total = (typeof data.total === 'number' ? data.total : subtotal + shipping).toFixed(2);
-
-    showOrderConfirmation(data, _selectedPayment, total);
-    goToStep(4);
-  } catch (err) {
-    btn.disabled = false;
-    btn.textContent = resetLabel;
-    showToast('Order could not be confirmed: ' + err.message, 'error');
-  }
+function newOrderId() {
+  const b = new Uint8Array(4);
+  (window.crypto || window.msCrypto).getRandomValues(b);
+  return 'GRX-' + Array.from(b, x => x.toString(16).padStart(2, '0')).join('').toUpperCase();
 }
 
-function showOrderConfirmation(data, paymentMethod, total) {
-  document.getElementById('confirm-order-id').textContent = `#${data.orderId}`;
+// ── Order → mailto: griffixracing@gmail.com (no backend, no env vars) ─────────
+let _orderMail = null;
+function submitOrder(_btn) {
+  const v = id => document.getElementById(id).value.trim();
+  const items = pricedItems();
+  if (!items.length) return showToast('Your cart is empty.', 'error');
+  const subtotal = checkoutSubtotal();
+  const shipping = parseFloat(FLAT_SHIPPING_RATE.amount);
+  const total = (subtotal + shipping).toFixed(2);
+  const orderId = _placedOrderId || newOrderId();
+  _placedOrderId = orderId;
+  const name = v('cust-name');
 
-  // Pre-fill the track order link with orderId + email
-  const email = document.getElementById('cust-email').value.trim();
-  const trackUrl = `/order-tracking.html?id=${encodeURIComponent(data.orderId)}&email=${encodeURIComponent(email)}`;
-  document.getElementById('track-order-link').href = trackUrl;
+  const payLines = {
+    paypal: ['PayPal (PayPal.me)', `Pay $${total} USD at ${_paypalMeBase}/${total}`],
+    venmo:  ['Venmo', `Send $${total} USD to @GriffixRacing — note: your name + ${orderId}`],
+    zelle:  ['Zelle', `Send $${total} USD via Zelle to ${_zelleContact} — memo: your name + ${orderId}`],
+  }[_selectedPayment] || [String(_selectedPayment || 'Not specified'), ''];
 
-  const payLabels = { paypal: 'PayPal', venmo: 'Venmo', zelle: 'Zelle' };
-  const summaryHtml = `
-    <p style="font-family:'Archivo Narrow',sans-serif; font-size:14px; color:#aaa; line-height:1.7; margin:0 0 12px;">
-      Payment method: <strong style="color:#e5e5e5;">${payLabels[paymentMethod] || paymentMethod}</strong>
-    </p>
-    <p style="font-family:'Archivo Narrow',sans-serif; font-size:14px; color:#aaa; line-height:1.7; margin:0 0 12px;">
-      Amount: <strong style="color:#FF6B00;">$${total} USD</strong>
-    </p>
-    <p style="font-family:'Archivo Narrow',sans-serif; font-size:13px; color:#555; line-height:1.6; margin:0;">
-      Save your Order ID: <strong style="color:#FF6B00; font-family:'Oswald',sans-serif;">${data.orderId}</strong> — you'll need it to track your order.
-    </p>
-  `;
-  document.getElementById('confirm-payment-summary').innerHTML = summaryHtml;
+  const itemLines = items.map((i, n) => {
+    const fit = [i.make, i.model, i.year].filter(Boolean).join(' ');
+    const known = ['id', 'productId', 'name', 'make', 'model', 'year', 'category', 'price', 'qty', 'image', 'catalogMatched'];
+    const extras = Object.keys(i).filter(k => !known.includes(k) && i[k] !== '' && i[k] != null)
+      .map(k => `${k}: ${typeof i[k] === 'object' ? JSON.stringify(i[k]) : i[k]}`);
+    return [
+      `${n + 1}. ${i.name}${i.id ? ' [' + i.id + ']' : ''}`,
+      fit ? `   Fitment: ${fit}` : '',
+      extras.length ? `   Options: ${extras.join('; ')}` : '',
+      `   Qty ${i.qty} × $${i.price.toFixed(2)} = $${(i.price * i.qty).toFixed(2)}${i.catalogMatched ? '' : ' (price from cart — not found in catalog)'}`,
+    ].filter(Boolean).join('\n');
+  });
+
+  const attr = GriffixMailto.attribution(null);
+  const body = [
+    `ORDER ${orderId} (via griffixracing.com/checkout)`,
+    '',
+    'CUSTOMER',
+    `Name: ${name}`,
+    `Email: ${v('cust-email')}`,
+    `Phone: ${v('cust-phone') || '—'}`,
+    '',
+    'SHIP TO',
+    v('addr-street1') + (v('addr-street2') ? ', ' + v('addr-street2') : ''),
+    `${v('addr-city')}, ${v('addr-state')} ${v('addr-zip')}`,
+    document.getElementById('addr-country').value,
+    '',
+    'ITEMS',
+    ...itemLines,
+    '',
+    `Subtotal: $${subtotal.toFixed(2)}`,
+    `Shipping: $${shipping.toFixed(2)} (flat rate, US)`,
+    `TOTAL: $${total} USD`,
+    '',
+    'PAYMENT',
+    `Method: ${payLines[0]}`,
+    payLines[1],
+    'Customer confirmed payment was sent.',
+    '',
+    '---',
+    'Attribution:',
+    ...GriffixMailto.attributionLines(attr),
+  ].join('\n');
+  const mail = GriffixMailto.build(`Order – ${name} – $${total}`, body);
+  _orderMail = mail;
+
+  document.getElementById('confirm-order-id').textContent = '#' + orderId;
+  goToStep(4);
+  GriffixMailto.renderConfirmation(document.getElementById('order-mail-confirm'), {
+    title: 'ALMOST DONE — SEND YOUR ORDER EMAIL',
+    intro: 'Your email app should have opened with your order filled in. <strong style="color:#e5e5e5;">Press send</strong> — your order is placed once we receive that email.',
+    mail,
+    attachNote: 'Have photos for your order (e.g. number/name references)? Attach them to the email before you send it.',
+    confirmLabel: "I've sent the order email",
+    onConfirm(btn) {
+      window.Cart.clear();
+      btn.disabled = true;
+      btn.textContent = 'Thanks — cart cleared';
+      document.getElementById('order-sent-thanks').style.display = 'block';
+    },
+  });
+  GriffixMailto.open(mail.href);
 }
 
 // ── Toast helper ──────────────────────────────────────────────────────────────
