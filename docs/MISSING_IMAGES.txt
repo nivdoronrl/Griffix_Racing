@@ -1,0 +1,93 @@
+# uploads/ files that are not real images (HTML saved in place of the image).
+# The original image is not in git on any branch; it may only have existed on Render's disk.
+uploads/gallery/e04dc3f0-41ff-40f0-a8cc-964d27279417.jpg
+uploads/products/001a8cdf-f4eb-42b8-8772-55b197ac68e0.png
+uploads/products/0382a62e-10d9-4f07-831b-e5963fa852f9.png
+uploads/products/05647399-e06a-4504-bbc0-bfdf77ada67c.png
+uploads/products/05f1a808-eb38-4fa7-9923-40ece16c0f7c.png
+uploads/products/0ade8294-80c3-4ed5-a7d3-4bec165c96a9.png
+uploads/products/15acf049-c11e-4a29-b25c-d9a3a152dce5.png
+uploads/products/1d0775cd-c903-462b-8b52-c6dbfbe02c4c.jpg
+uploads/products/250f52c3-d809-419e-bc95-5a1a854a8a8a.png
+uploads/products/2cdc63ac-9c0e-47d1-8508-b58282d1043d.png
+uploads/products/2dae00aa-bd90-44c2-8fd1-99b319e6e1a8.jpg
+uploads/products/34394474-cd55-4c84-8280-bcd32409a7ec.png
+uploads/products/3c2f9a29-e3d6-4164-9487-91ad8f8686ba.png
+uploads/products/3ce5fcf2-534e-49fc-b733-9f216cbae577.png
+uploads/products/419f4e1a-6267-413c-a63e-1124f1919ea1.png
+uploads/products/46711360-ea1f-4957-83c2-01f2b1860066.png
+uploads/products/5230ad00-7d41-4572-ac7b-66dd68d2b97e.png
+uploads/products/53ac0f66-f5ea-4ca9-995c-e601bac20216.png
+uploads/products/5715eb83-583e-4232-b269-c3b6d7ff6584.png
+uploads/products/573a7bb7-deb8-4227-a7e6-e94df783874a.png
+uploads/products/5869eec3-c572-4f88-b74f-8818c3cbe0e8.png
+uploads/products/5c627b2b-3c23-4fdc-8a70-1c964ded60c3.png
+uploads/products/5e3c3a6e-31bb-4bc2-8ab3-7a51fdf3b43e.png
+uploads/products/6952ebd2-ac64-458b-b4f6-4c44a3e215df.png
+uploads/products/70bb61fc-3b79-4113-8059-5973f5b630c5.png
+uploads/products/70f33966-8d1c-404f-a215-75b723bbcd3e.jpg
+uploads/products/7a23517c-a4ca-42d5-91a0-d894bfabd67a.png
+uploads/products/7a36e8dd-2d93-4f8b-a34d-ed8ec0819389.png
+uploads/products/7bae8b80-be09-451c-b48e-9931a4154ebe.png
+uploads/products/7c137c8a-041a-496f-9ad8-e4e6b0bf2f5f.png
+uploads/products/810cdb05-4140-455b-9fe0-b8fe093a618e.png
+uploads/products/889621de-f975-4d6a-87ca-779cc15353a5.png
+uploads/products/8d38ae98-cb01-458d-9752-6fc14bc53d49.png
+uploads/products/95d881e2-093e-440a-a8a0-3f8375a606de.png
+uploads/products/9d3bbad8-70f8-4c48-acaf-aa03ead0243f.jpg
+uploads/products/a34d3c5d-68c7-41e9-8673-bc08c3d79952.png
+uploads/products/a6c61225-764b-4e34-ad32-a2fa09f5ddb7.png
+uploads/products/a8c82524-d9e5-48fa-8326-ce86a0cd4d9c.png
+uploads/products/adba669f-4091-4256-aeaf-d25f744e1ad9.png
+uploads/products/afa92591-66dc-4a86-bd97-fb6e25c638cf.png
+uploads/products/b11e7e14-a257-4b18-85ec-3a676eec6ed8.png
+uploads/products/b2231038-6944-46d9-90f5-63cb4c1efb2c.png
+uploads/products/ba0b9298-1af2-463f-852d-34003311b5fc.png
+uploads/products/be9f0f83-3b3d-4fbd-9fe2-c04fc0a86594.png
+uploads/products/d1400380-ab33-4f97-a0ff-7235f8041196.png
+uploads/products/d17bcc5c-3bda-4b84-9980-0515ad5b97df.jpg
+uploads/products/db7d45be-7648-4923-949c-afc7f2dfde47.png
+uploads/products/f5940cef-7f7e-4f8c-9c08-899b2178d95f.png
+uploads/products/fcc77bda-4599-462a-989b-1ceb7228d36f.png
+uploads/products/fd3c31b1-59e8-4eba-b1c4-7659455fea0e.png
+uploads/products/fd7e0334-7a52-4329-adf0-fb3ad25a0a7f.jpg
+uploads/products/fec6e6f1-c30a-47b6-9354-b29d450f850b.png
+
+# Referenced by (product slug / name / missing file):
+# ktm-sx-f-250-350-stealth-kit | KTM SX-F 250/350 Stealth Kit | 1/2 missing | 34394474-cd55-4c84-8280-bcd32409a7ec.png
+# husqvarna-fe-350-coyote-kit | Husqvarna FE 350 Coyote Kit | 1/2 missing | 3c2f9a29-e3d6-4164-9487-91ad8f8686ba.png
+# yamaha-yz250f-acid-kit | Yamaha YZ250F Acid Kit | 1/2 missing | b2231038-6944-46d9-90f5-63cb4c1efb2c.png
+# honda-crf-450r-stealth-kit | Honda CRF 450R Stealth Kit | 1/2 missing | 2cdc63ac-9c0e-47d1-8508-b58282d1043d.png
+# ktm-factory-26-full-graphic-kit | KTM Factory 26 Full Graphic Kit | 1/2 missing | fec6e6f1-c30a-47b6-9354-b29d450f850b.png
+# ktm-scribble-full-graphic-kit | KTM Scribble Full Graphic Kit | 1/3 missing | 250f52c3-d809-419e-bc95-5a1a854a8a8a.png
+# scribble-hyper-neon-graphic-kit-for-ktm | Scribble Hyper Neon Graphic Kit for KTM | 1/2 missing | 5e3c3a6e-31bb-4bc2-8ab3-7a51fdf3b43e.png
+# scribble-orange-blue-graphic-kit-for-ktm | Scribble Orange/Blue Graphic Kit for KTM | 1/2 missing | 05f1a808-eb38-4fa7-9923-40ece16c0f7c.png
+# factory-26-graphic-kit-for-ktm | Factory 26 Graphic Kit for KTM | 1/2 missing | 95d881e2-093e-440a-a8a0-3f8375a606de.png
+# supertech-graphic-kit-for-ktm | Supertech Graphic Kit for KTM | 1/2 missing | 5230ad00-7d41-4572-ac7b-66dd68d2b97e.png
+# stryke-graphic-kit-orange-for-ktm | Stryke Graphic Kit Orange for KTM | 1/2 missing | 46711360-ea1f-4957-83c2-01f2b1860066.png
+# stryke-graphic-kit-for-ktm | Stryke Graphic Kit for KTM | 1/2 missing | 5869eec3-c572-4f88-b74f-8818c3cbe0e8.png
+# stock-25-graphic-kit-for-ktm | Stock 25 Graphic Kit for KTM | 1/2 missing | db7d45be-7648-4923-949c-afc7f2dfde47.png
+# true-mx-inferno-graphic-kit-for-ktm | True MX Inferno Graphic Kit for KTM | 1/2 missing | 573a7bb7-deb8-4227-a7e6-e94df783874a.png
+# factory-25-black-graphic-kit-for-ktm | Factory 25 Black Graphic Kit for KTM | 1/2 missing | 5c627b2b-3c23-4fdc-8a70-1c964ded60c3.png
+# vibes-graphic-kit-for-ktm | Vibes Graphic Kit for KTM | 1/2 missing | 3ce5fcf2-534e-49fc-b733-9f216cbae577.png
+# husqvarna-racer-blue-graphic-kit | Husqvarna Racer Blue Graphic Kit | 1/2 missing | a8c82524-d9e5-48fa-8326-ce86a0cd4d9c.png
+# husqvarna-race-series-grey-graphic-kit | Husqvarna Race Series Grey Graphic Kit | 1/2 missing | 5715eb83-583e-4232-b269-c3b6d7ff6584.png
+# husqvarna-racer-hyper-neon-graphic-kit | Husqvarna Racer Hyper Neon Graphic Kit | 1/2 missing | adba669f-4091-4256-aeaf-d25f744e1ad9.png
+# husqvarna-mx-14-graphic-kit | Husqvarna MX 14 Graphic Kit | 1/2 missing | 9d3bbad8-70f8-4c48-acaf-aa03ead0243f.jpg
+# husqvarna-checkered-graphic-kit | Husqvarna Checkered Graphic Kit | 1/2 missing | fd7e0334-7a52-4329-adf0-fb3ad25a0a7f.jpg
+# husqvarna-scribble-graphic-kit | Husqvarna Scribble Graphic Kit | 1/2 missing | 889621de-f975-4d6a-87ca-779cc15353a5.png
+# mx35-hyper-neon-graphic-kit-for-honda-s | MX35 Hyper Neon Graphic Kit for Honda's | 1/2 missing | 7bae8b80-be09-451c-b48e-9931a4154ebe.png
+# scribble-graphic-kit-for-honda-s | Scribble Graphic Kit for Honda's | 1/2 missing | 419f4e1a-6267-413c-a63e-1124f1919ea1.png
+# mx35-graphic-kit-for-honda-s | MX35 Graphic Kit for Honda's | 1/2 missing | 05647399-e06a-4504-bbc0-bfdf77ada67c.png
+# forged-graphic-kit-for-honda-s | Forged Graphic Kit for Honda's | 1/2 missing | a34d3c5d-68c7-41e9-8673-bc08c3d79952.png
+# aloha-graphic-kit-for-honda-s | Aloha Graphic Kit for Honda's | 1/2 missing | d17bcc5c-3bda-4b84-9980-0515ad5b97df.jpg
+# kawasaki-factory-26-graphic-kit | Kawasaki Factory 26 Graphic Kit | 1/2 missing | 810cdb05-4140-455b-9fe0-b8fe093a618e.png
+# kawasaki-scribble-graphic-kit | Kawasaki Scribble Graphic Kit | 1/2 missing | be9f0f83-3b3d-4fbd-9fe2-c04fc0a86594.png
+# kawasaki-tropical-graphic-kit | Kawasaki Tropical Graphic Kit | 1/3 missing | 2dae00aa-bd90-44c2-8fd1-99b319e6e1a8.jpg
+# kawasaki-rad-graphic-kit | Kawasaki Rad Graphic Kit | 1/3 missing | ba0b9298-1af2-463f-852d-34003311b5fc.png
+# kawasaki-pro-graphic-kit | Kawasaki Pro Graphic Kit | 1/3 missing | 70bb61fc-3b79-4113-8059-5973f5b630c5.png
+# yamaha-retro-92-graphic-kit | Yamaha Retro 92 Graphic Kit | 1/2 missing | 7a36e8dd-2d93-4f8b-a34d-ed8ec0819389.png
+# yamaha-distinct-graphic-kit | Yamaha Distinct Graphic Kit | 1/2 missing | 0382a62e-10d9-4f07-831b-e5963fa852f9.png
+# yamaha-scribble-hyper-neon-graphic-kit | Yamaha Scribble Hyper Neon Graphic Kit | 1/2 missing | afa92591-66dc-4a86-bd97-fb6e25c638cf.png
+# yamaha-factory-26-graphic-kit | Yamaha Factory 26 Graphic Kit | 1/2 missing | 8d38ae98-cb01-458d-9752-6fc14bc53d49.png
+# gallery g1 | Test URL Reference | uploads/gallery/e04dc3f0-41ff-40f0-a8cc-964d27279417.jpg
