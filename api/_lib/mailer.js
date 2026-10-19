@@ -3,8 +3,9 @@
  * Ported from server/lib/mailer.mjs (Render). Same templates, same recipients.
  *
  * Transport, in order of preference:
- *   1. Resend  (RESEND_API_KEY)                 — what server/lib/mailer.mjs on Render uses
- *   2. SMTP    (SMTP_USER + SMTP_PASS [+ SMTP_HOST, SMTP_PORT]) — e.g. Gmail App Password
+ *   1. Gmail SMTP (SMTP_USER + SMTP_PASS [+ SMTP_HOST, SMTP_PORT]) — sends as
+ *      griffixracing@gmail.com using a Gmail App Password (the chosen setup)
+ *   2. Resend  (RESEND_API_KEY) — what server/lib/mailer.mjs on Render used
  * If neither is configured, mailConfigured() is false and sends are skipped (logged).
  *
  * Owner notifications go to OWNER_EMAIL (default griffixracing@gmail.com).
@@ -17,8 +18,8 @@ const RESEND_FROM_ORDERS  = () => process.env.MAIL_FROM_ORDERS  || 'Griffix Raci
 const RESEND_FROM_DEFAULT = () => process.env.MAIL_FROM_DEFAULT || 'Griffix Racing <noreply@griffixracing.com>';
 
 export function mailTransport() {
-  if (process.env.RESEND_API_KEY) return 'resend';
   if (process.env.SMTP_USER && process.env.SMTP_PASS) return 'smtp';
+  if (process.env.RESEND_API_KEY) return 'resend';
   return null;
 }
 export const mailConfigured = () => mailTransport() !== null;
@@ -104,14 +105,16 @@ export async function sendOrderNotification(order) {
     </table>
     <table style="width:100%;margin-top:16px;">
       <tr><td style="color:#777;font-size:13px;padding:4px 0;">Subtotal</td><td style="text-align:right;color:#ccc;font-size:13px;">${money(order.subtotal)}</td></tr>
-      <tr><td style="color:#777;font-size:13px;padding:4px 0;">Shipping${order.shipping?.service ? ' (' + e(order.shipping.service) + ')' : ''}</td><td style="text-align:right;color:#ccc;font-size:13px;">${money(order.shipping?.amount)}</td></tr>
+      <tr><td style="color:#777;font-size:13px;padding:4px 0;">Shipping${(order.shipping?.servicelevel || order.shipping?.service) ? ' (' + e(order.shipping.servicelevel || order.shipping.service) + ')' : ''}</td><td style="text-align:right;color:#ccc;font-size:13px;">${money(order.shipping?.amount)}</td></tr>
       <tr><td style="color:#fff;font-size:15px;font-weight:700;padding:10px 0 0;">Total</td><td style="text-align:right;color:#FF6B00;font-size:18px;font-weight:700;padding:10px 0 0;">${money(order.total)}</td></tr>
     </table>
     <div style="background:#111;border:1px solid #2a2a2a;padding:16px;margin-top:28px;">
       <p style="color:#777;font-size:12px;margin:0 0 6px;text-transform:uppercase;">Payment Method</p>
       <p style="color:#e5e5e5;font-size:14px;margin:0;">${e(order.paymentMethod || 'Not specified')}</p>
     </div>
-    ${order.stored === false ? '<p style="color:#FF6B00;font-size:12px;margin-top:20px;">Note: no order database is configured — this email is the only record of this order.</p>' : ''}`;
+    ${order.stored === false ? '<p style="color:#FF6B00;font-size:12px;margin-top:20px;">This email is the order record (no order database is configured). Keep it.</p>' : ''}
+    <h2 style="color:#fff;font-size:13px;text-transform:uppercase;letter-spacing:.08em;margin-top:28px;">Full order record (JSON)</h2>
+    <pre style="background:#0f0f0f;color:#bbb;font-size:11px;line-height:1.5;padding:12px;white-space:pre-wrap;word-break:break-word;border:1px solid #2a2a2a;">${e(JSON.stringify(Object.fromEntries(Object.entries(order).filter(([k]) => k !== 'stored')), null, 2))}</pre>`;
   return send({
     kind: 'orders', to: OWNER(), replyTo: order.customer.email,
     subject: `New Order #${order.orderId} — ${money(order.total)}`,

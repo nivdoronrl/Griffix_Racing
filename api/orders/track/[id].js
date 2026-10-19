@@ -9,7 +9,9 @@ export async function GET(request) {
   if (!email) return json({ error: 'Email address is required.' }, 400);
 
   const notFound = () => json({ error: 'Order not found. Please check your Order ID and email address.' }, 404);
-  if (!storeBackend()) return notFound();
+  if (!storeBackend()) {
+    return json({ error: 'Online order tracking is not available right now. Your order confirmation email has your order details. For status updates, email griffixracing@gmail.com with your Order ID.' }, 503);
+  }
 
   let order = null;
   try { order = await getOrder(id); } catch (err) { console.error('[track] lookup failed:', err.message); }

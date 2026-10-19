@@ -39,8 +39,10 @@
     <h1 class="font-display text-white font-bold mb-6" style="font-size:22px; letter-spacing:-.01em; text-align:center;">SIGN IN</h1>
 
     <form id="login-form">
+      <label class="field-label">Username</label>
+      <input id="username" type="text" class="form-input mb-4" placeholder="Enter admin username" autocomplete="username" autofocus>
       <label class="field-label">Password</label>
-      <input id="password" type="password" class="form-input mb-4" placeholder="Enter admin password" autofocus>
+      <input id="password" type="password" class="form-input mb-4" placeholder="Enter admin password" autocomplete="current-password">
       <div id="login-error" style="display:none; color:#c0a0a0; font-family:'Archivo Narrow',sans-serif; font-size:13px; margin-bottom:14px;"></div>
       <button type="submit" id="login-btn" class="btn-primary w-full" style="padding:14px; font-size:14px;">Sign In</button>
     </form>
@@ -58,6 +60,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const btn = document.getElementById('login-btn');
   const errorEl = document.getElementById('login-error');
+  const username = document.getElementById('username').value.trim();
   const password = document.getElementById('password').value;
 
   btn.disabled = true;
@@ -68,12 +71,12 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     const res = await fetch('/api/admin/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password }),
+      body: JSON.stringify({ username, password }),
     });
     const data = await res.json();
 
     if (!res.ok || !data.token) {
-      throw new Error(data.error || 'Incorrect password.');
+      throw new Error(data.error || 'Incorrect username or password.');
     }
 
     saveToken(data.token);

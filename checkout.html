@@ -398,39 +398,15 @@ document.getElementById('step1-next').addEventListener('click', async () => {
   fetchRates({ name, city, state, zip, country, street1 });
 });
 
-// Flat-rate fallbacks used when Shippo returns no live rates
-const FALLBACK_RATES = [
-  { object_id: 'flat-standard', provider: 'Griffix', servicelevel: 'Standard Shipping', duration_terms: '5–10 business days', amount: '15.00', currency: 'USD' },
-  { object_id: 'flat-express',  provider: 'Griffix', servicelevel: 'Express Shipping',  duration_terms: '2–4 business days',  amount: '29.00', currency: 'USD' },
-];
+// Flat-rate shipping: $20 (US). Live Shippo rates are no longer requested;
+// the server (api/orders) applies the same FLAT_SHIPPING amount to the total.
+const FLAT_SHIPPING_RATE = { object_id: 'flat-us', provider: 'Griffix', servicelevel: 'Flat Rate Shipping (US)', duration_terms: '', amount: '20.00', currency: 'USD' };
 
-async function fetchRates(addr) {
-  document.getElementById('rates-loading').style.display = 'block';
-  document.getElementById('rates-container').innerHTML = '';
+function fetchRates(_addr) {
+  document.getElementById('rates-loading').style.display = 'none';
   document.getElementById('rates-error').style.display = 'none';
-  document.getElementById('step2-next').disabled = true;
   _selectedRate = null;
-
-  const items = window.Cart.getItems();
-
-  try {
-    const res = await fetch('/api/shippo/rates', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ toAddress: addr, items }),
-    });
-    const data = await res.json();
-    document.getElementById('rates-loading').style.display = 'none';
-
-    if (res.ok && data.rates?.length) {
-      renderRates(data.rates);
-    } else {
-      renderRates(FALLBACK_RATES, true);
-    }
-  } catch {
-    document.getElementById('rates-loading').style.display = 'none';
-    renderRates(FALLBACK_RATES, true);
-  }
+  renderRates([FLAT_SHIPPING_RATE]);
 }
 
 function renderRates(rates, isFallback = false) {
@@ -603,7 +579,8 @@ async function submitOrder(btn, resetLabel) {
 
     const subtotal = payload.subtotal;
     const shipping = parseFloat(shippingData.amount || 0);
-    const total = (subtotal + shipping).toFixed(2);
+    // Prefer the server-computed total (flat $20 shipping applied server-side)
+    const total = (typeof data.total === 'number' ? data.total : subtotal + shipping).toFixed(2);
 
     showOrderConfirmation(data, _selectedPayment, total);
     goToStep(4);

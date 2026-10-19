@@ -21,7 +21,7 @@ handful of visits or one crawler pass used up the 5 GB.
 | `POST /api/orders`, `GET /api/orders` (admin) | `api/orders/index.js` |
 | `PATCH /api/orders/:id` (admin) | `api/orders/[id].js` |
 | `GET /api/orders/track/:id?email=` | `api/orders/track/[id].js` |
-| `POST /api/shippo/rates` | `api/shippo/rates.js` (reuses `server/lib/shippo-client.mjs`) |
+| `POST /api/shippo/rates` | `api/shippo/rates.js` (returns the flat $20 rate; not called by checkout) |
 | `POST /api/admin/login`, `GET /api/admin/verify` | `api/admin/*.js` |
 
 `/api/config` returns `zelleContact: nivdoron1@gmail.com`.
@@ -34,29 +34,30 @@ handful of visits or one crawler pass used up the 5 GB.
 3. `node scripts/build-static-api.mjs`
 4. Commit and open a PR. Merging to `main` deploys production.
 
+## Decisions (2026-10-19)
+- **Shipping: flat $20 (US).** Checkout shows a single "Flat Rate Shipping (US)" option at $20. `api/orders` forces `shipping.amount = 20` and computes `subtotal` from the line items, so `total = subtotal + 20` server-side whatever the client sends. No Shippo calls: `api/shippo/rates` returns the flat rate and `server/lib/shippo-client.mjs` is unused.
+- **Order record: email.** No new accounts. Creating a Vercel Blob store wasn't possible: the Vercel connection gets 403 for this team. The owner email to `OWNER_EMAIL` includes the full order JSON. Order tracking replies "not available, see your confirmation email". The admin Orders page has no data until a store is configured (the Redis and private-GitHub backends stay in the code, off by default).
+- **Email: Gmail SMTP as griffixracing@gmail.com** (preferred over Resend when both are set).
+- **Admin login checks `ADMIN_USER` as well as `ADMIN_PASSWORD`.**
+
 ## Environment variables (Vercel → Project → Settings → Environment Variables)
-Names only. Set them for Production and Preview.
+Names only. Never commit values.
 
-Email (one of these is required for the contact/quote form and order emails):
-- `RESEND_API_KEY`: what the Render code (`server/lib/mailer.mjs`) actually uses. Sends from `orders@` / `noreply@griffixracing.com`, which must be a verified domain in Resend.
-- or Gmail SMTP: `SMTP_USER`, `SMTP_PASS` (Gmail App Password), optional `SMTP_HOST` (default smtp.gmail.com), `SMTP_PORT` (default 465), `SMTP_FROM`.
-- `OWNER_EMAIL`: optional, defaults to griffixracing@gmail.com.
-- Optional: `MAIL_FROM_ORDERS`, `MAIL_FROM_DEFAULT` (Resend sender overrides).
+Required for the Preview test (and later Production):
+- `ADMIN_USER`, `ADMIN_PASSWORD`, `ADMIN_SECRET` (random, 48+ chars)
+- `SMTP_USER` (griffixracing@gmail.com), `SMTP_PASS` (16-character Gmail App Password)
+- Optional (the defaults are correct): `SMTP_HOST` (smtp.gmail.com), `SMTP_PORT` (465), `OWNER_EMAIL` (griffixracing@gmail.com), `SMTP_FROM`
 
-Order storage (needed for order tracking and the admin Orders page):
-- `KV_REST_API_URL` + `KV_REST_API_TOKEN`: Upstash Redis (free) via the Vercel Marketplace. The integration injects these automatically. `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` also work.
-- or `ORDERS_GITHUB_REPO` + `ORDERS_GITHUB_TOKEN` (+ optional `ORDERS_GITHUB_BRANCH`): a **private** repo, one file per order. A public repo is refused; this repo is public, so never point it here.
-- With neither set, checkout still works and the owner email is the only record. That is effectively what happened on Render too: `orders.json` lived on its ephemeral disk and was never synced.
-- With neither storage nor email set, `POST /api/orders` returns 503 so no order is silently lost.
+To create the Gmail App Password: in the griffixracing@gmail.com Google Account, go to Security, turn on 2-Step Verification, then App passwords. Create one named "Griffix Vercel". It is 16 characters.
 
-Shipping: `SHIPPO_API_KEY`, `SHIPPO_FROM_NAME`, `SHIPPO_FROM_STREET`, `SHIPPO_FROM_CITY`, `SHIPPO_FROM_STATE`, `SHIPPO_FROM_ZIP`, `SHIPPO_FROM_COUNTRY`, `SHIPPO_FROM_PHONE`. Without them checkout shows its built-in estimated rates.
+Optional, unused for now:
+- `RESEND_API_KEY`
+- `KV_REST_API_URL` + `KV_REST_API_TOKEN`, or `ORDERS_GITHUB_REPO` + `ORDERS_GITHUB_TOKEN` (order storage)
 
-Admin: `ADMIN_PASSWORD`, `ADMIN_SECRET`.
-
-No longer used on Vercel: `PAYPAL_ME_URL` and `ZELLE_CONTACT` (now static in `static-api/config.json`), `GITHUB_TOKEN`, `GITHUB_REPO`, `GITHUB_DATA_BRANCH` (shop-data sync), `GOOGLE_SHEET_ID`, `GOOGLE_CREDENTIALS_PATH` (`/api/sheets/*` is not used by any page), `PORT`, `DATA_DIR`, `UPLOADS_DIR`.
+No longer used on Vercel: `SHIPPO_*`, `PAYPAL_ME_URL`, `ZELLE_CONTACT`, `GITHUB_TOKEN`, `GITHUB_REPO`, `GITHUB_DATA_BRANCH`, `GOOGLE_SHEET_ID`, `GOOGLE_CREDENTIALS_PATH`, `PORT`, `DATA_DIR`, `UPLOADS_DIR`.
 
 ## Admin impact
-- Works: login/verify, Orders list and status/tracking updates (needs order storage), tracking-number email to the customer.
+- Works: login (username + password) and verify. The Orders list, status/tracking updates and the tracking email need an order store, which isn't configured. Orders arrive by email instead.
 - Broken: Products and Gallery create/edit/delete and image upload (`POST/PUT/DELETE /api/products…`, `/api/gallery…`). Those URLs are now static files, so writes fail and the admin UI shows an error. Vercel has no writable disk.
 - Minimal option: edit the catalog in the repo (steps above) and deploy through a PR.
 - Next step if in-browser editing is needed: a Vercel Function that commits `server/data/*.json` and uploaded images to `main` through the GitHub API (the old `lib/github-sync.mjs` approach, pointed at `main`). Each save then triggers a production redeploy. The alternative is Vercel Blob for images plus a KV/Blob catalog.
