@@ -54,7 +54,7 @@
     <div class="label mb-3">Griffix Racing</div>
     <h1 class="font-display font-bold text-white" style="font-size:clamp(36px,6vw,72px); letter-spacing:-.03em; line-height:.95;">TRACK ORDER</h1>
     <p class="mt-4" style="font-family:'Archivo Narrow',sans-serif; font-size:16px; color:#777; line-height:1.7; max-width:480px;">
-      Enter your order ID and email to see your current order status and tracking information.
+      Order status updates are handled by email while online tracking is offline.
     </p>
   </div>
 </section>
@@ -63,8 +63,18 @@
 <section style="padding:56px 0 96px; background:#0f0f0f; min-height:60vh;">
   <div class="max-w-3xl mx-auto px-6">
 
-    <!-- Lookup form -->
-    <div id="lookup-form" style="background:#181818; border:1px solid rgba(163,145,113,.2); padding:36px;">
+    <!-- Online tracking is offline (no backend): point customers to email -->
+    <div id="tracking-email-notice" style="background:#181818; border:1px solid rgba(255,107,0,.3); border-left:3px solid #FF6B00; padding:32px; margin-bottom:24px;">
+      <h2 class="font-display text-white font-bold" style="font-size:20px; margin:0 0 10px;">TRACK YOUR ORDER BY EMAIL</h2>
+      <p style="font-family:'Archivo Narrow',sans-serif; font-size:15px; color:#aaa; line-height:1.7; margin:0 0 16px;">
+        Online order tracking is temporarily unavailable. We email you when your order ships, including the tracking number.
+        For a status update, email <a href="mailto:griffixracing@gmail.com" style="color:#FF6B00; font-weight:600;">griffixracing@gmail.com</a> with your Order ID (it starts with GRX-) and we'll reply quickly.
+      </p>
+      <a id="tracking-email-btn" href="mailto:griffixracing@gmail.com?subject=Order%20status" class="btn-primary inline-block no-underline" style="padding:13px 28px; font-size:13px;">Email us about my order →</a>
+    </div>
+
+    <!-- Lookup form (disabled while there is no order backend) -->
+    <div id="lookup-form" style="display:none; background:#181818; border:1px solid rgba(163,145,113,.2); padding:36px;">
       <h2 class="font-display text-white font-bold text-base tracking-widest uppercase mb-6">Find Your Order</h2>
       <div style="display:grid; gap:16px;">
         <div>
@@ -183,8 +193,10 @@ const params = new URLSearchParams(window.location.search);
 if (params.get('id') && params.get('email')) {
   document.getElementById('input-order-id').value = params.get('id');
   document.getElementById('input-email').value    = params.get('email');
-  // Auto-lookup
-  setTimeout(doLookup, 200);
+  // Online lookup disabled (no backend) — prefill the status email instead
+  document.getElementById('tracking-email-btn').href = 'mailto:griffixracing@gmail.com?subject=' +
+    encodeURIComponent('Order status – ' + params.get('id')) + '&body=' +
+    encodeURIComponent('Hi Griffix Racing,\n\nCould you send me a status update for order ' + params.get('id') + ' (email used at checkout: ' + params.get('email') + ')?\n\nThanks!');
 }
 
 // ── Lookup ────────────────────────────────────────────────────────────────────

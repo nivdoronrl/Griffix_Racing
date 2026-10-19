@@ -151,7 +151,7 @@
           <div class="mb-4">
             <label class="field-label" for="q-files">Upload photos / logos / references <span style="color:#555; text-transform:none; letter-spacing:0;">(optional)</span></label>
             <input id="q-files" name="files" type="file" class="form-input" accept="image/jpeg,image/png,image/webp,image/gif,application/pdf,.jpg,.jpeg,.png,.webp,.gif,.pdf" multiple>
-            <p class="quote-file-hint">JPEG, PNG, WebP, GIF or PDF · max 5 files · 4 MB each. File names are included in your quote email; we'll ask you to attach the files when we reply.</p>
+            <p class="quote-file-hint">JPEG, PNG, WebP, GIF or PDF · max 5 files · 4 MB each. File names are listed in your quote email — attach the files to that email before sending.</p>
             <p id="q-files-error" style="display:none; color:#c0a0a0; font-family:'Archivo Narrow',sans-serif; font-size:13px; margin-top:6px;"></p>
           </div>
 
@@ -178,7 +178,7 @@
           <input type="hidden" name="landing_page" id="q-landing" value="">
 
           <div class="flex flex-wrap items-center gap-4">
-            <button type="submit" id="quote-submit" class="btn-primary" style="padding:14px 36px; font-size:14px;">Send Quote Request</button>
+            <button type="submit" id="quote-submit" class="btn-primary" style="padding:14px 36px; font-size:14px;">Send Quote Request via Email →</button>
             <span id="quote-submitting" style="display:none; color:#666; font-family:'Archivo Narrow',sans-serif; font-size:13px;">Sending…</span>
           </div>
           <div id="quote-error" style="display:none; color:#c0a0a0; font-family:'Archivo Narrow',sans-serif; font-size:13px; margin-top:12px;"></div>
@@ -295,7 +295,9 @@
 <script src="/js/reveal.js"></script>
 <script src="/js/cart.js"></script>
 <script src="/js/nav.js"></script>
+<script src="/js/mailto-submit.js"></script>
 <script>
+// Quote form → mailto: griffixracing@gmail.com (no backend, no env vars).
 (function () {
   var MAX_FILES = 5;
   var MAX_BYTES = 4 * 1024 * 1024;
@@ -359,7 +361,7 @@
     filesError.style.display = err ? 'block' : 'none';
   });
 
-  form.addEventListener('submit', async function (e) {
+  form.addEventListener('submit', function (e) {
     e.preventDefault();
     var btn = document.getElementById('quote-submit');
     var loading = document.getElementById('quote-submitting');
@@ -408,7 +410,8 @@
       return;
     }
 
-    var attr = fillAttr();
+    fillAttr();
+    var attr = GriffixMailto.attribution(form);
     var fileNames = [];
     if (fileInput.files && fileInput.files.length) {
       for (var i = 0; i < fileInput.files.length; i++) {
@@ -416,74 +419,50 @@
       }
     }
 
-    var messageLines = [
-      'QUOTE REQUEST (via /custom-graphics/)',
+    var body = [
+      'QUOTE REQUEST (via griffixracing.com/custom-graphics/)',
       '',
+      'Name: ' + name,
+      'Email: ' + email,
+      'Phone: ' + (phone || '—'),
       'Need: ' + need,
       'Bike make: ' + make,
       'Model + year: ' + modelYear,
       'Name & number: ' + (nameNumber || '—'),
       'Need by: ' + (needBy || '—'),
-      'Phone: ' + (phone || '—'),
       'How found us: ' + source,
       '',
       'Colors / style / ideas:',
-      notes,
+      '{{NOTES}}',
       '',
       'Reference files selected: ' + (fileNames.length ? fileNames.join(', ') : 'none'),
+      fileNames.length ? '>> PLEASE ATTACH THESE FILES TO THIS EMAIL BEFORE SENDING <<' : 'Photos/logos? Attach them to this email.',
       '',
+      '---',
       'Attribution:',
-      'utm_source: ' + (attr.utm_source || '—'),
-      'utm_medium: ' + (attr.utm_medium || '—'),
-      'utm_campaign: ' + (attr.utm_campaign || '—'),
-      'utm_term: ' + (attr.utm_term || '—'),
-      'utm_content: ' + (attr.utm_content || '—'),
-      'referrer: ' + (attr.referrer || '—'),
-      'landing_page: ' + (attr.landing_page || '—'),
-    ];
+    ].concat(GriffixMailto.attributionLines(attr)).join('\n');
+    var mail = GriffixMailto.build('Quote Request – ' + name, body, { notes: notes });
 
-    btn.style.display = 'none';
-    loading.style.display = 'inline';
-
-    try {
-      // Reuses production /api/contact so preview submissions deliver before any Render redeploy
-      var res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: name,
-          email: email,
-          subject: 'Quote Request: ' + need,
-          message: messageLines.join('\n'),
-          website: '', // honeypot field for future server-side check
-        }),
+    if (window.GriffixAnalytics && window.GriffixAnalytics.generateLead) {
+      window.GriffixAnalytics.generateLead({
+        lead_type: leadTypeFromNeed(need),
+        source: source,
+        utm_source: attr.utm_source || '',
       });
-      var data;
-      try { data = await res.json(); } catch (err) { data = {}; }
-      if (!res.ok) throw new Error(data.error || 'Quote could not be sent. Please try again.');
-
-      if (window.GriffixAnalytics && window.GriffixAnalytics.generateLead) {
-        window.GriffixAnalytics.generateLead({
-          lead_type: leadTypeFromNeed(need),
-          source: source,
-          utm_source: attr.utm_source || '',
-        });
-      }
-
-      form.style.display = 'none';
-      document.getElementById('quote-success').style.display = 'block';
-      try {
-        history.replaceState(null, '', location.pathname + location.search + '#quote');
-      } catch (err) { /* ignore */ }
-    } catch (err) {
-      btn.style.display = 'inline-block';
-      loading.style.display = 'none';
-      var msg = (err.message && err.message.indexOf('token') === -1 && err.message.indexOf('JSON') === -1)
-        ? err.message
-        : 'Quote could not be sent. Please try again in a moment.';
-      errorEl.textContent = msg;
-      errorEl.style.display = 'block';
     }
+
+    var success = document.getElementById('quote-success');
+    form.style.display = 'none';
+    GriffixMailto.renderConfirmation(success, {
+      title: 'ALMOST DONE — SEND YOUR QUOTE REQUEST',
+      mail: mail,
+      attachNote: fileNames.length
+        ? 'Photos are not uploaded by this form — attach your ' + fileNames.length + ' file(s) (' + fileNames.join(', ') + ') to the email before you send it.'
+        : 'Have photos, logos or references? Attach them to the email before you send it.',
+    });
+    try { history.replaceState(null, '', location.pathname + location.search + '#quote'); } catch (err) { /* ignore */ }
+    success.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    GriffixMailto.open(mail.href);
   });
 })();
 </script>

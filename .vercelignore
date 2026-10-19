@@ -4,3 +4,8 @@ node_modules/
 .env.*
 .git/
 *.log
+docs/
+scripts/
+# Vercel Functions are not deployed: the site needs no backend and no env vars.
+# The code in api/ stays in the repo for later use (see docs/VERCEL_MIGRATION.md).
+api/

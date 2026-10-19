@@ -3,12 +3,66 @@
   "cleanUrls": true,
   "rewrites": [
     {
-      "source": "/api/:path*",
-      "destination": "https://griffix-racing.onrender.com/api/:path*"
+      "source": "/uploads/:dir(products|gallery)/:name.:ext(png|jpg|jpeg|webp|gif|PNG|JPG|JPEG)",
+      "destination": "/media/:dir/:name.webp"
     },
     {
-      "source": "/uploads/:path*",
-      "destination": "https://griffix-racing.onrender.com/uploads/:path*"
+      "source": "/api/products/bikes",
+      "destination": "/static-api/products/bikes.json"
+    },
+    {
+      "source": "/api/products",
+      "destination": "/static-api/products.json"
+    },
+    {
+      "source": "/api/gallery",
+      "destination": "/static-api/gallery.json"
+    },
+    {
+      "source": "/api/config",
+      "destination": "/static-api/config.json"
+    },
+    {
+      "source": "/api/health",
+      "destination": "/static-api/health.json"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/media/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/uploads/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/static-api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=300, stale-while-revalidate=86400"
+        }
+      ]
+    },
+    {
+      "source": "/api/(products|products/bikes|gallery|config|health)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=300, stale-while-revalidate=86400"
+        }
+      ]
     }
   ],
   "installCommand": "",

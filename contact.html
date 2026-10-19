@@ -97,7 +97,7 @@
           </div>
 
           <div class="flex items-center gap-4">
-            <button type="submit" id="contact-submit" class="btn-primary" style="padding:14px 36px; font-size:14px;">Send Message</button>
+            <button type="submit" id="contact-submit" class="btn-primary" style="padding:14px 36px; font-size:14px;">Send via Email →</button>
             <span id="contact-submitting" style="display:none; color:#666; font-family:'Archivo Narrow',sans-serif; font-size:13px;">Sending…</span>
           </div>
           <div id="contact-error" style="display:none; color:#c0a0a0; font-family:'Archivo Narrow',sans-serif; font-size:13px; margin-top:12px;"></div>
@@ -162,9 +162,12 @@
 <script src="/js/reveal.js"></script>
 <script src="/js/cart.js"></script>
 <script src="/js/nav.js"></script>
+<script src="/js/mailto-submit.js"></script>
 <script>
+// Contact form → mailto: griffixracing@gmail.com (no backend, no env vars).
 (function () {
   const form = document.getElementById('contact-form');
+  const success = document.getElementById('contact-success');
   function fillAttr() {
     if (window.GriffixAnalytics && window.GriffixAnalytics.fillAttributionFields) {
       return window.GriffixAnalytics.fillAttributionFields(form);
@@ -175,62 +178,60 @@
   setTimeout(fillAttr, 200);
   setTimeout(fillAttr, 800);
 
-  form.addEventListener('submit', async (e) => {
+  form.addEventListener('submit', (e) => {
     e.preventDefault();
-    const btn = document.getElementById('contact-submit');
-    const loading = document.getElementById('contact-submitting');
     const errorEl = document.getElementById('contact-error');
+    errorEl.style.display = 'none';
 
+    // Honeypot — pretend success for bots, open nothing
     if ((document.getElementById('c-website').value || '').trim()) {
       form.style.display = 'none';
-      document.getElementById('contact-success').style.display = 'block';
+      success.innerHTML = '<p style="color:#aaa;font-family:\'Archivo Narrow\',sans-serif;">Thanks!</p>';
+      success.style.display = 'block';
       return;
     }
 
     const name    = document.getElementById('c-name').value.trim();
     const email   = document.getElementById('c-email').value.trim();
     const subject = document.getElementById('c-subject').value;
-    let message   = document.getElementById('c-message').value.trim();
-    const attr    = fillAttr();
+    const message = document.getElementById('c-message').value.trim();
 
     if (!name || !email || !message) {
       errorEl.textContent = 'Please fill in your name, email, and message.';
       errorEl.style.display = 'block';
       return;
     }
-
-    message += '\n\n---\nAttribution:\n' +
-      'utm_source: ' + (attr.utm_source || '—') + '\n' +
-      'utm_medium: ' + (attr.utm_medium || '—') + '\n' +
-      'utm_campaign: ' + (attr.utm_campaign || '—') + '\n' +
-      'referrer: ' + (attr.referrer || '—') + '\n' +
-      'landing_page: ' + (attr.landing_page || '—');
-
-    btn.style.display = 'none';
-    loading.style.display = 'inline';
-    errorEl.style.display = 'none';
-
-    try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, subject, message, website: '' }),
-      });
-      let data;
-      try { data = await res.json(); } catch { data = {}; }
-      if (!res.ok) throw new Error(data.error || 'Message could not be sent. Please try again.');
-
-      form.style.display = 'none';
-      document.getElementById('contact-success').style.display = 'block';
-    } catch (err) {
-      btn.style.display = 'inline-block';
-      loading.style.display = 'none';
-      const msg = (err.message && !err.message.includes('token') && !err.message.includes('JSON'))
-        ? err.message
-        : 'Message could not be sent. Please try again in a moment.';
-      errorEl.textContent = msg;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errorEl.textContent = 'Please enter a valid email address.';
       errorEl.style.display = 'block';
+      return;
     }
+
+    fillAttr();
+    const attr = GriffixMailto.attribution(form);
+    const body = [
+      'CONTACT MESSAGE (via griffixracing.com/contact)',
+      '',
+      'Name: ' + name,
+      'Email: ' + email,
+      'Topic: ' + (subject || '—'),
+      '',
+      'Message:',
+      '{{NOTES}}',
+      '',
+      '---',
+      'Attribution:',
+    ].concat(GriffixMailto.attributionLines(attr)).join('\n');
+    const mail = GriffixMailto.build('Contact' + (subject ? ' – ' + subject : '') + ' – ' + name, body, { notes: message });
+
+    form.style.display = 'none';
+    GriffixMailto.renderConfirmation(success, {
+      title: 'ALMOST DONE — SEND YOUR MESSAGE',
+      mail: mail,
+      attachNote: 'Want to include photos? Attach them to the email before you send it.',
+    });
+    success.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    GriffixMailto.open(mail.href);
   });
 })();
 </script>
