@@ -374,7 +374,9 @@ function filterProducts() {
   const category = getActiveCategory();
   return _allProducts.filter(p => {
     if (category && p.category !== category) return false;
-    if (_ffMake && p.make !== _ffMake) return false;
+    // image_make: the product photo shows a different bike (e.g. a shared KTM render
+    // reused for other makes), so make filters use the pictured make. See server/data/products.json.
+    if (_ffMake && (p.image_make || p.make) !== _ffMake) return false;
     if (_ffModel && p.model !== _ffModel) return false;
     if (_ffYear) {
       const y = parseInt(_ffYear);
