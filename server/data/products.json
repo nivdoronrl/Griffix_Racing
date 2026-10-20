@@ -495,7 +495,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:25:20.771Z",
-    "slug": "husqvarna-supertech-graphic-kit"
+    "slug": "husqvarna-supertech-graphic-kit",
+    "image_make": "KTM"
   },
   {
     "id": "45c99159-a6b1-4a1d-8e26-0d4e5a95f85b",
@@ -514,7 +515,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:25:21.771Z",
-    "slug": "husqvarna-factory-26-graphic-kit"
+    "slug": "husqvarna-factory-26-graphic-kit",
+    "image_make": "KTM"
   },
   {
     "id": "cdd19185-9f9a-4b6f-8ad5-f2a490baa070",
@@ -533,7 +535,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:25:22.771Z",
-    "slug": "husqvarna-stryke-graphic-kit"
+    "slug": "husqvarna-stryke-graphic-kit",
+    "image_make": "KTM"
   },
   {
     "id": "9362cafd-0159-41a6-a8bc-c31a38423e18",
@@ -552,7 +555,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:25:23.771Z",
-    "slug": "husqvarna-vibes-graphic-kit"
+    "slug": "husqvarna-vibes-graphic-kit",
+    "image_make": "KTM"
   },
   {
     "id": "d14b32be-ad01-44fb-97ee-7f22a045ab96",
@@ -611,7 +615,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:25:26.770Z",
-    "slug": "mx37-graphic-kit-for-honda-s"
+    "slug": "mx37-graphic-kit-for-honda-s",
+    "image_make": "KTM"
   },
   {
     "id": "70817c60-a5b7-4041-b593-5969484a1da4",
@@ -630,7 +635,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:25:27.789Z",
-    "slug": "stryke-graphic-kit-for-honda-s"
+    "slug": "stryke-graphic-kit-for-honda-s",
+    "image_make": "KTM"
   },
   {
     "id": "414f10bb-cd5a-49dd-b630-d596a7b41a34",
@@ -649,7 +655,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:25:28.771Z",
-    "slug": "factory-26-graphic-kit-for-honda-s"
+    "slug": "factory-26-graphic-kit-for-honda-s",
+    "image_make": "KTM"
   },
   {
     "id": "0f951fb7-1607-4c07-86e7-246a93bb8e59",
@@ -668,7 +675,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:25:29.770Z",
-    "slug": "supertech-graphic-kit-for-honda-s"
+    "slug": "supertech-graphic-kit-for-honda-s",
+    "image_make": "KTM"
   },
   {
     "id": "93a07420-fb0c-45a7-9e94-b980a7c11cc6",
@@ -727,7 +735,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:25:35.770Z",
-    "slug": "vibes-graphic-kit-for-honda-s"
+    "slug": "vibes-graphic-kit-for-honda-s",
+    "image_make": "KTM"
   },
   {
     "id": "ba5fe270-1fa5-443f-94ad-7513bed314df",
@@ -867,7 +876,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:25:42.771Z",
-    "slug": "kawasaki-supertech-graphic-kit"
+    "slug": "kawasaki-supertech-graphic-kit",
+    "image_make": "KTM"
   },
   {
     "id": "859d211a-2193-41ca-b52f-b740860022c6",
@@ -907,7 +917,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:25:44.771Z",
-    "slug": "kawasaki-stryke-graphic-kit"
+    "slug": "kawasaki-stryke-graphic-kit",
+    "image_make": "KTM"
   },
   {
     "id": "d2692690-4adc-4771-a741-705bd2faa99c",
@@ -926,7 +937,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:25:45.769Z",
-    "slug": "kawasaki-mx37-graphic-kit"
+    "slug": "kawasaki-mx37-graphic-kit",
+    "image_make": "KTM"
   },
   {
     "id": "a5c983b8-b902-461d-bd85-7ac02e84e55f",
@@ -945,7 +957,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:25:46.770Z",
-    "slug": "kawasaki-mx35-graphic-kit"
+    "slug": "kawasaki-mx35-graphic-kit",
+    "image_make": "KTM"
   },
   {
     "id": "b2920529-e3c5-478e-8110-88f68e644769",
@@ -1024,7 +1037,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:25:53.771Z",
-    "slug": "yamaha-stryke-graphic-kit"
+    "slug": "yamaha-stryke-graphic-kit",
+    "image_make": "KTM"
   },
   {
     "id": "dc837802-f120-4e9d-bb27-d61c8852eca2",
@@ -1063,7 +1077,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:25:55.772Z",
-    "slug": "yamaha-supertech-graphic-kit"
+    "slug": "yamaha-supertech-graphic-kit",
+    "image_make": "KTM"
   },
   {
     "id": "6e230e36-ad30-4c41-bc38-3c7d84557641",
@@ -1139,7 +1154,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:25:59.771Z",
-    "slug": "yamaha-mx37-graphic-kit"
+    "slug": "yamaha-mx37-graphic-kit",
+    "image_make": "KTM"
   },
   {
     "id": "2288de28-9554-4484-8445-fd4a3336c7f6",
@@ -1177,7 +1193,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:26:01.771Z",
-    "slug": "suzuki-mx37-graphic-kit"
+    "slug": "suzuki-mx37-graphic-kit",
+    "image_make": "KTM"
   },
   {
     "id": "fb053854-339d-4352-98b4-21eddf03be20",
@@ -1196,7 +1213,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:26:02.771Z",
-    "slug": "suzuki-mx35-graphic-kit"
+    "slug": "suzuki-mx35-graphic-kit",
+    "image_make": "KTM"
   },
   {
     "id": "f32d4d73-fe6c-4676-9029-addae2b381b0",
@@ -1215,7 +1233,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:26:03.771Z",
-    "slug": "suzuki-stryke-graphic-kit"
+    "slug": "suzuki-stryke-graphic-kit",
+    "image_make": "KTM"
   },
   {
     "id": "f70d1338-9e4c-4708-a54f-dd4b2498d7fb",
@@ -1234,7 +1253,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:26:04.771Z",
-    "slug": "suzuki-vibes-graphic-kit"
+    "slug": "suzuki-vibes-graphic-kit",
+    "image_make": "KTM"
   },
   {
     "id": "e8ebeef6-1d7d-45ef-b0d8-540f47aefdd4",
@@ -1272,7 +1292,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:26:06.771Z",
-    "slug": "suzuki-factory-26-graphic-kit"
+    "slug": "suzuki-factory-26-graphic-kit",
+    "image_make": "KTM"
   },
   {
     "id": "33cdb2ec-2900-476d-ad61-40f7cd276ee8",
@@ -1291,7 +1312,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:26:07.774Z",
-    "slug": "suzuki-supertech-graphic-kit"
+    "slug": "suzuki-supertech-graphic-kit",
+    "image_make": "KTM"
   },
   {
     "id": "e833d5c3-6942-4311-b3ec-a943a7b7b562",
@@ -1348,7 +1370,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:26:10.769Z",
-    "slug": "gas-gas-stryke-graphic-kit"
+    "slug": "gas-gas-stryke-graphic-kit",
+    "image_make": "KTM"
   },
   {
     "id": "3d206af0-702b-4ed2-8dfe-a7fb4fb3b76d",
@@ -1367,7 +1390,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:26:11.769Z",
-    "slug": "gas-gas-vibes-graphic-kit"
+    "slug": "gas-gas-vibes-graphic-kit",
+    "image_make": "KTM"
   },
   {
     "id": "7d438451-b845-425d-9cdb-0fd348c007fa",
@@ -1386,7 +1410,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:26:12.769Z",
-    "slug": "gas-gas-supertech-graphic-kit"
+    "slug": "gas-gas-supertech-graphic-kit",
+    "image_make": "KTM"
   },
   {
     "id": "323bdbdf-32fa-4855-9834-9f0727e32825",
@@ -1405,7 +1430,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:26:13.769Z",
-    "slug": "gas-gas-mx35-graphic-kit"
+    "slug": "gas-gas-mx35-graphic-kit",
+    "image_make": "KTM"
   },
   {
     "id": "cc97540f-5edb-4fe0-b0b7-97520496e7c9",
@@ -1424,7 +1450,8 @@
     "in_stock": true,
     "featured": false,
     "created_at": "2026-03-01T22:26:14.770Z",
-    "slug": "gas-gas-mx37-graphic-kit"
+    "slug": "gas-gas-mx37-graphic-kit",
+    "image_make": "KTM"
   },
   {
     "id": "1dc7b13e-f5c5-4840-851b-60485516625c",
